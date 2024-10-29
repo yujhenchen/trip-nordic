@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func FIFetchAPIResponse(url string) (*models.FIApiResponse, error) {
+func SEFetchAPIResponse(url string) (*models.SEApiResponse, error) {
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch data: %v", err)
@@ -19,7 +19,7 @@ func FIFetchAPIResponse(url string) (*models.FIApiResponse, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response body: %v", err)
 	}
-	var apiResponse models.FIApiResponse
+	var apiResponse models.SEApiResponse
 	if err := json.Unmarshal(body, &apiResponse); err != nil {
 		return nil, fmt.Errorf("failed to parse JSON: %v", err)
 	}
