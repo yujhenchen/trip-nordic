@@ -1,4 +1,4 @@
-package fi_activity_client
+package clients
 
 import (
 	"backend/models"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func fetchAPIResponse(url string) (*models.ApiResponse, error) {
+func FetchAPIResponse(url string) (*models.ApiResponse, error) {
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch data: %v", err)
