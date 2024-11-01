@@ -9,44 +9,35 @@ import (
 	seModels "backend/models/se"
 )
 
-func getFIData(url string) {
-	var fiRes fiModels.Response
-	res, err := clients.FetchAPIResponse(url, fiRes)
+func getData[T seModels.Response | fiModels.Response](url string, response T) (*T, error) {
+	// var seRes seModels.Response
+	res, err := clients.FetchAPIResponse(url, response)
 	if err != nil {
-		log.Fatal("Error fetching API response: %v", err)
+		log.Fatalf("Error fetching API response: %v", err)
+		return res, fmt.Errorf("Error fetching API response: %v", err)
 	}
-	fmt.Printf("Total Results: %d\n", res.Total)
-	for _, result := range res.Results {
-		fmt.Printf("Name: %s, Region: %s\n", result.NameField, result.Region)
-	}
-}
-
-func getSEData(url string) {
-	var seRes seModels.Response
-	res, err := clients.FetchAPIResponse(url, seRes)
-	if err != nil {
-		log.Fatal("Error fetching API response: %v", err)
-	}
-	fmt.Printf("Total Results: %d\n", len(res.Results))
-	for _, result := range res.Results {
-		fmt.Printf("Name: %s, Region: %s\n", result.Title, result.Text)
-	}
+	return res, nil
 }
 
 func main() {
-	// TODO: use env variables or something else to store the variables
-	// url := ""
-	// res, err := clients.FIFetchAPIResponse(url)
-	// if err != nil {
-	// 	log.Fatal("Error fetching API response: %v", err)
-	// }
-	// fmt.Printf("Total Results: %d\n", res.Total)
-	// for _, result := range res.Results {
-	// 	fmt.Printf("Name: %s, Region: %s\n", result.NameField, result.Region)
-	// }
+	// FI
 	fiUrl := ""
-	getFIData(fiUrl)
+	fiRes, _ := getData(fiUrl, fiModels.Response{})
+	fmt.Printf("Total Results: %d\n", fiRes.Total)
+	for _, result := range fiRes.Results {
+		fmt.Printf("Name: %s, Region: %s\n", result.NameField, result.Region)
+	}
 
+	fmt.Println()
+
+	// SE
 	seUrl := ""
-	getSEData(seUrl)
+	seRes, _ := getData(seUrl, seModels.Response{})
+	fmt.Printf("Total Results: %d\n", len(seRes.Results))
+	for _, result := range seRes.Results {
+		fmt.Printf("Title: %s, Text: %s\n", result.Title, result.Text)
+	}
+
+	// NO
+
 }
