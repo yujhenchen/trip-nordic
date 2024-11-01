@@ -1,5 +1,7 @@
 package models
 
+import "encoding/json"
+
 type Image struct {
 	AltText       *string                  `json:"alt_text"`
 	Title         string                   `json:"title"`
@@ -63,17 +65,17 @@ type StringOrStringArray struct {
 }
 
 type Result struct {
-	ID            int                 `json:"id"`
-	Title         string              `json:"title"`
-	Href          string              `json:"href"`
-	Text          string              `json:"text"`
-	Image         Image               `json:"image"`
-	Live          bool                `json:"live"`
-	Path          string              `json:"path"`
-	Type          interface{}         `json:"type"`
-	OriginalTitle string              `json:"original_title"`
-	IsExternal    bool                `json:"is_external"`
-	Categories    StringOrStringArray `json:"categories"`
+	ID            int             `json:"id"`
+	Title         string          `json:"title"`
+	Href          string          `json:"href"`
+	Text          string          `json:"text"`
+	Image         Image           `json:"image"`
+	Live          bool            `json:"live"`
+	Path          string          `json:"path"`
+	Type          interface{}     `json:"type"`
+	OriginalTitle string          `json:"original_title"`
+	IsExternal    bool            `json:"is_external"`
+	Categories    json.RawMessage `json:"categories"` // FIX ME: this is either []string or string
 }
 
 type Response struct {
