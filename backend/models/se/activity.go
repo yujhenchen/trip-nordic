@@ -62,7 +62,7 @@ type StringOrStringArray struct {
 	StringValue string
 }
 
-type SEResult struct {
+type Result struct {
 	ID            int                 `json:"id"`
 	Title         string              `json:"title"`
 	Href          string              `json:"href"`
@@ -76,8 +76,8 @@ type SEResult struct {
 	Categories    StringOrStringArray `json:"categories"`
 }
 
-type SEApiResponse struct {
-	Results []SEResult `json:"results"`
-	Meta    Meta       `json:"meta"`
-	Facets  Facets     `json:"facets"`
+type Response struct {
+	Results []Result `json:"results"`
+	Meta    Meta     `json:"meta"`
+	Facets  Facets   `json:"facets"`
 }

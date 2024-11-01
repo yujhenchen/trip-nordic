@@ -1,14 +1,19 @@
 package clients
 
 import (
-	"backend/models"
+	fiModels "backend/models/fi"
+	seModels "backend/models/se"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 )
 
-func FIFetchAPIResponse(url string) (*models.FIApiResponse, error) {
+type ResponseType interface {
+	fiModels.Response | seModels.Response
+}
+
+func FetchAPIResponse[T ResponseType](url string, response T) (*T, error) {
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch data: %v", err)
@@ -19,10 +24,9 @@ func FIFetchAPIResponse(url string) (*models.FIApiResponse, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response body: %v", err)
 	}
-	var apiResponse models.FIApiResponse
-	if err := json.Unmarshal(body, &apiResponse); err != nil {
+	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, fmt.Errorf("failed to parse JSON: %v", err)
 	}
 
-	return &apiResponse, nil
+	return &response, nil
 }

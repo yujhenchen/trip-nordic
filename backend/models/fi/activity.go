@@ -11,7 +11,7 @@ package models
 //     Orientation  string `json:"orientation"`
 // }
 
-type FIResult struct {
+type Result struct {
 	Name             string `json:"@name"`
 	Path             string `json:"@path"`
 	ID               string `json:"@id"`
@@ -43,9 +43,9 @@ type FIResult struct {
 	// Image            Image  `json:"image"`
 }
 
-type FIApiResponse struct {
-	Total   int        `json:"total"`
-	Offset  int        `json:"offset"`
-	Limit   int        `json:"limit"`
-	Results []FIResult `json:"results"`
+type Response struct {
+	Total   int      `json:"total"`
+	Offset  int      `json:"offset"`
+	Limit   int      `json:"limit"`
+	Results []Result `json:"results"`
 }
