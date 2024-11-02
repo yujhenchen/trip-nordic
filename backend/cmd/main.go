@@ -10,7 +10,9 @@ import (
 	"os"
 	"strings"
 
+	fiModels "backend/models/fi"
 	noModels "backend/models/no"
+	seModels "backend/models/se"
 
 	"github.com/joho/godotenv"
 )
@@ -33,6 +35,29 @@ func goDotEnvVariable(key string) string {
 		log.Fatalf("Error loading .env file")
 	}
 	return os.Getenv(key)
+}
+
+func getFIActivityParams() string {
+	fields := strings.Split(goDotEnvVariable("NO_ACTIVITY_FIELDS"), ",")
+	params := make([]string, 0, len(fields))
+	for _, field := range fields {
+		var value string
+		switch field {
+		case "offset":
+			value = goDotEnvVariable("FI_ACTIVITY_OFFSET")
+		case "limit":
+			value = goDotEnvVariable("FI_ACTIVITY_LIMIT")
+		case "language":
+			value = goDotEnvVariable("FI_ACTIVITY_LANGUAGE")
+		case "category":
+			value = goDotEnvVariable("FI_ACTIVITY_CATEGORY")
+		}
+		if value != "" {
+			params = append(params, fmt.Sprintf("%s=%s", field, value))
+		}
+	}
+	return strings.Join(params, "&")
+
 }
 
 func getNOActivityParams() string {
@@ -73,33 +98,31 @@ func formatFields(fields []string) string {
 
 func main() {
 	// FI
-	// fiUrl := ""
-	// fiRes, _ := getData(fiUrl, fiModels.Response{})
-	// fmt.Printf("Total Results: %d\n", fiRes.Total)
-	// for _, result := range fiRes.Results {
-	// 	fmt.Printf("Name: %s, Region: %s\n", result.NameField, result.Region)
-	// }
+	fiUrl := goDotEnvVariable("FI_ACTIVITY_URL")
+	searchParams := getFIActivityParams()
+	fiRes, _ := getData(fmt.Sprintf("%s?%s", fiUrl, searchParams), fiModels.Response{})
+	fmt.Printf("Total Results: %d\n", fiRes.Total)
+	for _, result := range fiRes.Results {
+		fmt.Printf("Name: %s, Region: %s\n", result.NameField, result.Region)
+	}
 
-	// fmt.Println()
-
-	// // SE
-	// seUrl := ""
-	// seRes, _ := getData(seUrl, seModels.Response{})
-	// fmt.Printf("Total Results: %d\n", len(seRes.Results))
-	// for _, result := range seRes.Results {
-	// 	fmt.Printf("Title: %s, Text: %s\n", result.Title, result.Text)
-	// }
+	// SE
+	seUrl := goDotEnvVariable("SE_ACTIVITY_URL")
+	seRes, _ := getData(seUrl, seModels.Response{})
+	fmt.Printf("Total Results: %d\n", len(seRes.Results))
+	for _, result := range seRes.Results {
+		fmt.Printf("Title: %s, Text: %s\n", result.Title, result.Text)
+	}
 
 	// NO get token
 	token, err := no.GetToken(goDotEnvVariable("NO_TOKEN_URL"))
 	if err != nil {
 		fmt.Print(err)
 	}
-	fmt.Printf("token is: %s\n", token)
+	// fmt.Printf("token is: %s\n", token)
 
 	// NO param
 	params := getNOActivityParams()
-	// `{"filter":{"$and":[{"filter_tags":{"$in":["site_primary"]}},{"calendarid":{"$in":["1"]}},{"categories.catId":{"$in":["31","12","13","32","2","3","1","4","30","25","5","14","6","15","7","19","20","8","27","9","28","21","29","24","10"]}}],"dates":{"$elemMatch":{"eventDate":{"$gte":{"$date":"2024-08-30T22:00:00.000Z"},"$lte":{"$date":"2025-09-05T22:00:00.000Z"}}}}},"options":{"limit":1,"skip":0,"count":true,"castDocs":false,"fields":{"categories":1,"description":1,"endDate":1,"host_id":1,"host.recid":1,"host.title":1,"host.detailURL":1,"latitude":1,"listing_id":1,"listing.recid":1,"listing.title":1,"listing.detailURL":1,"location":1,"city":1,"longitude":1,"_media.mediaurl":1,"_media.mediadesc":1,"nextDate":1,"rank":1,"recid":1,"recurType":1,"recurrence":1,"sites":1,"startDate":1,"title":1,"typeName":1,"loc":1,"url":1,"locale_code":1,"date":1,"udfs_object.47.value":1,"udfs_object.35.value":1}}}`
 
 	// Create a URL object
 	u, err := url.Parse(goDotEnvVariable("NO_ACTIVITY_URL"))
