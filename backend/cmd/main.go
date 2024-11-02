@@ -3,7 +3,6 @@ package main
 import (
 	"backend/clients"
 	"backend/clients/no"
-	"backend/types"
 	"fmt"
 	"log"
 	"net/url"
@@ -16,16 +15,6 @@ import (
 
 	"github.com/joho/godotenv"
 )
-
-func getData[T types.ResponseType](url string, response T) (*T, error) {
-	// var seRes seModels.Response
-	res, err := clients.FetchAPIResponse(url, response)
-	if err != nil {
-		log.Fatalf("Error fetching API response: %v", err)
-		return res, fmt.Errorf("Error fetching API response: %v", err)
-	}
-	return res, nil
-}
 
 func goDotEnvVariable(key string) string {
 	// load .env file
@@ -100,7 +89,7 @@ func main() {
 	// FI
 	fiUrl := goDotEnvVariable("FI_ACTIVITY_URL")
 	searchParams := getFIActivityParams()
-	fiRes, _ := getData(fmt.Sprintf("%s?%s", fiUrl, searchParams), fiModels.Response{})
+	fiRes, _ := clients.FetchAPIResponse(fmt.Sprintf("%s?%s", fiUrl, searchParams), fiModels.Response{})
 	fmt.Printf("Total Results: %d\n", fiRes.Total)
 	for _, result := range fiRes.Results {
 		fmt.Printf("Name: %s, Region: %s\n", result.NameField, result.Region)
@@ -108,7 +97,7 @@ func main() {
 
 	// SE
 	seUrl := goDotEnvVariable("SE_ACTIVITY_URL")
-	seRes, _ := getData(seUrl, seModels.Response{})
+	seRes, _ := clients.FetchAPIResponse(seUrl, seModels.Response{})
 	fmt.Printf("Total Results: %d\n", len(seRes.Results))
 	for _, result := range seRes.Results {
 		fmt.Printf("Title: %s, Text: %s\n", result.Title, result.Text)
@@ -141,7 +130,7 @@ func main() {
 	// fmt.Println(u.String())
 
 	noUrl := u.String()
-	noRes, _ := getData(noUrl, noModels.Response{})
+	noRes, _ := clients.FetchAPIResponse(noUrl, noModels.Response{})
 	fmt.Printf("Total Results: %d\n", len(noRes.Docs.Docs))
 	for _, result := range noRes.Docs.Docs {
 		fmt.Printf("Title: %s, Text: %s\n", result.Title, result.City)
