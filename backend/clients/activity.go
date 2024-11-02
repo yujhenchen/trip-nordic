@@ -2,6 +2,7 @@ package clients
 
 import (
 	fiModels "backend/models/fi"
+	noModels "backend/models/no"
 	seModels "backend/models/se"
 	"encoding/json"
 	"fmt"
@@ -10,7 +11,7 @@ import (
 )
 
 type ResponseType interface {
-	fiModels.Response | seModels.Response
+	fiModels.Response | seModels.Response | noModels.Response
 }
 
 func FetchAPIResponse[T ResponseType](url string, response T) (*T, error) {
