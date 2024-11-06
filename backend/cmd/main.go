@@ -14,26 +14,24 @@ import (
 	seModels "backend/models/se"
 )
 
-func main() {
-	// TODO: if there is a package to do the Concurrency
-	var wg sync.WaitGroup
-
-	// FI
+func getFIURL() string {
 	fiUrl := config.GoDotEnvVariable("FI_ACTIVITY_URL")
 	searchParams := utils.GetFIActivityParams()
-	fiUrl = fmt.Sprintf("%s?%s", fiUrl, searchParams)
+	return fmt.Sprintf("%s?%s", fiUrl, searchParams)
+}
 
-	// SE
-	seUrl := config.GoDotEnvVariable("SE_ACTIVITY_URL")
+func getSEURL() string {
+	return config.GoDotEnvVariable("SE_ACTIVITY_URL")
+}
 
-	// NO
+func getNOURL() string {
 	params := utils.GetNOActivityParams()
 
 	// Create a URL object
 	u, err := url.Parse(config.GoDotEnvVariable("NO_ACTIVITY_URL"))
 	if err != nil {
 		fmt.Println("Error parsing URL:", err)
-		return
+		return ""
 	}
 
 	token, err := no.GetToken(config.GoDotEnvVariable("NO_TOKEN_URL"))
@@ -46,33 +44,37 @@ func main() {
 	q.Set("json", params)
 	q.Set("token", token)
 	u.RawQuery = q.Encode()
-	noUrl := u.String()
+	return u.String()
+}
+
+func main() {
+	var wg sync.WaitGroup
 
 	urls := map[string]interface{}{
-		fiUrl: fiModels.Response{},
-		seUrl: seModels.Response{},
-		noUrl: noModels.Response{},
+		getFIURL(): &fiModels.Response{}, // `myStruct{}` is the instance of struct with default value
+		getSEURL(): &seModels.Response{},
+		getNOURL(): &noModels.Response{},
 	}
 
 	for url, responseType := range urls {
 		wg.Add(1)
-		go func(url string, response any) { // TODO: study this, change any to more specific
+		go func(url string, response interface{}) {
 			defer wg.Done()
-			switch r := response.(type) { // TODO: study this
-			case fiModels.Response:
-				data, err := clients.FetchAPIResponse(url, r)
+			switch r := response.(type) { // type assertion
+			case *fiModels.Response:
+				data, err := clients.FetchAPIResponse(url, *r)
 				if err != nil {
 					fmt.Printf("get FI data error: %v", err)
 				}
 				fmt.Printf("Total Results: %d\n", data.Total)
-			case seModels.Response:
-				data, err := clients.FetchAPIResponse(url, r)
+			case *seModels.Response:
+				data, err := clients.FetchAPIResponse(url, *r)
 				if err != nil {
 					fmt.Printf("get SE data error: %v", err)
 				}
 				fmt.Printf("Total Results: %d\n", len(data.Results))
-			case noModels.Response:
-				data, err := clients.FetchAPIResponse(url, r)
+			case *noModels.Response:
+				data, err := clients.FetchAPIResponse(url, *r)
 				if err != nil {
 					fmt.Printf("get NO data error: %v", err)
 				}
@@ -83,7 +85,7 @@ func main() {
 	}
 	wg.Wait()
 
-	// TODO: below are currently work version
+	// TODO: below is the version without WaitGroup, use benchmark to test the speed before and after
 	// FI
 	// fiUrl := config.GoDotEnvVariable("FI_ACTIVITY_URL")
 	// searchParams := utils.GetFIActivityParams()
