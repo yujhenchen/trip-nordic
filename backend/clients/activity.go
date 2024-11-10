@@ -1,14 +1,21 @@
 package clients
 
 import (
-	"backend/types"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+
+	fiModels "backend/models/fi"
+	noModels "backend/models/no"
+	seModels "backend/models/se"
 )
 
-func FetchAPIResponse[T types.ResponseType](url string, response T) (*T, error) {
+type ResponseType interface {
+	fiModels.Response | seModels.Response | noModels.Response
+}
+
+func FetchAPIResponse[T ResponseType](url string, response T) (*T, error) {
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch data: %v", err)
