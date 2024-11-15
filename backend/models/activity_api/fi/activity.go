@@ -1,4 +1,4 @@
-package models
+package activity_api
 
 // type Image struct {
 //     Copyright    string `json:"copyright"`

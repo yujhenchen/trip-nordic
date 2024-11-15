@@ -6,9 +6,9 @@ import (
 	"io"
 	"net/http"
 
-	fiModels "backend/models/fi"
-	noModels "backend/models/no"
-	seModels "backend/models/se"
+	fiModels "backend/models/activity_api/fi"
+	noModels "backend/models/activity_api/no"
+	seModels "backend/models/activity_api/se"
 )
 
 type ResponseType interface {

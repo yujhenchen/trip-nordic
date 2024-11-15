@@ -1,4 +1,4 @@
-package models
+package activity_api
 
 import "encoding/json"
 

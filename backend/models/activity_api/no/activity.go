@@ -1,4 +1,4 @@
-package models
+package activity_api
 
 // ApiResponse represents the top-level structure of the API response.
 type Response struct {
