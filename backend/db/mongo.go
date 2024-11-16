@@ -3,13 +3,8 @@ package mongodb
 import (
 	"context"
 
-	"errors"
-	"reflect"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/bsoncodec"
-	"go.mongodb.org/mongo-driver/bson/bsonrw"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -74,46 +69,33 @@ type mongoSession struct {
 	mongo.Session
 }
 
-type nullawareDecoder struct {
-	defDecoder bsoncodec.ValueDecoder
-	zeroValue  reflect.Value
-}
+// type nullawareDecoder struct {
+// 	defDecoder bsoncodec.ValueDecoder
+// 	zeroValue  reflect.Value
+// }
 
-func (d *nullawareDecoder) DecodeValue(dctx bsoncodec.DecodeContext, vr bsonrw.ValueReader, val reflect.Value) error {
-	if vr.Type() != bson.TypeNull {
-		return d.defDecoder.DecodeValue(dctx, vr, val)
-	}
+// func (d *nullawareDecoder) DecodeValue(dctx bsoncodec.DecodeContext, vr bsonrw.ValueReader, val reflect.Value) error {
+// 	if vr.Type() != bson.TypeNull {
+// 		return d.defDecoder.DecodeValue(dctx, vr, val)
+// 	}
 
-	if !val.CanSet() {
-		return errors.New("value not settable")
-	}
-	if err := vr.ReadNull(); err != nil {
-		return err
-	}
-	// Set the zero value of val's type:
-	val.Set(d.zeroValue)
-	return nil
-}
+// 	if !val.CanSet() {
+// 		return errors.New("value not settable")
+// 	}
+// 	if err := vr.ReadNull(); err != nil {
+// 		return err
+// 	}
+// 	// Set the zero value of val's type:
+// 	val.Set(d.zeroValue)
+// 	return nil
+// }
 
 func NewClient(connection string) (Client, error) {
 
 	time.Local = time.UTC
-	// uri := config.GoDotEnvVariable("MONGODB_URI")
-	// docs := "www.mongodb.com/docs/drivers/go/current/"
-	// if uri == "" {
-	// 	log.Fatal("Set your 'MONGODB_URI' environment variable. " +
-	// 		"See: " + docs +
-	// 		"usage-examples/#environment-variable")
-	// }
-
 	// create a new client instance that connects to MongoDB
 	// options.Client function creates a configuration for the MongoDB client
 	c, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(connection))
-	// if err != nil {
-	// 	// panic is a built-in Go function that stops the ordinary flow of execution and starts panicking. It’s generally used for unrecoverable errors
-	// 	panic(err)
-	// }
-
 	return &mongoClient{cl: c}, err
 
 }

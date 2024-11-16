@@ -11,9 +11,6 @@ import (
 
 	"github.com/jinzhu/copier"
 	"go.mongodb.org/mongo-driver/bson"
-	// activity_db "backend/models/activity_db/se"
-	// "github.com/jinzhu/copier"
-	// "go.mongodb.org/mongo-driver/bson"
 )
 
 func main() {
