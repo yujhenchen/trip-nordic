@@ -6,17 +6,14 @@ import (
 	mongodb "backend/db"
 	"context"
 	"fmt"
-	"log"
 
 	seModels "backend/models/activity_api/se"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
+	// activity_db "backend/models/activity_db/se"
+	// "github.com/jinzhu/copier"
+	// "go.mongodb.org/mongo-driver/bson"
 )
-
-// "log"
-
-// "go.mongodb.org/mongo-driver/bson"
 
 // func getFIURL() string {
 // 	fiUrl := config.GoDotEnvVariable("FI_ACTIVITY_URL")
@@ -159,15 +156,12 @@ func main() {
 	// }
 	// fmt.Println(insertResult.InsertedID)
 
-	results := clients.GetSEAPIData()
+	data := clients.GetSEAPIData()
 	// fmt.Printf("result count %d", len(*results))
 
 	uri := config.GoDotEnvVariable("MONGODB_URI")
-	docs := "www.mongodb.com/docs/drivers/go/current/"
 	if uri == "" {
-		log.Fatal("Set your 'MONGODB_URI' environment variable. " +
-			"See: " + docs +
-			"usage-examples/#environment-variable")
+		fmt.Println("Cannot find uri")
 	}
 	client, err := mongodb.NewClient(uri)
 	if err != nil {
@@ -175,26 +169,67 @@ func main() {
 		panic(err)
 	}
 	seCol := client.Database("activity_db").Collection("se")
-
 	fmt.Println(seCol)
 
+	// update 1 by 1
 	// iterate results array
 	// check if id exists, insert to database if not, update if exists
-	for _, record := range *results {
+	for _, record := range *data {
 		fmt.Println(record.ID)
 		filter := bson.M{"ID": record.ID}
-		err := seCol.FindOne(context.TODO(), filter).Decode(seModels.Result{})
-		if err != nil {
-			if err == mongo.ErrNoDocuments {
-				// seCol.InsertOne(context.TODO())
-				fmt.Println("cannot find doc")
-			} else {
-				log.Fatalf("FindOne error: %v", err)
-			}
-		} else {
-			// seCol.UpdateOne(context.TODO())
-			fmt.Println("found doc, update doc")
-		}
+		var result seModels.Result
+		seCol.FindOne(context.TODO(), filter).Decode(&result)
+		fmt.Println(result.Categories.Data, result.Type)
+		// if err != nil {
+		// 	if err == mongo.ErrNoDocuments {
+		// 		// fmt.Println("cannot find doc")
+		// 		toInsert := activity_db.Result{
+		// 			ID:            record.ID,
+		// 			Title:         record.Title,
+		// 			Href:          record.Href,
+		// 			Text:          record.Text,
+		// 			OriginalTitle: record.OriginalTitle,
+		// 			Categories:    record.Categories,
+		// 		}
+		// 		doc, err := seCol.InsertOne(context.TODO(), toInsert)
+		// 		if err != nil {
+		// 			log.Fatalf("Failed to insert document: %v", err)
+		// 		}
+		// 		fmt.Println(doc)
+		// 	} else {
+		// 		log.Fatalf("FindOne error: %v", err)
+		// 	}
+		// } else {
+		// 	// seCol.UpdateOne(context.TODO())
+		// 	fmt.Println("found doc, update doc")
+		// }
 	}
+
+	// map group of data into target struct
+	// insert many
+	// var toInsertArr []activity_db.Result
+	// err = copier.Copy(&toInsertArr, dataArr)
+	// if err != nil {
+	// 	fmt.Printf("Error copying data: %v\n", err)
+	// }
+	// fmt.Println(len(toInsertArr))
+
+	// // Convert to []interface{}
+	// docs := make([]interface{}, len(toInsertArr))
+	// for i, record := range toInsertArr {
+	// 	docs[i] = record
+	// }
+	// results, err := seCol.InsertMany(context.TODO(), docs)
+	// if err != nil {
+	// 	fmt.Printf("Error inserting documents: %v\n", err)
+	// }
+	// fmt.Println(results)
+
+	// // find one
+	// filter := bson.M{"ID": 5141}
+	// var result activity_db.Result
+	// seCol.FindOne(context.TODO(), filter).Decode(&result)
+	// fmt.Println(result.Categories)
+
 	defer client.Disconnect(context.TODO())
 }
