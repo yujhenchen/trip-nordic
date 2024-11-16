@@ -1,6 +1,8 @@
 package activity_api
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type Image struct {
 	AltText       *string                  `json:"alt_text"`
@@ -58,24 +60,45 @@ type Region struct {
 	Path  string `json:"path"`
 }
 
-// TODO: 2024/10/29 20:55:25 Error fetching API response: %vfailed to parse JSON: json: cannot unmarshal array into Go struct field SEResult.results.categories of type models.StringOrStringArray
-type StringOrStringArray struct {
-	StringArray []string
-	StringValue string
+// Custom Categories type to handle both string and []string
+type Categories struct {
+	Data interface{}
+}
+
+func (c *Categories) UnmarshalJSON(data []byte) error {
+	// Attempt to unmarshal into []string
+	var strArray []string
+	if err := json.Unmarshal(data, &strArray); err == nil {
+		c.Data = strArray
+		// fmt.Println("Unmarshaled into []string:", strArray) // Debug output
+		return nil
+	}
+
+	// If unmarshaling into []string fails, try unmarshaling into a string
+	var str string
+	if err := json.Unmarshal(data, &str); err == nil {
+		c.Data = str
+		// fmt.Println("Unmarshaled into string:", str) // Debug output
+		return nil
+	}
+
+	// If both attempts fail, return an error
+	// return fmt.Errorf("categories field must be either a string or an array of strings")
+	return nil
 }
 
 type Result struct {
-	ID            int             `json:"id"`
-	Title         string          `json:"title"`
-	Href          string          `json:"href"`
-	Text          string          `json:"text"`
-	Image         Image           `json:"image"`
-	Live          bool            `json:"live"`
-	Path          string          `json:"path"`
-	Type          interface{}     `json:"type"`
-	OriginalTitle string          `json:"original_title"`
-	IsExternal    bool            `json:"is_external"`
-	Categories    json.RawMessage `json:"categories"` // FIX ME: this is either []string or string
+	ID            int         `json:"id"`
+	Title         string      `json:"title"`
+	Href          string      `json:"href"`
+	Text          string      `json:"text"`
+	Image         Image       `json:"image"`
+	Live          bool        `json:"live"`
+	Path          string      `json:"path"`
+	Type          interface{} `json:"type"`
+	OriginalTitle string      `json:"original_title"`
+	IsExternal    bool        `json:"is_external"`
+	Categories    Categories  `json:"categories"` // FIX ME: this is either []string or string
 }
 
 type Response struct {

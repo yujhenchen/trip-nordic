@@ -33,12 +33,10 @@ func FetchAPIResponse[T ResponseType](url string, response T) (*T, error) {
 	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, fmt.Errorf("failed to parse JSON: %v", err)
 	}
-
 	return &response, nil
 }
 
 // get API urls
-
 func GetFIURL() string {
 	fiUrl := config.GoDotEnvVariable("FI_ACTIVITY_URL")
 	searchParams := utils.GetFIActivityParams()
