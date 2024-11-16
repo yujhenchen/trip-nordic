@@ -3,6 +3,7 @@ module backend
 go 1.23.2
 
 require (
+	github.com/jinzhu/copier v0.4.0
 	github.com/joho/godotenv v1.5.1
 	go.mongodb.org/mongo-driver v1.17.1
 )
