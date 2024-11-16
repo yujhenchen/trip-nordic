@@ -43,8 +43,9 @@ func GetFIURL() string {
 	return fmt.Sprintf("%s?%s", fiUrl, searchParams)
 }
 
-func GetSEURL() string {
-	return config.GoDotEnvVariable("SE_ACTIVITY_URL")
+func GetSEURL(page int) string {
+	// return config.GoDotEnvVariable("SE_ACTIVITY_URL")
+	return fmt.Sprintf("%s?%s=%d", config.GoDotEnvVariable("SE_ACTIVITY_URL"), config.GoDotEnvVariable("SE_ACTIVITY_FIELDS"), page)
 }
 
 func GetNOURL() string {
@@ -71,8 +72,8 @@ func GetNOURL() string {
 }
 
 // get api, connect to DB and insert data
-func GetSEAPIData() *[]seModels.Result {
-	data, err := FetchAPIResponse(GetSEURL(), seModels.Response{})
+func GetSEAPIData(page int) *[]seModels.Result {
+	data, err := FetchAPIResponse(GetSEURL(page), seModels.Response{})
 	if err != nil {
 		fmt.Printf("get SE data error: %v", err)
 	}
