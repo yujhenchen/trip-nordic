@@ -16,6 +16,7 @@ MongoDB
 - [MongoDB Go Driver](https://www.mongodb.com/docs/drivers/go/current/)
 - [How To Use Go with MongoDB Using the MongoDB Go Driver](https://www.digitalocean.com/community/tutorials/how-to-use-go-with-mongodb-using-the-mongodb-go-driver)
 - [How to Use MongoDB with Go](https://earthly.dev/blog/use-mongo-with-go/)
+- [Go Backend Clean Architecture](https://github.com/amitshekhariitbhu/go-backend-clean-architecture)
 
 Not yet
 - [Testing and Benchmarking in Go](https://medium.com/hyperskill/testing-and-benchmarking-in-go-e33a54b413e)
