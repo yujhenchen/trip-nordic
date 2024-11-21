@@ -1,22 +1,21 @@
-package clients
+package api
 
 import (
+	"backend/config"
+	"backend/models/activity/api/fi"
+	"backend/models/activity/api/no"
+	"backend/models/activity/api/se"
+	"backend/utils"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
-
-	"backend/clients/no"
-	"backend/config"
-	fiModels "backend/models/activity_api/fi"
-	noModels "backend/models/activity_api/no"
-	seModels "backend/models/activity_api/se"
-	"backend/utils"
+	"regexp"
 )
 
 type ResponseType interface {
-	fiModels.Response | seModels.Response | noModels.Response
+	fi.Response | se.Response | no.Response
 }
 
 func FetchAPIResponse[T ResponseType](url string, response T) (*T, error) {
@@ -48,6 +47,28 @@ func GetSEURL(page int) string {
 	return fmt.Sprintf("%s?%s=%d", config.GoDotEnvVariable("SE_ACTIVITY_URL"), config.GoDotEnvVariable("SE_ACTIVITY_FIELDS"), page)
 }
 
+func GetNOToken(url string) (string, error) {
+	res, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer res.Body.Close()
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return "", err
+	}
+
+	re := regexp.MustCompile(`"token":"([a-zA-Z0-9]+)"`)
+	matches := re.FindStringSubmatch(string(body))
+
+	if len(matches) < 2 {
+		return "", fmt.Errorf("token not found")
+	}
+
+	return matches[1], nil
+}
+
 func GetNOURL() string {
 	params := utils.GetNOActivityParams()
 
@@ -58,7 +79,7 @@ func GetNOURL() string {
 		return ""
 	}
 
-	token, err := no.GetToken(config.GoDotEnvVariable("NO_TOKEN_URL"))
+	token, err := GetNOToken(config.GoDotEnvVariable("NO_TOKEN_URL"))
 	if err != nil {
 		fmt.Println("Failed to get NO token")
 	}
@@ -72,8 +93,8 @@ func GetNOURL() string {
 }
 
 // get api, connect to DB and insert data
-func GetSEAPIData(page int) seModels.Response {
-	data, err := FetchAPIResponse(GetSEURL(page), seModels.Response{})
+func GetSEAPIData(page int) se.Response {
+	data, err := FetchAPIResponse(GetSEURL(page), se.Response{})
 	if err != nil {
 		fmt.Printf("get SE data error: %v", err)
 	}

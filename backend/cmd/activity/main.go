@@ -1,11 +1,11 @@
 package main
 
 import (
-	"backend/clients"
+	"backend/cmd/activity/api"
 	"backend/config"
 	mongodb "backend/db"
-	activity_api "backend/models/activity_api/se"
-	activity_db "backend/models/activity_db/se"
+	"backend/models/activity/api/se"
+	db_se "backend/models/activity/mongo/se"
 	"context"
 	"fmt"
 	"log"
@@ -16,10 +16,10 @@ import (
 
 func main() {
 	initPage := 1
-	res := clients.GetSEAPIData(initPage)
+	res := api.GetSEAPIData(initPage)
 	pageCount := (res.Meta.TotalPages)
 
-	var activities []activity_api.Result
+	var activities []se.Result
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
@@ -29,7 +29,7 @@ func main() {
 		wg.Add(1)
 		go func(pageNum int) {
 			defer wg.Done()
-			res := clients.GetSEAPIData(page)
+			res := api.GetSEAPIData(page)
 
 			mu.Lock()
 			activities = append(activities, res.Results...)
@@ -40,7 +40,7 @@ func main() {
 	fmt.Println("activities count: ", len(activities))
 
 	// map group of data into target struct
-	var toInsertActivities []activity_db.Result
+	var toInsertActivities []db_se.Result
 	err := copier.Copy(&toInsertActivities, activities)
 	if err != nil {
 		fmt.Printf("Error copying data: %v\n", err)

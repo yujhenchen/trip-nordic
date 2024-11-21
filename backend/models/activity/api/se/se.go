@@ -1,4 +1,4 @@
-package activity_api
+package se
 
 import (
 	"encoding/json"
