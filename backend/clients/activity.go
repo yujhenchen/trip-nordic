@@ -72,11 +72,11 @@ func GetNOURL() string {
 }
 
 // get api, connect to DB and insert data
-func GetSEAPIData(page int) *[]seModels.Result {
+func GetSEAPIData(page int) seModels.Response {
 	data, err := FetchAPIResponse(GetSEURL(page), seModels.Response{})
 	if err != nil {
 		fmt.Printf("get SE data error: %v", err)
 	}
 	fmt.Printf("Total Results: %d\n", len(data.Results))
-	return &data.Results
+	return *data
 }
