@@ -5,7 +5,6 @@ import (
 	"backend/config"
 	"backend/utils"
 
-	// mongodb "backend/db"
 	"backend/models/activity/api/se"
 	db_se "backend/models/activity/mongo/se"
 	"context"
@@ -19,11 +18,15 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func main() {
-	// TODO: disconnect DB and exist program when error happens
-	initPage := 1
+func getActivities(from, to int) []se.Result {
+	initPage := from
 	res := api.GetSEAPIData(initPage)
-	pageCount := res.Meta.TotalPages
+	var pageCount int
+	if to == -1 {
+		pageCount = res.Meta.TotalPages
+	} else {
+		pageCount = to
+	}
 
 	var activities []se.Result
 	var wg sync.WaitGroup
@@ -43,7 +46,14 @@ func main() {
 		}(page)
 	}
 	wg.Wait()
-	fmt.Println("activities count: ", len(activities))
+	// fmt.Println("activities count: ", len(activities))
+	return activities
+}
+
+func main() {
+	// TODO: disconnect DB and exist program when error happens
+	initPage := 1
+	activities := getActivities(initPage, 3)
 
 	// map group of data into target struct
 	var toInsertActivities []db_se.Result
@@ -73,24 +83,24 @@ func main() {
 
 	// client: connection instance, access collection in the database, assigns the se collection reference to the seCol variable
 	seCol := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
-	var seColActivities []bson.M
+	// var seColActivities []bson.M
 
-	// get ids from the API result
-	var toInsertIDs []int
-	for idx := range toInsertActivities {
-		toInsertIDs = append(toInsertIDs, toInsertActivities[idx].ID)
-	}
-	// NOTE: field in document is different from struct
-	filter := bson.M{"id": bson.M{"$in": toInsertIDs}}
-	seCur, err := seCol.Find(context.TODO(), filter)
-	if err != nil {
-		fmt.Printf("Error finding docs: %v\n", err)
-	}
-	defer seCur.Close(context.TODO())
+	// // get ids from the API result
+	// var toInsertIDs []int
+	// for idx := range toInsertActivities {
+	// 	toInsertIDs = append(toInsertIDs, toInsertActivities[idx].ID)
+	// }
+	// // NOTE: field in document is different from struct
+	// filter := bson.M{"id": bson.M{"$in": toInsertIDs}}
+	// seCur, err := seCol.Find(context.TODO(), filter)
+	// if err != nil {
+	// 	fmt.Printf("Error finding docs: %v\n", err)
+	// }
+	// defer seCur.Close(context.TODO())
 
-	if err = seCur.All(context.TODO(), &seColActivities); err != nil {
-		panic(err)
-	}
+	// if err = seCur.All(context.TODO(), &seColActivities); err != nil {
+	// 	panic(err)
+	// }
 
 	// create hash
 	for idx := range toInsertActivities {
@@ -101,36 +111,16 @@ func main() {
 		toInsertActivities[idx].Hash = hash
 	}
 
-	if len(seColActivities) == 0 {
-		// TODO: run one for loop to hash and convert into interface
-		fmt.Println("seColActivities is empty")
+	var bulkOps []mongo.WriteModel
+	for i := range toInsertActivities {
+		filter := bson.M{"id": toInsertActivities[i].ID}
+		update := bson.M{"$set": toInsertActivities[i]} // TODO: what is $set, why use M here
 
-		toInserts, err := utils.StructsToInterfaceSlice(toInsertActivities)
-		if err != nil {
-			fmt.Printf("Error StructsToInterfaceSlice error: %v", err)
-		} else {
-			result, err := seCol.InsertMany(context.TODO(), toInserts)
-			if err != nil {
-				fmt.Printf("Error InsertMany error: %v", err)
-			}
-			fmt.Printf("result InsertedIDs: %v", result.InsertedIDs)
-		}
-
-	} else {
-		fmt.Printf("seColActivities len: %d\n", len(seColActivities))
-
-		// bulk operation to update
-		var bulkOps []mongo.WriteModel
-		for i := range toInsertActivities {
-			filter := bson.M{"id": toInsertActivities[i].ID}
-			update := bson.M{"$set": toInsertActivities[i]} // TODO: what is $set, why use M here
-
-			bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true)) // TODO: what is mongo.NewUpdateOneModel()
-		}
-		result, err := seCol.BulkWrite(context.TODO(), bulkOps)
-		if err != nil {
-			fmt.Printf("Error BulkWrite error: %v", err)
-		}
-		fmt.Printf("Matched: %d, Modified: %d, Upserted: %d\n", result.MatchedCount, result.ModifiedCount, result.UpsertedCount)
+		bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true)) // TODO: what is mongo.NewUpdateOneModel()
 	}
+	result, err := seCol.BulkWrite(context.TODO(), bulkOps)
+	if err != nil {
+		fmt.Printf("Error BulkWrite error: %v", err)
+	}
+	fmt.Printf("Matched: %d, Modified: %d, Upserted: %d\n", result.MatchedCount, result.ModifiedCount, result.UpsertedCount)
 }
