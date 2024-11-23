@@ -14,6 +14,7 @@ import (
 
 	"github.com/jinzhu/copier"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -50,18 +51,31 @@ func getActivities(from, to int) []se.Result {
 	return activities
 }
 
-func main() {
-	// TODO: disconnect DB and exist program when error happens
-	initPage := 1
-	activities := getActivities(initPage, 3)
+func getActivitiesDocs(col *mongo.Collection, activities []db_se.Result) []primitive.M {
+	var results []bson.M
 
-	// map group of data into target struct
-	var toInsertActivities []db_se.Result
-	err := copier.Copy(&toInsertActivities, activities)
-	if err != nil {
-		fmt.Printf("Error copying data: %v\n", err)
+	// get ids from the API result
+	var ids []int
+	for i := range activities {
+		ids = append(ids, activities[i].ID)
 	}
-	fmt.Println(len(toInsertActivities))
+	// NOTE: field in document is different from struct
+	filter := bson.M{"id": bson.M{"$in": ids}}
+	seCur, err := col.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Printf("Error finding docs: %v\n", err)
+	}
+	defer seCur.Close(context.TODO())
+
+	if err = seCur.All(context.TODO(), &results); err != nil {
+		panic(err)
+	}
+	return results
+}
+
+func main() {
+	initPage := 1
+	activities := getActivities(initPage, 5)
 
 	// connect to database
 	uri := config.GoDotEnvVariable("MONGODB_URI")
@@ -83,40 +97,25 @@ func main() {
 
 	// client: connection instance, access collection in the database, assigns the se collection reference to the seCol variable
 	seCol := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
-	// var seColActivities []bson.M
 
-	// // get ids from the API result
-	// var toInsertIDs []int
-	// for idx := range toInsertActivities {
-	// 	toInsertIDs = append(toInsertIDs, toInsertActivities[idx].ID)
-	// }
-	// // NOTE: field in document is different from struct
-	// filter := bson.M{"id": bson.M{"$in": toInsertIDs}}
-	// seCur, err := seCol.Find(context.TODO(), filter)
-	// if err != nil {
-	// 	fmt.Printf("Error finding docs: %v\n", err)
-	// }
-	// defer seCur.Close(context.TODO())
-
-	// if err = seCur.All(context.TODO(), &seColActivities); err != nil {
-	// 	panic(err)
-	// }
-
-	// create hash
-	for idx := range toInsertActivities {
-		hash, err := utils.GenerateHash(toInsertActivities[idx])
-		if err != nil {
-			fmt.Printf("Error GenerateHash for element: %v", toInsertActivities[idx])
-		}
-		toInsertActivities[idx].Hash = hash
-	}
-
+	// upsert using bulk
 	var bulkOps []mongo.WriteModel
-	for i := range toInsertActivities {
-		filter := bson.M{"id": toInsertActivities[i].ID}
-		update := bson.M{"$set": toInsertActivities[i]} // TODO: what is $set, why use M here
-
-		bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true)) // TODO: what is mongo.NewUpdateOneModel()
+	var activity db_se.Result
+	for i := range activities {
+		filter := bson.M{"id": activities[i].ID}
+		err := copier.Copy(&activity, activities[i])
+		if err != nil {
+			fmt.Printf("Error copying data: %v\n", err)
+		} else {
+			hash, err := utils.GenerateHash(activity) // TODO: since json.Marshal(obj) has no order, which always get a new hash. Need to persist the hash when all fields in the object do not change
+			if err != nil {
+				fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
+			} else {
+				activity.Hash = hash
+				update := bson.M{"$set": activity}                                                                       // TODO: what is $set, why use M here
+				bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true)) // TODO: what is mongo.NewUpdateOneModel()
+			}
+		}
 	}
 	result, err := seCol.BulkWrite(context.TODO(), bulkOps)
 	if err != nil {
