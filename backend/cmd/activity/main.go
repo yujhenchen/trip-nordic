@@ -20,9 +20,10 @@ import (
 )
 
 func main() {
+	// TODO: disconnect DB and exist program when error happens
 	initPage := 1
 	res := api.GetSEAPIData(initPage)
-	pageCount := 1 // (res.Meta.TotalPages)
+	pageCount := res.Meta.TotalPages
 
 	var activities []se.Result
 	var wg sync.WaitGroup
@@ -79,8 +80,6 @@ func main() {
 	for idx := range toInsertActivities {
 		toInsertIDs = append(toInsertIDs, toInsertActivities[idx].ID)
 	}
-	// fmt.Println(toInsertIDs)
-	// find documents that id in the ids array as foundDocs
 	// NOTE: field in document is different from struct
 	filter := bson.M{"id": bson.M{"$in": toInsertIDs}}
 	seCur, err := seCol.Find(context.TODO(), filter)
@@ -93,47 +92,45 @@ func main() {
 		panic(err)
 	}
 
-	// (insert)
-	// if foundDocs length === 0
-	// calculate hash and insert api results into collection
-	// else
-	//, get the results that are not in the foundDocs
-	// calculate hash and insert api results into collection
-	//
-	// (update)
-	// if hash are not the same, update
-	// else, do nothing
+	// create hash
+	for idx := range toInsertActivities {
+		hash, err := utils.GenerateHash(toInsertActivities[idx])
+		if err != nil {
+			fmt.Printf("Error GenerateHash for element: %v", toInsertActivities[idx])
+		}
+		toInsertActivities[idx].Hash = hash
+	}
+
 	if len(seColActivities) == 0 {
 		// TODO: run one for loop to hash and convert into interface
 		fmt.Println("seColActivities is empty")
-		for idx := range toInsertActivities {
-			hash, err := utils.GenerateHash(toInsertActivities[idx])
-			if err != nil {
-				fmt.Printf("Error GenerateHash for element: %v", toInsertActivities[idx])
-			}
-			toInsertActivities[idx].Hash = hash
-		}
-		toInsertSlice, err := utils.StructsToInterfaceSlice(toInsertActivities)
-		seCol.InsertMany(context.TODO(), toInsertSlice)
+
+		toInserts, err := utils.StructsToInterfaceSlice(toInsertActivities)
 		if err != nil {
-			fmt.Printf("Error InsertMany error: %v", err)
+			fmt.Printf("Error StructsToInterfaceSlice error: %v", err)
+		} else {
+			result, err := seCol.InsertMany(context.TODO(), toInserts)
+			if err != nil {
+				fmt.Printf("Error InsertMany error: %v", err)
+			}
+			fmt.Printf("result InsertedIDs: %v", result.InsertedIDs)
 		}
+
 	} else {
 		fmt.Printf("seColActivities len: %d\n", len(seColActivities))
-	}
 
-	// TODO: try not to convert to []interface, use bson.Marshal and Unmarshal instead
-	// insert to api results into collection
-	// Convert to []interface{}
-	// docs := make([]interface{}, len(toInsertActivities))
-	// for i, record := range toInsertActivities {
-	// 	docs[i] = record
-	// }
-	// // insert many
-	// results, err := seCol.InsertMany(context.TODO(), docs)
-	// if err != nil {
-	// 	fmt.Printf("Error inserting documents: %v\n", err)
-	// }
-	// // fmt.Println(results)
-	// fmt.Println(len(results))
+		// bulk operation to update
+		var bulkOps []mongo.WriteModel
+		for i := range toInsertActivities {
+			filter := bson.M{"id": toInsertActivities[i].ID}
+			update := bson.M{"$set": toInsertActivities[i]} // TODO: what is $set, why use M here
+
+			bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true)) // TODO: what is mongo.NewUpdateOneModel()
+		}
+		result, err := seCol.BulkWrite(context.TODO(), bulkOps)
+		if err != nil {
+			fmt.Printf("Error BulkWrite error: %v", err)
+		}
+		fmt.Printf("Matched: %d, Modified: %d, Upserted: %d\n", result.MatchedCount, result.ModifiedCount, result.UpsertedCount)
+	}
 }
