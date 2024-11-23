@@ -3,6 +3,7 @@ package main
 import (
 	"backend/cmd/activity/api"
 	"backend/config"
+	"backend/utils"
 
 	// mongodb "backend/db"
 	"backend/models/activity/api/se"
@@ -21,7 +22,7 @@ import (
 func main() {
 	initPage := 1
 	res := api.GetSEAPIData(initPage)
-	pageCount := 2 // (res.Meta.TotalPages)
+	pageCount := 1 // (res.Meta.TotalPages)
 
 	var activities []se.Result
 	var wg sync.WaitGroup
@@ -73,8 +74,15 @@ func main() {
 	seCol := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
 	var seColActivities []bson.M
 
+	// get ids from the API result
+	var toInsertIDs []int
+	for idx := range toInsertActivities {
+		toInsertIDs = append(toInsertIDs, toInsertActivities[idx].ID)
+	}
+	// fmt.Println(toInsertIDs)
 	// find documents that id in the ids array as foundDocs
-	filter := bson.M{"ID": bson.M{"$in": []string{}}}
+	// NOTE: field in document is different from struct
+	filter := bson.M{"id": bson.M{"$in": toInsertIDs}}
 	seCur, err := seCol.Find(context.TODO(), filter)
 	if err != nil {
 		fmt.Printf("Error finding docs: %v\n", err)
@@ -96,11 +104,22 @@ func main() {
 	// if hash are not the same, update
 	// else, do nothing
 	if len(seColActivities) == 0 {
+		// TODO: run one for loop to hash and convert into interface
 		fmt.Println("seColActivities is empty")
-		// create hash for each element in toInsertActivities
-		// insert all into collection
+		for idx := range toInsertActivities {
+			hash, err := utils.GenerateHash(toInsertActivities[idx])
+			if err != nil {
+				fmt.Printf("Error GenerateHash for element: %v", toInsertActivities[idx])
+			}
+			toInsertActivities[idx].Hash = hash
+		}
+		toInsertSlice, err := utils.StructsToInterfaceSlice(toInsertActivities)
+		seCol.InsertMany(context.TODO(), toInsertSlice)
+		if err != nil {
+			fmt.Printf("Error InsertMany error: %v", err)
+		}
 	} else {
-		fmt.Printf("seColActivities len: %d", len(seColActivities))
+		fmt.Printf("seColActivities len: %d\n", len(seColActivities))
 	}
 
 	// TODO: try not to convert to []interface, use bson.Marshal and Unmarshal instead
