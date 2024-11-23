@@ -3,7 +3,8 @@ package main
 import (
 	"backend/cmd/activity/api"
 	"backend/config"
-	mongodb "backend/db"
+
+	// mongodb "backend/db"
 	"backend/models/activity/api/se"
 	db_se "backend/models/activity/mongo/se"
 	"context"
@@ -12,12 +13,15 @@ import (
 	"sync"
 
 	"github.com/jinzhu/copier"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func main() {
 	initPage := 1
 	res := api.GetSEAPIData(initPage)
-	pageCount := (res.Meta.TotalPages)
+	pageCount := 2 // (res.Meta.TotalPages)
 
 	var activities []se.Result
 	var wg sync.WaitGroup
@@ -53,26 +57,64 @@ func main() {
 		log.Fatal("Error, cannot find uri")
 		return
 	}
-	client, err := mongodb.NewClient(uri)
+	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
+	client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
-		log.Fatal("Error, failed to start a new client", err)
-		return
+		panic(err)
 	}
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			panic(err)
+		}
+	}()
+
+	// client: connection instance, access collection in the database, assigns the se collection reference to the seCol variable
 	seCol := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
-	fmt.Println(seCol)
+	var seColActivities []bson.M
 
-	// Convert to []interface{}
-	docs := make([]interface{}, len(toInsertActivities))
-	for i, record := range toInsertActivities {
-		docs[i] = record
-	}
-	// insert many
-	results, err := seCol.InsertMany(context.TODO(), docs)
+	// find documents that id in the ids array as foundDocs
+	filter := bson.M{"ID": bson.M{"$in": []string{}}}
+	seCur, err := seCol.Find(context.TODO(), filter)
 	if err != nil {
-		fmt.Printf("Error inserting documents: %v\n", err)
+		fmt.Printf("Error finding docs: %v\n", err)
 	}
-	// fmt.Println(results)
-	fmt.Println(len(results))
+	defer seCur.Close(context.TODO())
 
-	defer client.Disconnect(context.TODO())
+	if err = seCur.All(context.TODO(), &seColActivities); err != nil {
+		panic(err)
+	}
+
+	// (insert)
+	// if foundDocs length === 0
+	// calculate hash and insert api results into collection
+	// else
+	//, get the results that are not in the foundDocs
+	// calculate hash and insert api results into collection
+	//
+	// (update)
+	// if hash are not the same, update
+	// else, do nothing
+	if len(seColActivities) == 0 {
+		fmt.Println("seColActivities is empty")
+		// create hash for each element in toInsertActivities
+		// insert all into collection
+	} else {
+		fmt.Printf("seColActivities len: %d", len(seColActivities))
+	}
+
+	// TODO: try not to convert to []interface, use bson.Marshal and Unmarshal instead
+	// insert to api results into collection
+	// Convert to []interface{}
+	// docs := make([]interface{}, len(toInsertActivities))
+	// for i, record := range toInsertActivities {
+	// 	docs[i] = record
+	// }
+	// // insert many
+	// results, err := seCol.InsertMany(context.TODO(), docs)
+	// if err != nil {
+	// 	fmt.Printf("Error inserting documents: %v\n", err)
+	// }
+	// // fmt.Println(results)
+	// fmt.Println(len(results))
 }
