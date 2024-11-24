@@ -92,7 +92,6 @@ func newConnection(uri string) (*mongo.Client, error) {
 
 // func getActivitiesDocs(col *mongo.Collection, activities []db_se.Result) []primitive.M {
 // 	var results []bson.M
-
 // 	// get ids from the API result
 // 	var ids []int
 // 	for i := range activities {
@@ -105,7 +104,6 @@ func newConnection(uri string) (*mongo.Client, error) {
 // 		fmt.Printf("Error finding docs: %v\n", err)
 // 	}
 // 	defer seCur.Close(context.TODO())
-
 // 	if err = seCur.All(context.TODO(), &results); err != nil {
 // 		panic(err)
 // 	}
