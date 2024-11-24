@@ -19,17 +19,30 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func getActivities(from, to int) []se.Result {
-	initPage := from
+// fetch SE API data by page
+// from is the start page, to is the end page, if to is -1, set the end page to the total page
+// return activities slice, and its underlying array will remain allocated in memory, ready for garbage collection when no longer needed
+func getSEActivities(from, to int) []se.Result {
+	var initPage int
+	if from < 1 {
+		initPage = 1
+	} else {
+		initPage = from
+	}
+
 	res := api.GetSEAPIData(initPage)
 	var pageCount int
 	if to == -1 {
 		pageCount = res.Meta.TotalPages
+	} else if to < initPage {
+		pageCount = initPage
 	} else {
 		pageCount = to
 	}
 
-	var activities []se.Result
+	// allocate a sufficient memory first to prevent memory re-allocation to increase performance
+	// declare and initialize an empty slice, no pre-filled elements, grows up to pageCount-initPage+1 without reallocation
+	activities := make([]se.Result, 0, pageCount-initPage+1)
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
@@ -75,7 +88,7 @@ func getActivitiesDocs(col *mongo.Collection, activities []db_se.Result) []primi
 
 func main() {
 	initPage := 1
-	activities := getActivities(initPage, 5)
+	activities := getSEActivities(initPage, 1)
 
 	// connect to database
 	uri := config.GoDotEnvVariable("MONGODB_URI")
@@ -99,7 +112,10 @@ func main() {
 	seCol := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
 
 	// upsert using bulk
-	var bulkOps []mongo.WriteModel
+	// TODO: performance: bulk vs insertMany
+	// TODO: how does BulkWrite work?? when the data is the same ?? how does it know if the data are the same or not ??
+	// TODO: can I use
+	var bulkOps []mongo.WriteModel // TODO: what is mongo.WriteModel ??
 	var activity db_se.Result
 	for i := range activities {
 		filter := bson.M{"id": activities[i].ID}
@@ -121,5 +137,6 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error BulkWrite error: %v", err)
 	}
+	// TODO: why change the total pages get different ModifiedCount
 	fmt.Printf("Matched: %d, Modified: %d, Upserted: %d\n", result.MatchedCount, result.ModifiedCount, result.UpsertedCount)
 }

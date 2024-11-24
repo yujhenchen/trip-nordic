@@ -18,6 +18,7 @@ type ResponseType interface {
 	fi.Response | se.Response | no.Response
 }
 
+// the res variable is a pointer (*http.Response) to a Go struct that contains details of the HTTP response.
 func FetchAPIResponse[T ResponseType](url string, response T) (*T, error) {
 	res, err := http.Get(url)
 	if err != nil {
@@ -65,7 +66,6 @@ func GetNOToken(url string) (string, error) {
 	if len(matches) < 2 {
 		return "", fmt.Errorf("token not found")
 	}
-
 	return matches[1], nil
 }
 
@@ -92,12 +92,12 @@ func GetNOURL() string {
 	return u.String()
 }
 
-// get api, connect to DB and insert data
-func GetSEAPIData(page int) se.Response {
+// fetch SE API data, return the pointer of the response struct
+func GetSEAPIData(page int) *se.Response {
 	data, err := FetchAPIResponse(GetSEURL(page), se.Response{})
 	if err != nil {
 		fmt.Printf("get SE data error: %v", err)
 	}
 	fmt.Printf("Total Results: %d\n", len(data.Results))
-	return *data
+	return data
 }
