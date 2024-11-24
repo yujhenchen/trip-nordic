@@ -7,6 +7,7 @@
 - [Structs](https://www.codecademy.com/resources/docs/go/structs)
 - [Understanding the Power of Go Interfaces: A Comprehensive Guide](https://medium.com/@jamal.kaksouri/understanding-the-power-of-go-interfaces-a-comprehensive-guide-835954101b7e)
 - [Type assertion vs type switches in Go](https://rednafi.com/go/type_assertion_vs_type_switches/)
+- [gob](https://pkg.go.dev/encoding/gob#NewEncoder)
 
 ### Context
 
