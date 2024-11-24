@@ -93,11 +93,11 @@ func GetNOURL() string {
 }
 
 // fetch SE API data, return the pointer of the response struct
-func GetSEAPIData(page int) *se.Response {
+func GetSEAPIData(page int) (*se.Response, error) {
 	data, err := FetchAPIResponse(GetSEURL(page), se.Response{})
 	if err != nil {
-		fmt.Printf("get SE data error: %v", err)
+		return nil, fmt.Errorf("get SE data error: %v", err)
 	}
-	fmt.Printf("Total Results: %d\n", len(data.Results))
-	return data
+	// fmt.Printf("Total Results: %d\n", len(data.Results))
+	return data, nil
 }

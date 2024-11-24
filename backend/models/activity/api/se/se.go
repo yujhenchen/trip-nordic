@@ -65,6 +65,7 @@ type Categories struct {
 	Data interface{}
 }
 
+// TODO: handle when error is not nil
 func (c *Categories) UnmarshalJSON(data []byte) error {
 	// Attempt to unmarshal into []string
 	var strArray []string

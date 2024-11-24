@@ -22,20 +22,24 @@ import (
 // fetch SE API data by page
 // from is the start page, to is the end page, if to is -1, set the end page to the total page
 // return activities slice, and its underlying array will remain allocated in memory, ready for garbage collection when no longer needed
-func getSEActivities(from, to int) []se.Result {
-	var initPage int
+func getSEActivities(from, to int) ([]se.Result, error) {
 	if from < 1 {
-		initPage = 1
-	} else {
-		initPage = from
+		return nil, fmt.Errorf("from page need to be greater than 1")
 	}
 
-	res := api.GetSEAPIData(initPage)
+	if to < from {
+		return nil, fmt.Errorf("to page need to be greater than from page")
+	}
+	initPage := from
 	var pageCount int
+
+	res, err := api.GetSEAPIData(initPage)
+	if err != nil {
+		return nil, err
+	}
+
 	if to == -1 {
 		pageCount = res.Meta.TotalPages
-	} else if to < initPage {
-		pageCount = initPage
 	} else {
 		pageCount = to
 	}
@@ -52,7 +56,11 @@ func getSEActivities(from, to int) []se.Result {
 		wg.Add(1)
 		go func(pageNum int) {
 			defer wg.Done()
-			res := api.GetSEAPIData(page)
+			res, err := api.GetSEAPIData(page)
+			if err != nil {
+				// TODO: stop the process in this go routine
+				// TODO: collect each error as a big error for later to return
+			}
 
 			mu.Lock()
 			activities = append(activities, res.Results...)
@@ -60,7 +68,7 @@ func getSEActivities(from, to int) []se.Result {
 		}(page)
 	}
 	wg.Wait()
-	return activities
+	return activities, err
 }
 
 func newConnection(uri string) (*mongo.Client, error) {
@@ -107,11 +115,13 @@ func newConnection(uri string) (*mongo.Client, error) {
 func main() {
 	// TODO: fix all the error handling, logging
 	initPage := 1
-	activities := getSEActivities(initPage, 1)
+	activities, err := getSEActivities(initPage, 1)
+	if err != nil {
+		log.Fatalf("Error getSEActivities error: %v", err)
+	}
 
 	// connect to database
-	uri := config.GoDotEnvVariable("MONGODB_URI")
-	client, err := newConnection(uri)
+	client, err := newConnection(config.GoDotEnvVariable("MONGODB_URI"))
 	if err != nil {
 		log.Fatalf("Error establishing MongoDB connection: %v", err)
 	}

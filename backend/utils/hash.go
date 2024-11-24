@@ -16,7 +16,6 @@ func getEncode(obj interface{}) (bytes.Buffer, error) {
 	enc := gob.NewEncoder(&buf)
 	err := enc.Encode(obj)
 	if err != nil {
-		// log.Fatal("encode error:", err)
 		return bytes.Buffer{}, err
 	}
 	return buf, nil
