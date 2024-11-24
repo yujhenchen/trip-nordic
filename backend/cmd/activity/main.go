@@ -4,6 +4,7 @@ import (
 	"backend/cmd/activity/api"
 	"backend/config"
 	"backend/utils"
+	"errors"
 
 	"backend/models/activity/api/se"
 	db_se "backend/models/activity/mongo/se"
@@ -14,7 +15,6 @@ import (
 
 	"github.com/jinzhu/copier"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -60,82 +60,102 @@ func getSEActivities(from, to int) []se.Result {
 		}(page)
 	}
 	wg.Wait()
-	// fmt.Println("activities count: ", len(activities))
 	return activities
 }
 
-func getActivitiesDocs(col *mongo.Collection, activities []db_se.Result) []primitive.M {
-	var results []bson.M
-
-	// get ids from the API result
-	var ids []int
-	for i := range activities {
-		ids = append(ids, activities[i].ID)
-	}
-	// NOTE: field in document is different from struct
-	filter := bson.M{"id": bson.M{"$in": ids}}
-	seCur, err := col.Find(context.TODO(), filter)
-	if err != nil {
-		fmt.Printf("Error finding docs: %v\n", err)
-	}
-	defer seCur.Close(context.TODO())
-
-	if err = seCur.All(context.TODO(), &results); err != nil {
-		panic(err)
-	}
-	return results
-}
-
-func main() {
-	initPage := 1
-	activities := getSEActivities(initPage, 1)
-
-	// connect to database
-	uri := config.GoDotEnvVariable("MONGODB_URI")
+func newConnection(uri string) (*mongo.Client, error) {
 	if uri == "" {
 		log.Fatal("Error, cannot find uri")
-		return
+		err := errors.New("Error empty uri")
+		return nil, err
 	}
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
 	client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
-		panic(err)
+		return nil, err
+	}
+	// ping the database to verify the connection
+	if err := client.Ping(context.TODO(), nil); err != nil {
+		return nil, fmt.Errorf("failed to ping MongoDB: %w", err)
+	}
+	return client, nil
+}
+
+// func getActivitiesDocs(col *mongo.Collection, activities []db_se.Result) []primitive.M {
+// 	var results []bson.M
+
+// 	// get ids from the API result
+// 	var ids []int
+// 	for i := range activities {
+// 		ids = append(ids, activities[i].ID)
+// 	}
+// 	// NOTE: field in document is different from struct
+// 	filter := bson.M{"id": bson.M{"$in": ids}}
+// 	seCur, err := col.Find(context.TODO(), filter)
+// 	if err != nil {
+// 		fmt.Printf("Error finding docs: %v\n", err)
+// 	}
+// 	defer seCur.Close(context.TODO())
+
+// 	if err = seCur.All(context.TODO(), &results); err != nil {
+// 		panic(err)
+// 	}
+// 	return results
+// }
+
+func main() {
+	// TODO: fix all the error handling, logging
+	initPage := 1
+	activities := getSEActivities(initPage, 1)
+
+	// connect to database
+	uri := config.GoDotEnvVariable("MONGODB_URI")
+	client, err := newConnection(uri)
+	if err != nil {
+		log.Fatalf("Error establishing MongoDB connection: %v", err)
 	}
 	defer func() {
 		if err = client.Disconnect(context.TODO()); err != nil {
-			panic(err)
+			log.Fatalf("Error disconnecting MongoDB client: %v", err)
 		}
 	}()
 
 	// client: connection instance, access collection in the database, assigns the se collection reference to the seCol variable
-	seCol := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
+	seColl := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
 
 	// upsert using bulk
 	// TODO: performance: bulk vs insertMany
 	// TODO: how does BulkWrite work?? when the data is the same ?? how does it know if the data are the same or not ??
-	// TODO: can I use
-	var bulkOps []mongo.WriteModel // TODO: what is mongo.WriteModel ??
+	// TODO: what is mongo.WriteModel ??
+	bulkOps := make([]mongo.WriteModel, 0, len(activities))
 	var activity db_se.Result
 	for i := range activities {
+		// TODO: how does memory work ??
 		filter := bson.M{"id": activities[i].ID}
+		// TODO: do I need copier.Copy first ??
 		err := copier.Copy(&activity, activities[i])
 		if err != nil {
 			fmt.Printf("Error copying data: %v\n", err)
-		} else {
-			hash, err := utils.GenerateHash(activity) // TODO: since json.Marshal(obj) has no order, which always get a new hash. Need to persist the hash when all fields in the object do not change
-			if err != nil {
-				fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
-			} else {
-				activity.Hash = hash
-				update := bson.M{"$set": activity}                                                                       // TODO: what is $set, why use M here
-				bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true)) // TODO: what is mongo.NewUpdateOneModel()
-			}
+			// TODO: how to handle when this error happens in the loop
+			continue
 		}
+		hash, err := utils.GenerateHash(activity)
+		if err != nil {
+			fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
+			// TODO: how to handle when this error happens in the loop
+			continue
+		}
+		// TODO: what is $set, why use M here
+		// TODO: what is mongo.NewUpdateOneModel()
+		// TODO: how does memory work ??
+		activity.Hash = hash
+		update := bson.M{"$set": activity}
+		bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true))
 	}
-	result, err := seCol.BulkWrite(context.TODO(), bulkOps)
+	result, err := seColl.BulkWrite(context.TODO(), bulkOps)
 	if err != nil {
-		fmt.Printf("Error BulkWrite error: %v", err)
+		log.Fatalf("Error BulkWrite error: %v", err)
 	}
 	// TODO: why change the total pages get different ModifiedCount
 	fmt.Printf("Matched: %d, Modified: %d, Upserted: %d\n", result.MatchedCount, result.ModifiedCount, result.UpsertedCount)
