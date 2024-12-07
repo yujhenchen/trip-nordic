@@ -1,28 +1,21 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
+union StringOrStringArray = SingleString | StringArray
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+type SingleString {
+  value: String
 }
 
-type User {
+type StringArray {
+  value: [String!]
+}
+
+type Activity {
   id: ID!
-  name: String!
+  categories: StringOrStringArray
+  href: String
+  text: String
+  title: String
 }
 
 type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
-}
-
-type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  activityid(id: ID!): Activity
 }

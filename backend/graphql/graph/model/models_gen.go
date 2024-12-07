@@ -2,18 +2,29 @@
 
 package model
 
-type Mutation struct {
+type StringOrStringArray interface {
+	IsStringOrStringArray()
 }
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type Activity struct {
+	ID         string              `json:"id"`
+	Categories StringOrStringArray `json:"categories,omitempty"`
+	Href       *string             `json:"href,omitempty"`
+	Text       *string             `json:"text,omitempty"`
+	Title      *string             `json:"title,omitempty"`
 }
 
 type Query struct {
 }
 
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type SingleString struct {
+	Value *string `json:"value,omitempty"`
 }
+
+func (SingleString) IsStringOrStringArray() {}
+
+type StringArray struct {
+	Value []string `json:"value,omitempty"`
+}
+
+func (StringArray) IsStringOrStringArray() {}
