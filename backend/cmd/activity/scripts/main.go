@@ -1,12 +1,12 @@
 package main
 
 import (
-	"backend/cmd/activity/api"
 	"backend/config"
+	"backend/models/activity/api/se"
+	fetchactivities "backend/scripts"
 	"backend/utils"
 	"errors"
 
-	"backend/models/activity/api/se"
 	db_se "backend/models/activity/mongo/se"
 	"context"
 	"fmt"
@@ -27,13 +27,13 @@ func getSEActivities(from, to int) ([]se.Result, error) {
 		return nil, fmt.Errorf("from page need to be greater than 1")
 	}
 
-	if to < from {
+	if to != -1 && to < from {
 		return nil, fmt.Errorf("to page need to be greater than from page")
 	}
 	initPage := from
 	var pageCount int
 
-	res, err := api.GetSEAPIData(initPage)
+	res, err := fetchactivities.GetSEAPIData(initPage)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func getSEActivities(from, to int) ([]se.Result, error) {
 		wg.Add(1)
 		go func(pageNum int) {
 			defer wg.Done()
-			res, err := api.GetSEAPIData(page)
+			res, err := fetchactivities.GetSEAPIData(page)
 			if err != nil {
 				// TODO: stop the process in this go routine
 				// TODO: collect each error as a big error for later to return
@@ -111,9 +111,11 @@ func newConnection(uri string) (*mongo.Client, error) {
 // }
 
 func main() {
+	config.LoadEnvFile()
+
 	// TODO: fix all the error handling, logging
 	initPage := 1
-	activities, err := getSEActivities(initPage, 1)
+	activities, err := getSEActivities(initPage, -1)
 	if err != nil {
 		log.Fatalf("Error getSEActivities error: %v", err)
 	}

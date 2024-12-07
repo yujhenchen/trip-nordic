@@ -1,4 +1,4 @@
-package api
+package fetchactivities
 
 import (
 	"backend/config"
@@ -45,7 +45,8 @@ func GetFIURL() string {
 
 func GetSEURL(page int) string {
 	// return config.GoDotEnvVariable("SE_ACTIVITY_URL")
-	return fmt.Sprintf("%s?%s=%d", config.GoDotEnvVariable("SE_ACTIVITY_URL"), config.GoDotEnvVariable("SE_ACTIVITY_FIELDS"), page)
+	url := fmt.Sprintf("%s?%s=%d", config.GoDotEnvVariable("SE_ACTIVITY_URL"), config.GoDotEnvVariable("SE_ACTIVITY_FIELDS"), page)
+	return url
 }
 
 func GetNOToken(url string) (string, error) {
