@@ -17,5 +17,5 @@ type Activity {
 }
 
 type Query {
-  activityid(id: ID!): Activity
+  activities(count: Int = 10): [Activity!]!
 }

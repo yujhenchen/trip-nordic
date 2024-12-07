@@ -9,16 +9,23 @@ import (
 	"context"
 )
 
-// Activityid is the resolver for the activityid field.
-func (r *queryResolver) Activityid(ctx context.Context, id string) (*model.Activity, error) {
+// TODO: remove dummyActivity, get real data from mongoDB
+// Activities is the resolver for the activities field.
+func (r *queryResolver) Activities(ctx context.Context, count *int) ([]*model.Activity, error) {
+	var activities []*model.Activity
+	categories := model.StringArray{Value: []string{"A", "B", "C"}}
+	href := "https://www.google.com/"
+	text := "this is am amazing place"
+	title := "test title"
 	dummyActivity := model.Activity{
-		// ID:         "testId",
-		// Categories: [3]string{"A", "B", "C"},
-		// Href:       "https://www.google.com/",
-		// Text:       "this is am amazing place",
-		// Title:      "test title",
+		ID:         "testId",
+		Categories: categories,
+		Href:       &href,
+		Text:       &text,
+		Title:      &title,
 	}
-	return &dummyActivity, nil
+	activities = append(activities, &dummyActivity)
+	return activities, nil
 }
 
 // Query returns QueryResolver implementation.
