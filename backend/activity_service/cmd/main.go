@@ -2,12 +2,12 @@ package main
 
 import (
 	"backend/config"
-	"backend/models/activity/api/se"
-	fetchactivities "backend/scripts"
+	mongodb "backend/mongo"
+	"backend/scripts"
 	"backend/utils"
-	"errors"
 
-	db_se "backend/models/activity/mongo/se"
+	"backend/models/api/se"
+	db_se "backend/models/mongo/se"
 	"context"
 	"fmt"
 	"log"
@@ -16,7 +16,6 @@ import (
 	"github.com/jinzhu/copier"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // fetch SE API data by page
@@ -33,7 +32,7 @@ func getSEActivities(from, to int) ([]se.Result, error) {
 	initPage := from
 	var pageCount int
 
-	res, err := fetchactivities.GetSEAPIData(initPage)
+	res, err := scripts.GetSEAPIData(initPage)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +55,7 @@ func getSEActivities(from, to int) ([]se.Result, error) {
 		wg.Add(1)
 		go func(pageNum int) {
 			defer wg.Done()
-			res, err := fetchactivities.GetSEAPIData(page)
+			res, err := scripts.GetSEAPIData(page)
 			if err != nil {
 				// TODO: stop the process in this go routine
 				// TODO: collect each error as a big error for later to return
@@ -71,24 +70,24 @@ func getSEActivities(from, to int) ([]se.Result, error) {
 	return activities, err
 }
 
-func newConnection(uri string) (*mongo.Client, error) {
-	if uri == "" {
-		log.Fatal("Error, cannot find uri")
-		err := errors.New("Error empty uri")
-		return nil, err
-	}
-	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
-	client, err := mongo.Connect(context.TODO(), opts)
-	if err != nil {
-		return nil, err
-	}
-	// ping the database to verify the connection
-	if err := client.Ping(context.TODO(), nil); err != nil {
-		return nil, fmt.Errorf("failed to ping MongoDB: %w", err)
-	}
-	return client, nil
-}
+// func newConnection(uri string) (*mongo.Client, error) {
+// 	if uri == "" {
+// 		log.Fatal("Error, cannot find uri")
+// 		err := errors.New("Error empty uri")
+// 		return nil, err
+// 	}
+// 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+// 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
+// 	client, err := mongo.Connect(context.TODO(), opts)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	// ping the database to verify the connection
+// 	if err := client.Ping(context.TODO(), nil); err != nil {
+// 		return nil, fmt.Errorf("failed to ping MongoDB: %w", err)
+// 	}
+// 	return client, nil
+// }
 
 // func getActivitiesDocs(col *mongo.Collection, activities []db_se.Result) []primitive.M {
 // 	var results []bson.M
@@ -111,6 +110,7 @@ func newConnection(uri string) (*mongo.Client, error) {
 // }
 
 func main() {
+	// panic or fatal
 	config.LoadEnvFile()
 
 	// TODO: fix all the error handling, logging
@@ -121,12 +121,12 @@ func main() {
 	}
 
 	// connect to database
-	client, err := newConnection(config.GoDotEnvVariable("MONGODB_URI"))
+	client, err := mongodb.NewConnection(config.GoDotEnvVariable("MONGODB_URI"), context.TODO())
 	if err != nil {
 		log.Fatalf("Error establishing MongoDB connection: %v", err)
 	}
 	defer func() {
-		if err = client.Disconnect(context.TODO()); err != nil {
+		if err = mongodb.CloseDB(client, context.TODO()); err != nil {
 			log.Fatalf("Error disconnecting MongoDB client: %v", err)
 		}
 	}()

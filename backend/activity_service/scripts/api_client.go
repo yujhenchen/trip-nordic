@@ -1,10 +1,10 @@
-package fetchactivities
+package scripts
 
 import (
 	"backend/config"
-	"backend/models/activity/api/fi"
-	"backend/models/activity/api/no"
-	"backend/models/activity/api/se"
+	"backend/models/api/fi"
+	"backend/models/api/no"
+	"backend/models/api/se"
 	"backend/utils"
 	"encoding/json"
 	"fmt"

@@ -1,6 +1,6 @@
 package se
 
-import "backend/models/activity/api/se"
+import "backend/models/api/se"
 
 type Result struct {
 	ID            int
