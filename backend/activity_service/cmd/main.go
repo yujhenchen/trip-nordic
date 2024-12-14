@@ -130,7 +130,7 @@ func main() {
 	seColl := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
 
 	// upsert using bulk
-	// write models is used to specify replace and update operations
+	// mongo.WriteModel: write models is used to specify replace and update operations
 	bulkOps := make([]mongo.WriteModel, 0, len(activities))
 	var activity db_se.Result
 	for i := range activities {
