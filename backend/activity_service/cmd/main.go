@@ -53,6 +53,7 @@ func getSEActivities(from, to int) ([]se.Result, []error, error) {
 	errsDone := make(chan struct{})
 	resultErrs := []error{}
 
+	// TODO: how does this work?
 	go func() {
 		for err := range errs {
 			resultErrs = append(resultErrs, err)
@@ -78,38 +79,19 @@ func getSEActivities(from, to int) ([]se.Result, []error, error) {
 	wg.Wait()
 	close(errs)
 
-	// waits for the signal from the errsDone channel, ensuring that the main goroutine does not proceed until the error processing is complete
+	// waits for the signal from the errsDone channel,
+	// ensuring that the main goroutine does not proceed until the error processing is complete
 	<-errsDone
 	return activities, resultErrs, err
 }
-
-// func getActivitiesDocs(col *mongo.Collection, activities []db_se.Result) []primitive.M {
-// 	var results []bson.M
-// 	// get ids from the API result
-// 	var ids []int
-// 	for i := range activities {
-// 		ids = append(ids, activities[i].ID)
-// 	}
-// 	// NOTE: field in document is different from struct
-// 	filter := bson.M{"id": bson.M{"$in": ids}}
-// 	seCur, err := col.Find(context.TODO(), filter)
-// 	if err != nil {
-// 		fmt.Printf("Error finding docs: %v\n", err)
-// 	}
-// 	defer seCur.Close(context.TODO())
-// 	if err = seCur.All(context.TODO(), &results); err != nil {
-// 		panic(err)
-// 	}
-// 	return results
-// }
 
 func main() {
 	config.LoadEnvFile()
 
 	initPage := 1
-	activities, errs, err := getSEActivities(initPage, -1)
-	if len(errs) > 0 {
-		log.Fatalf("Error getSEActivities errs: %v", errs)
+	activities, apiErrs, err := getSEActivities(initPage, -1)
+	if len(apiErrs) > 0 {
+		log.Fatalf("Error getSEActivities errs: %v", apiErrs)
 	}
 	if err != nil {
 		log.Fatalf("Error getSEActivities error: %v", err)
@@ -129,33 +111,49 @@ func main() {
 	// client: connection instance, access collection in the database, assigns the se collection reference to the seCol variable
 	seColl := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
 
-	// upsert using bulk
 	// mongo.WriteModel: write models is used to specify replace and update operations
 	bulkOps := make([]mongo.WriteModel, 0, len(activities))
-	var activity db_se.Result
-	for i := range activities {
-		// use bson.D when field order matters. bson.D is used in the official documentation
-		// filter := bson.M{"id": activities[i].ID}
-		filter := bson.D{{Key: "id", Value: activities[i].ID}}
-		err := copier.Copy(&activity, &activities[i])
-		if err != nil {
-			fmt.Printf("Error copying data: %v\n", err)
-			// TODO: error handling
-			continue
-		}
-		// TODO: generate hash for checking if doc is updated
-		// hash, err := utils.GenerateHash(activity)
-		// if err != nil {
-		// 	fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
-		// 	// TODO: error handling
-		// 	continue
-		// }
-		// activity.Hash = hash
 
-		// update := bson.M{"$set": activity}
-		update := bson.D{{Key: "$set", Value: activity}}
-		bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true))
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	for i := range activities {
+		wg.Add(1)
+		go func(idx int) {
+			defer wg.Done()
+
+			var activity db_se.Result
+
+			// use bson.D when field order matters. bson.D is used in the official documentation
+			// filter := bson.M{"id": activities[i].ID}
+			filter := bson.D{{Key: "id", Value: activities[idx].ID}}
+			err := copier.Copy(&activity, &activities[idx])
+			if err != nil {
+				// TODO: handle error
+				fmt.Printf("Error copying data: %v\n", err)
+				// continue
+			} else {
+				// TODO: generate hash for checking if doc is updated
+				// hash, err := utils.GenerateHash(activity)
+				// if err != nil {
+				// 	fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
+				// 	// TODO: error handling
+				// 	continue
+				// }
+				// activity.Hash = hash
+
+				// update := bson.M{"$set": activity}
+				update := bson.D{{Key: "$set", Value: activity}}
+
+				mu.Lock()
+				bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true))
+				mu.Unlock()
+			}
+		}(i)
 	}
+	wg.Wait()
+	// close(errs)
+	// <-errsDone
+
 	result, err := seColl.BulkWrite(context.TODO(), bulkOps)
 	if err != nil {
 		log.Fatalf("Error BulkWrite error: %v", err)
