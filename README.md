@@ -24,3 +24,6 @@ Not yet
 - [Testing and Benchmarking in Go](https://medium.com/hyperskill/testing-and-benchmarking-in-go-e33a54b413e)
 - [Benchmarking in Golang: Improving function performance](https://blog.logrocket.com/benchmarking-golang-improve-function-performance/)
 - 
+
+GraphQL
+- [Building a GraphQL server in Go with go-graphql](https://www.apollographql.com/blog/building-a-graphql-server-in-go-with-go-graphql)
