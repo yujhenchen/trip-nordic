@@ -4,7 +4,6 @@ import (
 	"backend/config"
 	mongodb "backend/mongo"
 	"backend/scripts"
-	"backend/utils"
 
 	"backend/models/api/se"
 	db_se "backend/models/mongo/se"
@@ -131,30 +130,30 @@ func main() {
 	seColl := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
 
 	// upsert using bulk
-	// TODO: what is mongo.WriteModel ??
+	// write models is used to specify replace and update operations
 	bulkOps := make([]mongo.WriteModel, 0, len(activities))
 	var activity db_se.Result
 	for i := range activities {
-		// TODO: how does memory work ??
-		filter := bson.M{"id": activities[i].ID}
-		// TODO: do I need copier.Copy first ??
-		err := copier.Copy(&activity, activities[i])
+		// use bson.D when field order matters. bson.D is used in the official documentation
+		// filter := bson.M{"id": activities[i].ID}
+		filter := bson.D{{Key: "id", Value: activities[i].ID}}
+		err := copier.Copy(&activity, &activities[i])
 		if err != nil {
 			fmt.Printf("Error copying data: %v\n", err)
-			// TODO: how to handle when this error happens in the loop
+			// TODO: error handling
 			continue
 		}
-		hash, err := utils.GenerateHash(activity)
-		if err != nil {
-			fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
-			// TODO: how to handle when this error happens in the loop
-			continue
-		}
-		// TODO: what is $set, why use M here
-		// TODO: what is mongo.NewUpdateOneModel()
-		// TODO: how does memory work ??
-		activity.Hash = hash
-		update := bson.M{"$set": activity}
+		// TODO: generate hash for checking if doc is updated
+		// hash, err := utils.GenerateHash(activity)
+		// if err != nil {
+		// 	fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
+		// 	// TODO: error handling
+		// 	continue
+		// }
+		// activity.Hash = hash
+
+		// update := bson.M{"$set": activity}
+		update := bson.D{{Key: "$set", Value: activity}}
 		bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true))
 	}
 	result, err := seColl.BulkWrite(context.TODO(), bulkOps)
