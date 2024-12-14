@@ -151,13 +151,10 @@ func main() {
 		}(i)
 	}
 	wg.Wait()
-	// close(errs)
-	// <-errsDone
 
 	result, err := seColl.BulkWrite(context.TODO(), bulkOps)
 	if err != nil {
 		log.Fatalf("Error BulkWrite error: %v", err)
 	}
-	// TODO: why change the total pages get different ModifiedCount
 	fmt.Printf("Matched: %d, Modified: %d, Upserted: %d\n", result.MatchedCount, result.ModifiedCount, result.UpsertedCount)
 }
