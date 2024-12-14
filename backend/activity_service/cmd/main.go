@@ -21,20 +21,20 @@ import (
 // fetch SE API data by page
 // from is the start page, to is the end page, if to is -1, set the end page to the total page
 // return activities slice, and its underlying array will remain allocated in memory, ready for garbage collection when no longer needed
-func getSEActivities(from, to int) ([]se.Result, error) {
+func getSEActivities(from, to int) ([]se.Result, []error, error) {
 	if from < 1 {
-		return nil, fmt.Errorf("from page need to be greater than 1")
+		return nil, nil, fmt.Errorf("from page need to be greater than 1")
 	}
 
 	if to != -1 && to < from {
-		return nil, fmt.Errorf("to page need to be greater than from page")
+		return nil, nil, fmt.Errorf("to page need to be greater than from page")
 	}
 	initPage := from
 	var pageCount int
 
 	res, err := scripts.GetSEAPIData(initPage)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if to == -1 {
@@ -49,45 +49,40 @@ func getSEActivities(from, to int) ([]se.Result, error) {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
+	errs := make(chan error)
+	// a signal mechanism since an empty struct uses no memory
+	errsDone := make(chan struct{})
+	resultErrs := []error{}
+
+	go func() {
+		for err := range errs {
+			resultErrs = append(resultErrs, err)
+		}
+		errsDone <- struct{}{}
+	}()
+
 	// fetch each page data from API
 	activities = append(activities, res.Results...)
 	for page := initPage + 1; page <= pageCount; page++ {
 		wg.Add(1)
 		go func(pageNum int) {
 			defer wg.Done()
-			res, err := scripts.GetSEAPIData(page)
+			res, err = scripts.GetSEAPIData(page)
 			if err != nil {
-				// TODO: stop the process in this go routine
-				// TODO: collect each error as a big error for later to return
+				errs <- fmt.Errorf("get SE API data error: %v", err)
 			}
-
 			mu.Lock()
 			activities = append(activities, res.Results...)
 			mu.Unlock()
 		}(page)
 	}
 	wg.Wait()
-	return activities, err
-}
+	close(errs)
 
-// func newConnection(uri string) (*mongo.Client, error) {
-// 	if uri == "" {
-// 		log.Fatal("Error, cannot find uri")
-// 		err := errors.New("Error empty uri")
-// 		return nil, err
-// 	}
-// 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-// 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
-// 	client, err := mongo.Connect(context.TODO(), opts)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	// ping the database to verify the connection
-// 	if err := client.Ping(context.TODO(), nil); err != nil {
-// 		return nil, fmt.Errorf("failed to ping MongoDB: %w", err)
-// 	}
-// 	return client, nil
-// }
+	// waits for the signal from the errsDone channel, ensuring that the main goroutine does not proceed until the error processing is complete
+	<-errsDone
+	return activities, resultErrs, err
+}
 
 // func getActivitiesDocs(col *mongo.Collection, activities []db_se.Result) []primitive.M {
 // 	var results []bson.M
@@ -110,33 +105,32 @@ func getSEActivities(from, to int) ([]se.Result, error) {
 // }
 
 func main() {
-	// panic or fatal
 	config.LoadEnvFile()
 
-	// TODO: fix all the error handling, logging
 	initPage := 1
-	activities, err := getSEActivities(initPage, -1)
+	activities, errs, err := getSEActivities(initPage, -1)
+	if len(errs) > 0 {
+		log.Fatalf("Error getSEActivities errs: %v", errs)
+	}
 	if err != nil {
 		log.Fatalf("Error getSEActivities error: %v", err)
 	}
 
 	// connect to database
 	client, err := mongodb.NewConnection(config.GoDotEnvVariable("MONGODB_URI"), context.TODO())
-	if err != nil {
-		log.Fatalf("Error establishing MongoDB connection: %v", err)
-	}
 	defer func() {
 		if err = mongodb.CloseDB(client, context.TODO()); err != nil {
 			log.Fatalf("Error disconnecting MongoDB client: %v", err)
 		}
 	}()
+	if err != nil {
+		log.Fatalf("Error establishing MongoDB connection: %v", err)
+	}
 
 	// client: connection instance, access collection in the database, assigns the se collection reference to the seCol variable
 	seColl := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("se")
 
 	// upsert using bulk
-	// TODO: performance: bulk vs insertMany
-	// TODO: how does BulkWrite work?? when the data is the same ?? how does it know if the data are the same or not ??
 	// TODO: what is mongo.WriteModel ??
 	bulkOps := make([]mongo.WriteModel, 0, len(activities))
 	var activity db_se.Result
