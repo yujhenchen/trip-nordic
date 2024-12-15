@@ -37,10 +37,15 @@ func FetchAPIResponse[T ResponseType](url string, response T) (*T, error) {
 }
 
 // get API urls
-func GetFIURL() string {
+func GetFIURL(limit int, language string) string {
 	fiUrl := config.GoDotEnvVariable("FI_ACTIVITY_URL")
-	searchParams := utils.GetFIActivityParams()
-	return fmt.Sprintf("%s?%s", fiUrl, searchParams)
+	// searchParams := utils.GetFIActivityParams()
+	limitQuery := fmt.Sprintf("limit=%d", limit)
+
+	encodedLanguage := url.QueryEscape(language)
+	languageQuery := fmt.Sprintf("languages%%5Blike%%5D=%%25%s%%25", encodedLanguage)
+
+	return fmt.Sprintf("%s?%s&%s", fiUrl, limitQuery, languageQuery)
 }
 
 func GetSEURL(page int) string {
@@ -100,5 +105,15 @@ func GetSEAPIData(page int) (*se.Response, error) {
 		return nil, fmt.Errorf("get SE data error: %v", err)
 	}
 	// fmt.Printf("Total Results: %d\n", len(data.Results))
+	return data, nil
+}
+
+// fetch FI API data, return the pointer of the response struct
+func GetFIAPIData(limit int, language string) (*fi.Response, error) {
+	url := GetFIURL(limit, language)
+	data, err := FetchAPIResponse(url, fi.Response{})
+	if err != nil {
+		return nil, fmt.Errorf("get FI data error: %v", err)
+	}
 	return data, nil
 }

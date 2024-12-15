@@ -1,16 +1,5 @@
 package fi
 
-// type Image struct {
-//     Copyright    string `json:"copyright"`
-//     Filename     string `json:"filename"`
-//     AltText      string `json:"altText"`
-//     LargeURL     string `json:"largeUrl"`
-//     OriginalURL  string `json:"originalUrl"`
-//     ThumbnailURL string `json:"thumbnailUrl"`
-//     CoverPhoto   bool   `json:"coverPhoto"`
-//     Orientation  string `json:"orientation"`
-// }
-
 type Result struct {
 	// Name       string `json:"@name"`
 	// Path       string `json:"@path"`
@@ -41,11 +30,4 @@ type Result struct {
 	// LastModified   string `json:"mgnl:lastModified"`
 	// LastModifiedBy string `json:"mgnl:lastModifiedBy"`
 	// Image            Image  `json:"image"`
-}
-
-type Response struct {
-	Total   int      `json:"total"`
-	Offset  int      `json:"offset"`
-	Limit   int      `json:"limit"`
-	Results []Result `json:"results"`
 }

@@ -14,28 +14,27 @@ func GetFormatFields(fields []string) string {
 	return strings.Join(formattedFields, ",")
 }
 
-func GetFIActivityParams() string {
-	fields := strings.Split(config.GoDotEnvVariable("NO_ACTIVITY_FIELDS"), ",")
-	params := make([]string, 0, len(fields))
-	for _, field := range fields {
-		var value string
-		switch field {
-		case "offset":
-			value = config.GoDotEnvVariable("FI_ACTIVITY_OFFSET")
-		case "limit":
-			value = config.GoDotEnvVariable("FI_ACTIVITY_LIMIT")
-		case "language":
-			value = config.GoDotEnvVariable("FI_ACTIVITY_LANGUAGE")
-		case "category":
-			value = config.GoDotEnvVariable("FI_ACTIVITY_CATEGORY")
-		}
-		if value != "" {
-			params = append(params, fmt.Sprintf("%s=%s", field, value))
-		}
-	}
-	return strings.Join(params, "&")
-
-}
+// func GetFIActivityParams() string {
+// 	fields := strings.Split(config.GoDotEnvVariable("FI_ACTIVITY_FIELDS"), ",")
+// 	params := make([]string, 0, len(fields))
+// 	for _, field := range fields {
+// 		var value string
+// 		switch field {
+// 		case "offset":
+// 			value = config.GoDotEnvVariable("FI_ACTIVITY_OFFSET")
+// 		case "limit":
+// 			value = config.GoDotEnvVariable("FI_ACTIVITY_LIMIT")
+// 		case "language":
+// 			value = config.GoDotEnvVariable("FI_ACTIVITY_LANGUAGE")
+// 		case "category":
+// 			value = config.GoDotEnvVariable("FI_ACTIVITY_CATEGORY")
+// 		}
+// 		if value != "" {
+// 			params = append(params, fmt.Sprintf("%s=%s", field, value))
+// 		}
+// 	}
+// 	return strings.Join(params, "&")
+// }
 
 func GetNOActivityParams() string {
 	filterTags := config.GoDotEnvVariable("NO_ACTIVITY_FILTER_TAGS")
