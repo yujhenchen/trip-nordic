@@ -4,32 +4,32 @@ import (
 	"encoding/json"
 )
 
-type Image struct {
-	AltText       *string                  `json:"alt_text"`
-	Title         string                   `json:"title"`
-	File          string                   `json:"file"`
-	Width         int                      `json:"width"`
-	Height        int                      `json:"height"`
-	FileSize      int                      `json:"file_size"`
-	Focal         Focal                    `json:"focal"`
-	Src           string                   `json:"src"`
-	Credits       string                   `json:"credits"`
-	Caption       string                   `json:"caption"`
-	ID            int                      `json:"id"`
-	LocalMetaData map[string]LocalizedData `json:"local_meta_data"`
-}
+// type Image struct {
+// 	AltText       *string                  `json:"alt_text"`
+// 	Title         string                   `json:"title"`
+// 	File          string                   `json:"file"`
+// 	Width         int                      `json:"width"`
+// 	Height        int                      `json:"height"`
+// 	FileSize      int                      `json:"file_size"`
+// 	Focal         Focal                    `json:"focal"`
+// 	Src           string                   `json:"src"`
+// 	Credits       string                   `json:"credits"`
+// 	Caption       string                   `json:"caption"`
+// 	ID            int                      `json:"id"`
+// 	LocalMetaData map[string]LocalizedData `json:"local_meta_data"`
+// }
 
-type Focal struct {
-	X string `json:"x"`
-	Y string `json:"y"`
-}
+// type Focal struct {
+// 	X string `json:"x"`
+// 	Y string `json:"y"`
+// }
 
-type LocalizedData struct {
-	Title    string `json:"title"`
-	Caption  string `json:"caption"`
-	AltText  string `json:"alt_text"`
-	Location string `json:"location"`
-}
+// type LocalizedData struct {
+// 	Title    string `json:"title"`
+// 	Caption  string `json:"caption"`
+// 	AltText  string `json:"alt_text"`
+// 	Location string `json:"location"`
+// }
 
 type Meta struct {
 	TotalPages   int     `json:"total_pages"`
@@ -89,17 +89,17 @@ func (c *Categories) UnmarshalJSON(data []byte) error {
 }
 
 type Result struct {
-	ID            int         `json:"id"`
-	Title         string      `json:"title"`
-	Href          string      `json:"href"`
-	Text          string      `json:"text"`
-	Image         Image       `json:"image"`
-	Live          bool        `json:"live"`
-	Path          string      `json:"path"`
-	Type          interface{} `json:"type"`
-	OriginalTitle string      `json:"original_title"`
-	IsExternal    bool        `json:"is_external"`
-	Categories    Categories  `json:"categories"` // FIX ME: this is either []string or string
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+	Href  string `json:"href"`
+	Text  string `json:"text"`
+	// Image         Image       `json:"image"`
+	// Live          bool        `json:"live"`
+	// Path          string      `json:"path"`
+	// Type          interface{} `json:"type"`
+	OriginalTitle string `json:"original_title"`
+	// IsExternal    bool        `json:"is_external"`
+	Categories Categories `json:"categories"` // FIX ME: this is either []string or string
 }
 
 type Response struct {

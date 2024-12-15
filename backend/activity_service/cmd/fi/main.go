@@ -2,7 +2,7 @@ package main
 
 import (
 	"backend/config"
-	"backend/models/api/fi"
+	"backend/models/fi"
 	"backend/scripts"
 	"fmt"
 	"log"

@@ -2,9 +2,9 @@ package scripts
 
 import (
 	"backend/config"
-	"backend/models/api/fi"
-	"backend/models/api/no"
-	"backend/models/api/se"
+	"backend/models/fi"
+	"backend/models/no"
+	"backend/models/se"
 	"backend/utils"
 	"encoding/json"
 	"fmt"

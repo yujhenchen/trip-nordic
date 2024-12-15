@@ -2,17 +2,15 @@ package main
 
 import (
 	"backend/config"
+	"backend/models/se"
 	mongodb "backend/mongo"
 	"backend/scripts"
 
-	"backend/models/api/se"
-	db_se "backend/models/mongo/se"
 	"context"
 	"fmt"
 	"log"
 	"sync"
 
-	"github.com/jinzhu/copier"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -121,33 +119,24 @@ func main() {
 		go func(idx int) {
 			defer wg.Done()
 
-			var activity db_se.Result
-
 			// use bson.D when field order matters. bson.D is used in the official documentation
 			// filter := bson.M{"id": activities[i].ID}
 			filter := bson.D{{Key: "id", Value: activities[idx].ID}}
-			err := copier.Copy(&activity, &activities[idx])
-			if err != nil {
-				// TODO: handle error
-				fmt.Printf("Error copying data: %v\n", err)
-				// continue
-			} else {
-				// TODO: generate hash for checking if doc is updated
-				// hash, err := utils.GenerateHash(activity)
-				// if err != nil {
-				// 	fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
-				// 	// TODO: error handling
-				// 	continue
-				// }
-				// activity.Hash = hash
+			// TODO: generate hash for checking if doc is updated
+			// hash, err := utils.GenerateHash(activity)
+			// if err != nil {
+			// 	fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
+			// 	// TODO: error handling
+			// 	continue
+			// }
+			// activity.Hash = hash
 
-				// update := bson.M{"$set": activity}
-				update := bson.D{{Key: "$set", Value: activity}}
+			// update := bson.M{"$set": activity}
+			update := bson.D{{Key: "$set", Value: &activities[idx]}}
 
-				mu.Lock()
-				bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true))
-				mu.Unlock()
-			}
+			mu.Lock()
+			bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true))
+			mu.Unlock()
 		}(i)
 	}
 	wg.Wait()
