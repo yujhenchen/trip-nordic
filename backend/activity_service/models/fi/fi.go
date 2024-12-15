@@ -19,8 +19,8 @@ type Result struct {
 	// CreatedBy  string `json:"jcr:createdBy"`
 	IDInternal string `json:"id"`
 	Languages  string `json:"languages"`
-	NameField  string `json:"name"`
-	NameEN     string `json:"nameEN"`
+	// NameField  string `json:"name"`
+	NameEN string `json:"nameEN"`
 	// NameFI           string `json:"nameFI,omitempty"`
 	// NameSV           string `json:"nameSV,omitempty"`
 	// NameDE           string `json:"nameDE,omitempty"`
