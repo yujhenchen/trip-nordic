@@ -5,13 +5,13 @@ import { getAuth, inMemoryPersistence } from "firebase/auth";
 // TODO: Fill your web app's Firebase configuration
 // See https://firebase.google.com/docs/web/learn-more?hl=fr#config-object
 const firebaseConfig = {
-  apiKey: "AIzaSyCbyxYTTlRwx8lRkpkJwB1mHHTWz0PFyek",
-  authDomain: "jen-playground-c6f0c.firebaseapp.com",
-  databaseURL: "https://jen-playground-c6f0c-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "jen-playground-c6f0c",
-  storageBucket: "jen-playground-c6f0c.firebasestorage.app",
-  messagingSenderId: "14516712620",
-  appId: "1:14516712620:web:fb3e16ccb27ca3d1acdb09"
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 let firebaseApp: FirebaseApp | undefined;
