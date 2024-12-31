@@ -16,9 +16,11 @@ export default function LayoutDefault({
       <Sidebar>
         <Logo />
         <Link href="/">Welcome</Link>
-        <Link href="/todo">Todo</Link>
-        <Link href="/star-wars">Data Fetching</Link>
+        {/* <Link href="/todo">Todo</Link>
+        <Link href="/star-wars">Data Fetching</Link> */}
         <Link href="/login">Login</Link>
+        <Link href="/plan">Plan</Link>
+        <Link href="/explore">Explore</Link>
       </Sidebar>
       <Content>{children}</Content>
     </div>
