@@ -6,6 +6,9 @@ export default {
   content: ["./{pages,layouts,components,src}/**/*.{html,js,jsx,ts,tsx,vue}"],
   theme: {
     extend: {
+      fontFamily: {
+        poppins: ["Poppins", "ui-sans-serif", "system-ui"]
+      },
       keyframes: {
         "caret-blink": {
           "0%,70%,100%": { opacity: "1" },
