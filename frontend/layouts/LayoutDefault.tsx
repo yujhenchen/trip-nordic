@@ -3,8 +3,9 @@ import "./style.css";
 import "./tailwind.css";
 
 import PageContent from "@/components/common/PageContent";
-import Footer from "@/components/common/Footer";
 import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 export default function LayoutDefault({
   children,
@@ -12,10 +13,12 @@ export default function LayoutDefault({
   children: React.ReactNode;
 }) {
   return (
-    <div className="container mx-auto">
-      <Header />
-      <PageContent>{children}</PageContent>
-      <Footer />
-    </div>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div className="container mx-auto">
+        <Header />
+        <PageContent>{children}</PageContent>
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }
