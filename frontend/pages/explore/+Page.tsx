@@ -6,18 +6,36 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Filter,
+  FilterContent,
+  FilterOption,
+  FilterRow,
+  FilterTitle,
+} from "./Filter";
 
 export default function Page() {
   return (
     <div>
-      <FilterWrapper />
+      <Filter>
+        <FilterTitle>Filter Title</FilterTitle>
+        <FilterContent>
+          <FilterRow>
+            <FilterOption>Filter Row 1 1</FilterOption>
+            <FilterOption>Filter Row 1 2</FilterOption>
+            <FilterOption>Filter Row 1 3</FilterOption>
+          </FilterRow>
+
+          <FilterRow>
+            <FilterOption>Filter Row 2 1</FilterOption>
+            <FilterOption>Filter Row 2 2</FilterOption>
+          </FilterRow>
+        </FilterContent>
+      </Filter>
+
       <CardWrapper />
     </div>
   );
-}
-
-function FilterWrapper() {
-  return <div>Filter Wrapper</div>;
 }
 
 function CardWrapper() {
