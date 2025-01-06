@@ -1,5 +1,5 @@
+import { cn } from "@/lib/utils";
 import { usePageContext } from "vike-react/usePageContext";
-import { clsx } from "clsx/lite";
 
 export function Link({
   href,
@@ -17,7 +17,7 @@ export function Link({
   return (
     <a
       href={href}
-      className={clsx(isActive ? "is-active" : undefined, className)}
+      className={cn(isActive ? "is-active" : undefined, className)}
     >
       {children}
     </a>

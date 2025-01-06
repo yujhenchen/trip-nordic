@@ -24,7 +24,6 @@
     "@vite-plugin-vercel/vike": "^9.0.2",
     "@vitejs/plugin-react": "^4.3.4",
     "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
     "cookie": "^1.0.2",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
