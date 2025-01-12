@@ -51,7 +51,11 @@ export default function FilterPanel({
                 />
               ))}
             </FilterOptionsContainer>
-            <Button variant="secondary" onClick={onReset}>
+            <Button
+              variant="secondary"
+              onClick={onReset}
+              className="rounded-full"
+            >
               Reset
             </Button>
           </FilterRow>
