@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   FilterContent,
   FilterOptionsContainer,
@@ -12,6 +13,7 @@ export interface Props {
   filters: FiltersType;
   chipIcon: React.ReactNode;
   onClickOption: (row: string, option: FilterOptionData) => void;
+  onReset: () => void;
   title?: string;
   className?: string;
 }
@@ -27,6 +29,7 @@ export default function FilterPanel({
   chipIcon,
   className,
   onClickOption,
+  onReset,
 }: Props) {
   return (
     <div className={className}>
@@ -48,6 +51,9 @@ export default function FilterPanel({
                 />
               ))}
             </FilterOptionsContainer>
+            <Button variant="secondary" onClick={onReset}>
+              Reset
+            </Button>
           </FilterRow>
         ))}
       </FilterContent>
