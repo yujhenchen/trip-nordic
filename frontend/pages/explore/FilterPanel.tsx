@@ -4,8 +4,8 @@ import {
   FilterRow,
   FilterRowTitle,
   FilterTitle,
+  FilterChip,
 } from "./Filter";
-import FilterChip from "./FilterChip";
 
 export interface Props {
   title?: string;
