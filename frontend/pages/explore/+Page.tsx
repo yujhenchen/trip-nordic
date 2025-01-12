@@ -1,9 +1,14 @@
 import FilterPanel from "./FilterPanel";
-import testFilterPanelRows from "./filterTestData"; // TODO: replace with real data
+import { testFilters } from "./filterTestData"; // TODO: replace with real data
 import { X } from "lucide-react";
 import CardGrid, { CardProps } from "./CardGrid";
 import { activityTestData } from "./activityTestData";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  FilterOptionData,
+  FilterProvider,
+  useFilterProvider,
+} from "./FilterProvider";
 
 export interface Activity {
   id: string;
@@ -20,11 +25,21 @@ export interface Activity {
 }
 
 export default function Page() {
+  return (
+    <FilterProvider filters={testFilters}>
+      <Content />
+    </FilterProvider>
+  );
+}
+
+function Content() {
+  const { filters, updateFilters } = useFilterProvider();
+
   const cards: Array<CardProps> = activityTestData.map((activity) => {
     return {
       id: activity.id,
       onClick: () => {
-        console.log("clicked");
+        console.log("clicked card");
       },
       children: (
         <CardHeader>
@@ -39,11 +54,27 @@ export default function Page() {
     };
   });
 
+  const handleClickOption = (rowStr: string, option: FilterOptionData) => {
+    const row = filters.find((filter) => filter.title === rowStr);
+    const newOptions =
+      row?.options.map((o) =>
+        o.value === option.value ? { ...o, isSelected: !o.isSelected } : o
+      ) ?? [];
+    updateFilters(rowStr, newOptions);
+  };
+
   return (
     <>
-      <FilterPanel rows={testFilterPanelRows} chipIcon={<X size={16} />} />
+      <FilterPanel
+        filters={filters}
+        chipIcon={<X size={16} />}
+        onClickOption={handleClickOption}
+      />
 
-      <CardGrid cards={cards} />
+      <CardGrid
+        cards={cards}
+        // TODO: filters={filters}
+      />
     </>
   );
 }

@@ -53,19 +53,23 @@ const FilterOptionsContainer = React.forwardRef<
 ));
 FilterOptionsContainer.displayName = "FilterOptionsContainer";
 
+interface FilterChipProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    React.RefAttributes<HTMLDivElement> {
+  selected: boolean;
+  value: string;
+  selectedIcon: React.ReactNode;
+}
+
 const FilterChip = ({
   selected,
   value,
   selectedIcon,
   ref,
-}: {
-  selected: boolean;
-  value: string;
-  selectedIcon: React.ReactNode;
-  ref?: React.Ref<HTMLDivElement>;
-}) => {
+  ...props
+}: FilterChipProps) => {
   return (
-    <div className="flex flex-wrap gap-4" ref={ref}>
+    <div className="flex flex-wrap gap-4" ref={ref} {...props}>
       <button
         className={cn(
           "flex items-center px-4 py-2 rounded-full shadow-sm border space-x-2",

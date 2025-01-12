@@ -1,6 +1,6 @@
 import { FilterPanelRow } from "./FilterPanel";
 
-const testFilterPanelRows: Array<FilterPanelRow> = [
+export const testFilters: Array<FilterPanelRow> = [
     {
         title: "Cities",
         options: [
@@ -44,4 +44,10 @@ const testFilterPanelRows: Array<FilterPanelRow> = [
     }
 ];
 
-export default testFilterPanelRows;
+// export const testFilterMap: Map<string, Array<FilterOptionData>> = new Map(
+//     testFilterPanelRows.map((row) => [
+//         row.title,
+//         row.options,
+//     ])
+// );
+
