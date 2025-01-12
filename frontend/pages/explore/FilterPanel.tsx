@@ -35,13 +35,14 @@ export default function FilterPanel({
       {title ? <FilterTitle>{title}</FilterTitle> : null}
       <FilterContent>
         {rows.map((row) => (
-          <FilterRow>
+          <FilterRow key={row.title}>
             <FilterRowTitle className="flex-shrink-0 w-24">
               {row.title}
             </FilterRowTitle>
             <FilterOptionsContainer>
               {row.options.map((option) => (
                 <FilterChip
+                  key={option.value}
                   selected={option.isSelected}
                   value={option.value}
                   selectedIcon={chipIcon}
