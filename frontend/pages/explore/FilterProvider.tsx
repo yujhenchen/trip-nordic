@@ -46,13 +46,15 @@ export function FilterProvider({
     title: string,
     newOptions: FilterOptionsType
   ) => {
-    setProviderFilters((preFilters) => {
-      const newFilters = [...preFilters];
-      const found = newFilters.find((f) => f.title === title);
-      if (found) {
-        found.options = newOptions;
-      }
-      return newFilters;
+    document.startViewTransition(() => {
+      setProviderFilters((preFilters) => {
+        const newFilters = [...preFilters];
+        const found = newFilters.find((f) => f.title === title);
+        if (found) {
+          found.options = newOptions;
+        }
+        return newFilters;
+      });
     });
   };
 
