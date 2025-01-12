@@ -1,30 +1,11 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-const Filter = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      // "rounded-lg border bg-card text-card-foreground shadow-sm",
-      className
-    )}
-    {...props}
-  />
-));
-Filter.displayName = "Filter";
-
 const FilterTitle = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    // className={cn("flex flex-col space-y-1.5 p-6", className)}
-    {...props}
-  />
+  <p ref={ref} className={cn("font-semibold p-3", className)} {...props} />
 ));
 FilterTitle.displayName = "FilterTitle";
 
@@ -34,7 +15,7 @@ const FilterContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    // className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={cn("flex flex-col space-y-4 p-6", className)}
     {...props}
   />
 ));
@@ -46,21 +27,36 @@ const FilterRow = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    // className={cn("flex items-center p-6 pt-0", className)}
+    className={cn("flex items-center space-x-3", className)}
     {...props}
   />
 ));
 FilterRow.displayName = "FilterRow";
 
-const FilterOption = React.forwardRef<
+const FilterRowTitle = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <p ref={ref} className={cn("font-medium", className)} {...props} />
+));
+FilterRowTitle.displayName = "FilterRowTitle";
+
+const FilterOptionsContainer = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    // className={cn("flex items-center p-6 pt-0", className)}
+    className={cn("flex space-x-3 overflow-x-scroll", className)}
     {...props}
   />
 ));
+FilterOptionsContainer.displayName = "FilterOptionsContainer";
 
-export { Filter, FilterTitle, FilterContent, FilterRow, FilterOption };
+export {
+  FilterTitle,
+  FilterContent,
+  FilterRow,
+  FilterRowTitle,
+  FilterOptionsContainer,
+};
