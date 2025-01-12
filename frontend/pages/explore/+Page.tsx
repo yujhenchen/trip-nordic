@@ -1,43 +1,49 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import FilterPanel from "./FilterPanel";
-import testFilterPanelRows from "./filterTestData";
+import testFilterPanelRows from "./filterTestData"; // TODO: replace with real data
 import { X } from "lucide-react";
+import CardGrid, { CardProps } from "./CardGrid";
+import { activityTestData } from "./activityTestData";
+import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+export interface Activity {
+  id: string;
+  category: string;
+  city: string;
+  description: string;
+  name: string;
+  region: string;
+  seasons: string;
+  img?: {
+    src: string;
+    alt: string;
+  };
+}
 
 export default function Page() {
+  const cards: Array<CardProps> = activityTestData.map((activity) => {
+    return {
+      id: activity.id,
+      onClick: () => {
+        console.log("clicked");
+      },
+      children: (
+        <CardHeader>
+          <img
+            src={activity.img?.src ?? "https://via.placeholder.com/150x100"}
+            alt={activity.img?.alt ?? "Card Image"}
+          />
+          <CardTitle>{activity.name}</CardTitle>
+          <CardDescription>{activity.description}</CardDescription>
+        </CardHeader>
+      ),
+    };
+  });
+
   return (
     <>
       <FilterPanel rows={testFilterPanelRows} chipIcon={<X size={16} />} />
 
-      <CardWrapper />
+      <CardGrid cards={cards} />
     </>
-  );
-}
-
-function CardWrapper() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {Array.from({ length: 15 }, (_, i) => (
-        <Card>
-          <CardHeader>
-            <img src="https://via.placeholder.com/150x100" alt="Card Image" />
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>Card Description</CardDescription>
-          </CardHeader>
-          {/* <CardContent>
-            <p>Card Content</p>
-          </CardContent> */}
-          {/* <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter> */}
-        </Card>
-      ))}
-    </div>
   );
 }
