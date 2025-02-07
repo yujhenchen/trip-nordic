@@ -40,7 +40,7 @@ export default function Header() {
               <Link href="/login">
                 <Avatar>
                   <AvatarImage
-                    src="https://via.placeholder.com/150"
+                    src="https://placehold.co.com/150"
                     className="rounded-full w-12 aspect-square"
                   />
                   <AvatarFallback>CN</AvatarFallback>

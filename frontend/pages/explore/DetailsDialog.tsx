@@ -1,0 +1,76 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { FilterChip, FilterRow } from "./Filter";
+import { Button } from "@/components/ui/button";
+
+interface Props {
+  headerImage: {
+    src: string;
+    alt: string;
+  };
+  title: string;
+  description: string;
+  tags: Array<string>;
+}
+
+export default function DetailsDialog({
+  headerImage,
+  title,
+  description,
+  tags,
+}: Props) {
+  return (
+    <Dialog>
+      <DialogTrigger>Open</DialogTrigger>
+      <DialogContent className="p-10 max-w-3xl">
+        <img
+          src={headerImage.src}
+          alt={headerImage.alt}
+          className="w-3/5 object-cover mx-auto"
+        />
+        <div className="flex space-x-6">
+          <DialogHeader className="py-4">
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
+          </DialogHeader>
+
+          <div className="flex space-y-4 flex-col">
+            <FilterRow className="place-content-end">
+              {tags.map((tag) => (
+                <FilterChip
+                  key={tag}
+                  selected={false}
+                  value={tag}
+                  selectedIcon={null}
+                ></FilterChip>
+              ))}
+            </FilterRow>
+            <iframe
+              className="w-200 h-100"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=9.950866699218752%2C59.716945112398264%2C11.145629882812502%2C60.22685703775105&amp;layer=mapnik"
+            ></iframe>
+            {/* <br />
+            <small>
+              <a href="https://www.openstreetmap.org/?#map=10/59.9729/10.5482">
+                View Larger Map
+              </a>
+            </small> */}
+          </div>
+        </div>
+        <Button
+          variant="default"
+          size="lg"
+          className="rounded-xl w-fit mx-auto"
+        >
+          Keep
+        </Button>
+      </DialogContent>
+    </Dialog>
+  );
+}

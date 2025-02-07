@@ -9,6 +9,7 @@ import {
   FilterProvider,
   useFilterProvider,
 } from "./FilterProvider";
+import DetailsDialog from "./DetailsDialog";
 
 export interface Activity {
   id: string;
@@ -28,6 +29,17 @@ export default function Page() {
   return (
     <FilterProvider filters={testFilters}>
       <Content />
+      <DetailsDialog
+        headerImage={{
+          src: "https://placehold.co/300x200",
+          alt: "",
+        }}
+        title={"Pottery House Anubis"}
+        description={
+          "Pottery House Anubis. In the heart of the Glass Capital Iittala, in the Green House, the naive artist Markku Mäki has a pottery house and store with a warm welcome. Anubis is the place to admire and buy naive sculpture, high-fired ceramics and Finnish hand-made knives. You can follow the artist´s work in his workshop every day."
+        }
+        tags={["A", "B", "C"]}
+      />
     </FilterProvider>
   );
 }
@@ -49,7 +61,7 @@ function Content() {
         children: (
           <CardHeader>
             <img
-              src={activity.img?.src ?? "https://via.placeholder.com/150x100"}
+              src={activity.img?.src ?? "https://placehold.co.com/150x100"}
               alt={activity.img?.alt ?? "Card Image"}
             />
             <CardTitle>{activity.name}</CardTitle>
@@ -81,10 +93,7 @@ function Content() {
         onReset={handleReset}
       />
 
-      <CardGrid
-        cards={cards}
-        // TODO: filters={filters}
-      />
+      <CardGrid cards={cards} />
     </>
   );
 }
