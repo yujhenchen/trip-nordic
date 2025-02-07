@@ -10,10 +10,6 @@
 - [gob](https://pkg.go.dev/encoding/gob#NewEncoder)
 - [Golang Defer: From Basic To Traps](https://victoriametrics.com/blog/defer-in-go/)
 
-### Context
-
-### defer
-
 MongoDB
 - [MongoDB Go Driver](https://www.mongodb.com/docs/drivers/go/current/)
 - [How To Use Go with MongoDB Using the MongoDB Go Driver](https://www.digitalocean.com/community/tutorials/how-to-use-go-with-mongodb-using-the-mongodb-go-driver)
@@ -26,4 +22,36 @@ Not yet
 - 
 
 GraphQL
-- [Building a GraphQL server in Go with go-graphql](https://www.apollographql.com/blog/building-a-graphql-server-in-go-with-go-graphql)
+- 
+
+Frontend development
+- [Learn to become a modern Frontend Developer in 2022](https://medium.com/@kamranahmedse/modern-frontend-developer-in-2018-4c2072fa2b9c)
+- [frontend-checklist](https://developerruhul.github.io/frontend-checklist/)
+
+tech stack and why choose them
+#### Frontend
+- runtime: Bun
+- Frontend Framework: [Vike](https://vike.dev/)
+- UI Framework: [React]()
+- ???: [Bâti](https://batijs.dev/)
+- CSS: [Panda CSS](https://panda-css.com/)
+    - generate static CSS as build-time
+- UI Component Libraries: [shadcn](https://ui.shadcn.com/)
+
+#### Data
+- Auth: []()
+- Data fetching: []()
+- Server: []()
+- Database: []()
+
+#### Deployment
+Hosting: [Vercel]()
+
+#### Utilities
+- Linter: [Biome]()
+- Analytics: [Google Ana]()
+- Error tracking: [Sentry]()
+
+
+## Features
+
