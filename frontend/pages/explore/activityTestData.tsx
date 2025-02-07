@@ -13,7 +13,7 @@ export const activityTestData: Array<Activity> = [
     region: "lakeland",
     seasons: "spring,summer,autumn,winter",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Pottery House Anubis",
     },
   },
@@ -27,7 +27,7 @@ export const activityTestData: Array<Activity> = [
     region: "southern-finland",
     seasons: "spring,summer",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Helsinki Food Market",
     },
   },
@@ -41,7 +41,7 @@ export const activityTestData: Array<Activity> = [
     region: "lapland",
     seasons: "winter",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Santa Claus Village",
     },
   },
@@ -55,7 +55,7 @@ export const activityTestData: Array<Activity> = [
     region: "southwest-finland",
     seasons: "year-round",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Turku Castle",
     },
   },
@@ -69,7 +69,7 @@ export const activityTestData: Array<Activity> = [
     region: "pirkanmaa",
     seasons: "winter",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Tampere Film Festival",
     },
   },
@@ -83,7 +83,7 @@ export const activityTestData: Array<Activity> = [
     region: "north-karjala",
     seasons: "spring,summer,autumn",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Koli National Park",
     },
   },
@@ -97,7 +97,7 @@ export const activityTestData: Array<Activity> = [
     region: "southern-finland",
     seasons: "year-round",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "National Museum of Finland",
     },
   },
@@ -111,7 +111,7 @@ export const activityTestData: Array<Activity> = [
     region: "lapland",
     seasons: "winter",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Levi Ski Resort",
     },
   },
@@ -125,7 +125,7 @@ export const activityTestData: Array<Activity> = [
     region: "southern-finland",
     seasons: "year-round",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Ateneum Art Museum",
     },
   },
@@ -139,7 +139,7 @@ export const activityTestData: Array<Activity> = [
     region: "southern-finland",
     seasons: "year-round",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Helsinki Market Square",
     },
   },
@@ -153,7 +153,7 @@ export const activityTestData: Array<Activity> = [
     region: "central-finland",
     seasons: "summer,autumn",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Jyvaskyla Lakes",
     },
   },
@@ -167,7 +167,7 @@ export const activityTestData: Array<Activity> = [
     region: "southern-finland",
     seasons: "spring,summer,autumn",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Nuuksio National Park",
     },
   },
@@ -181,7 +181,7 @@ export const activityTestData: Array<Activity> = [
     region: "southwest-finland",
     seasons: "year-round",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Turku Art Museum",
     },
   },
@@ -195,7 +195,7 @@ export const activityTestData: Array<Activity> = [
     region: "lapland",
     seasons: "winter",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Lapland Northern Lights",
     },
   },
@@ -209,7 +209,7 @@ export const activityTestData: Array<Activity> = [
     region: "southern-finland",
     seasons: "year-round",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Porvoo Old Town",
     },
   },
@@ -223,7 +223,7 @@ export const activityTestData: Array<Activity> = [
     region: "northern-finland",
     seasons: "year-round",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Oulu Market Hall",
     },
   },
@@ -237,7 +237,7 @@ export const activityTestData: Array<Activity> = [
     region: "western-finland",
     seasons: "summer",
     img: {
-      src: "https://placehold.co.com/150x100",
+      src: "https://placehold.co/150x100",
       alt: "Vaasa Festival",
     },
   },
