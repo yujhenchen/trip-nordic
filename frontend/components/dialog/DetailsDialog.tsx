@@ -6,10 +6,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FilterChip, FilterRow } from "./Filter";
 import { Button } from "@/components/ui/button";
+import { FilterChip, FilterRow } from "@/pages/explore/Filter";
 
 interface Props {
+  onClose: () => void;
   headerImage: {
     src: string;
     alt: string;
@@ -20,14 +21,15 @@ interface Props {
 }
 
 export default function DetailsDialog({
+  onClose,
   headerImage,
   title,
   description,
   tags,
 }: Props) {
   return (
-    <Dialog>
-      <DialogTrigger>Open</DialogTrigger>
+    <Dialog onOpenChange={onClose}>
+      {/* <DialogTrigger>Open</DialogTrigger> */}
       <DialogContent className="p-10 max-w-3xl">
         <img
           src={headerImage.src}
@@ -41,16 +43,18 @@ export default function DetailsDialog({
           </DialogHeader>
 
           <div className="flex space-y-4 flex-col">
-            <FilterRow className="place-content-end">
-              {tags.map((tag) => (
-                <FilterChip
-                  key={tag}
-                  selected={false}
-                  value={tag}
-                  selectedIcon={null}
-                ></FilterChip>
-              ))}
-            </FilterRow>
+            {tags.length > 0 ? (
+              <FilterRow className="place-content-end">
+                {tags.map((tag) => (
+                  <FilterChip
+                    key={tag}
+                    selected={false}
+                    value={tag}
+                    selectedIcon={null}
+                  ></FilterChip>
+                ))}
+              </FilterRow>
+            ) : null}
             <iframe
               className="w-200 h-100"
               src="https://www.openstreetmap.org/export/embed.html?bbox=9.950866699218752%2C59.716945112398264%2C11.145629882812502%2C60.22685703775105&amp;layer=mapnik"

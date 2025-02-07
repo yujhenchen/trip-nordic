@@ -7,6 +7,7 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { DialogProvider } from "@/components/providers/DialogProvider";
 
 export default function LayoutDefault({
   children,
@@ -15,12 +16,14 @@ export default function LayoutDefault({
 }) {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="container mx-auto">
-        <Header />
-        <PageContent>{children}</PageContent>
-        <Footer />
-        <Toaster />
-      </div>
+      <DialogProvider>
+        <div className="container mx-auto">
+          <Header />
+          <PageContent>{children}</PageContent>
+          <Footer />
+          <Toaster />
+        </div>
+      </DialogProvider>
     </ThemeProvider>
   );
 }

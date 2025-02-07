@@ -1,0 +1,103 @@
+import {
+  ComponentProps,
+  createContext,
+  JSX,
+  Suspense,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
+import { DialogManager, DialogType } from "./DialogManager";
+import { nanoid } from "nanoid";
+
+interface DialogProviderProps {
+  children: React.ReactNode;
+}
+
+type DialogStructure = {
+  id: string;
+  component: () => JSX.Element;
+};
+
+interface DialogProviderState {
+  activeDialogs: Array<DialogStructure>;
+  open: (
+    dialogType: DialogType,
+    props: Omit<
+      ComponentProps<(typeof DialogManager)[typeof dialogType]>,
+      "onClose"
+    >
+  ) => void;
+  close: (dialogId: string) => void;
+}
+
+const initialState: DialogProviderState = {
+  activeDialogs: [],
+  open: () => {},
+  close: () => {},
+};
+
+const DialogProviderContext = createContext<DialogProviderState>(initialState);
+
+export function DialogProvider({ children, ...props }: DialogProviderProps) {
+  const [activeDialogs, setActiveDialogs] = useState<Array<DialogStructure>>(
+    []
+  );
+  const close = useCallback((dialogId: string) => {
+    setActiveDialogs((prevDialogs) =>
+      prevDialogs.filter((dialog) => dialog.id !== dialogId)
+    );
+  }, []);
+
+  const open = useCallback(
+    (
+      dialogType: DialogType,
+      props: Omit<
+        ComponentProps<(typeof DialogManager)[typeof dialogType]>,
+        "onClose"
+      >
+    ) => {
+      const dialogId = nanoid();
+      const Component = DialogManager[dialogType];
+
+      setActiveDialogs((prevDialogs) => [
+        ...prevDialogs,
+        {
+          id: dialogId,
+          component: () => (
+            <Component {...props} onClose={() => close(dialogId)} />
+          ),
+        },
+      ]);
+      return null;
+    },
+    [close]
+  );
+  const value = {
+    activeDialogs,
+    open,
+    close,
+  };
+
+  return (
+    <DialogProviderContext.Provider value={value} {...props}>
+      {children}
+      {typeof window !== "undefined" && value.activeDialogs.length > 0 ? (
+        <Suspense fallback={null}>
+          {value.activeDialogs.map(({ id, component: LazyDialog }) => (
+            <LazyDialog key={id} />
+          ))}
+        </Suspense>
+      ) : null}
+    </DialogProviderContext.Provider>
+  );
+}
+
+export const useDialog = () => {
+  const context = useContext(DialogProviderContext);
+
+  if (context === undefined)
+    throw new Error("useDialog must be used within a DialogProvider");
+
+  return context;
+};
