@@ -15,8 +15,8 @@ export interface CardProps {
 export default function CardGrid({ cards }: Props) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {cards.map(({ id, ref, children }) => (
-        <Card ref={ref} key={id}>
+      {cards.map(({ id, ref, onClick, children }) => (
+        <Card ref={ref} key={id} onClick={onClick}>
           {children}
         </Card>
       ))}

@@ -9,7 +9,7 @@ import {
   FilterProvider,
   useFilterProvider,
 } from "./FilterProvider";
-import DetailsDialog from "./DetailsDialog";
+import { useDialog } from "@/components/providers/DialogProvider";
 
 export interface Activity {
   id: string;
@@ -29,23 +29,13 @@ export default function Page() {
   return (
     <FilterProvider filters={testFilters}>
       <Content />
-      <DetailsDialog
-        headerImage={{
-          src: "https://placehold.co/300x200",
-          alt: "",
-        }}
-        title={"Pottery House Anubis"}
-        description={
-          "Pottery House Anubis. In the heart of the Glass Capital Iittala, in the Green House, the naive artist Markku Mäki has a pottery house and store with a warm welcome. Anubis is the place to admire and buy naive sculpture, high-fired ceramics and Finnish hand-made knives. You can follow the artist´s work in his workshop every day."
-        }
-        tags={["A", "B", "C"]}
-      />
     </FilterProvider>
   );
 }
 
 function Content() {
   const { filters, updateFilters } = useFilterProvider();
+  const { open } = useDialog();
 
   const cards: Array<CardProps> = activityTestData
     .filter((data) => {
@@ -56,16 +46,26 @@ function Content() {
       return {
         id: activity.id,
         onClick: () => {
-          console.log("clicked card");
+          open("DetailsDialog", {
+            headerImage: {
+              src: "https://placehold.co/300x200",
+              alt: "",
+            },
+            title: activity.name,
+            description: activity.description,
+            tags: ["A", "B", "C"],
+          });
         },
         children: (
           <CardHeader>
             <img
-              src={activity.img?.src ?? "https://placehold.co.com/150x100"}
+              src={activity.img?.src ?? "https://placehold.co/150x100"}
               alt={activity.img?.alt ?? "Card Image"}
             />
             <CardTitle>{activity.name}</CardTitle>
-            <CardDescription>{activity.description}</CardDescription>
+            <CardDescription className=" line-clamp-3">
+              {activity.description}
+            </CardDescription>
           </CardHeader>
         ),
       };

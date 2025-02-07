@@ -82,13 +82,12 @@ export function DialogProvider({ children, ...props }: DialogProviderProps) {
   return (
     <DialogProviderContext.Provider value={value} {...props}>
       {children}
-      {typeof window !== "undefined" && value.activeDialogs.length > 0 ? (
-        <Suspense fallback={null}>
-          {value.activeDialogs.map(({ id, component: LazyDialog }) => (
+      <Suspense fallback={null}>
+        {value.activeDialogs &&
+          value.activeDialogs.map(({ id, component: LazyDialog }) => (
             <LazyDialog key={id} />
           ))}
-        </Suspense>
-      ) : null}
+      </Suspense>
     </DialogProviderContext.Provider>
   );
 }

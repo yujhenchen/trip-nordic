@@ -28,9 +28,9 @@ export default function DetailsDialog({
   tags,
 }: Props) {
   return (
-    <Dialog onOpenChange={onClose}>
+    <Dialog open onOpenChange={onClose}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
-      <DialogContent className="p-10 max-w-3xl">
+      <DialogContent className="p-10 w-3/4 max-w-full">
         <img
           src={headerImage.src}
           alt={headerImage.alt}
