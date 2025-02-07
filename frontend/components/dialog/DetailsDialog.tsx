@@ -30,13 +30,13 @@ export default function DetailsDialog({
   return (
     <Dialog open onOpenChange={onClose}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
-      <DialogContent className="p-10 w-3/4 max-w-full">
+      <DialogContent className="p-10 overflow-scroll w-full md:w-2/3 xl:w-2/5 max-w-full max-h-screen">
         <img
           src={headerImage.src}
           alt={headerImage.alt}
           className="w-3/5 object-cover mx-auto"
         />
-        <div className="flex space-x-6">
+        <div className="flex flex-col md:flex-row space-x-6">
           <DialogHeader className="py-4">
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
