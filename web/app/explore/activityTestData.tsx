@@ -1,6 +1,4 @@
-import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity } from "./+Page";
-import { CardProps } from "./CardGrid";
+import { Activity } from "./page";
 
 export const activityTestData: Array<Activity> = [
   {
