@@ -61,7 +61,12 @@ Frontend development
 - [ ] header
     - [ ] logo
     - [ ] navbar 
-    - [ ] explore page, plan page, about page, sign in/ sign out button/ sign in status
+    	- [x] explore page, plan page, about page, sign in/ sign out button
+		- [ ] sign in/ out status
+		- [ ] toggle theme
+- [x] footer
+	- [x] copyright
+	- [x] navbar
 
 ### Home
 - [ ] hero text
@@ -70,16 +75,19 @@ Frontend development
 ### About
 
 ### Explore
-- [ ] filter panel
-    - [ ] select/ unselect filters
-    - [ ] reset a row of filters
-    - [ ] reset all filters
-- [ ] activity card grid
-    - [ ] card
-        - [ ] image, title, description
-        - [ ] click to open card detail dialog
-    - [ ] display cards based on filters 
+- [x] filter panel
+    - [x] select/ unselect filters
+    - [x] reset a row of filters
+    - [x] reset all filters
+- [x] activity card grid
+    - [x] card
+        - [x] image, title, description
+        - [x] click to open card detail dialog
+    - [x] display cards based on filters 
 - [ ] card detail dialog
+	- [ ] style should be correct
+	- [ ] map of the place
+	- [ ] press Keep to save the activity in personal Keep
 
 
 ### Plan
