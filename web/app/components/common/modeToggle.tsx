@@ -1,3 +1,5 @@
+"use client";
+
 import { Toggle } from "@radix-ui/react-toggle";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../providers/ThemeProvider";
