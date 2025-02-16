@@ -20,7 +20,7 @@ interface Props {
   tags: Array<string>;
 }
 
-export default function DetailsDialog({
+export function DetailsDialog({
   onClose,
   headerImage,
   title,

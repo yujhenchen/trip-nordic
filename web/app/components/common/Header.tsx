@@ -1,23 +1,22 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
-	Link,
-	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
+  Link,
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
 } from "@radix-ui/react-navigation-menu";
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import Logo from "./Logo";
-import Sidebar from "./Sidebar";
 import { ModeToggle } from "./modeToggle";
 
-export default function Header() {
-	// TODO: need to solve hydration issues
-	return (
-		<header className="flex py-8 items-center w-full">
-			<Logo />
-			<NavigationMenu className="w-full px-6">
-				{/* <NavigationMenuList className="flex items-center">
+export function Header() {
+  // TODO: need to solve hydration issues
+  return (
+    <header className="flex py-8 items-center w-full">
+      <Logo />
+      <NavigationMenu className="w-full px-6">
+        {/* <NavigationMenuList className="flex items-center">
           <div className="flex grow">
             <NavigationMenuItem>
               <Link href="/plan">
@@ -54,7 +53,7 @@ export default function Header() {
             </NavigationMenuItem>
           </div>
         </NavigationMenuList> */}
-			</NavigationMenu>
-		</header>
-	);
+      </NavigationMenu>
+    </header>
+  );
 }

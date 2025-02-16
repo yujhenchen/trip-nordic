@@ -23,7 +23,7 @@ export interface FilterPanelRow {
   options: Array<FilterOptionData>;
 }
 
-export default function FilterPanel({
+export function FilterPanel({
   title,
   filters,
   chipIcon,

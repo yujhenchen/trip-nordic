@@ -1,7 +1,7 @@
 import { testFilters } from "./filterTestData"; // TODO: replace with real data
 
 import { FilterProvider } from "./FilterProvider";
-import { PageContent } from "./pageContent";
+import { Content } from "./content";
 
 export interface Activity {
   id: string;
@@ -20,7 +20,7 @@ export interface Activity {
 export default function Page() {
   return (
     <FilterProvider filters={testFilters}>
-      <PageContent />
+      <Content />
     </FilterProvider>
   );
 }

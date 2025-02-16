@@ -12,7 +12,7 @@ export interface CardProps {
   className?: string;
 }
 
-export default function CardGrid({ cards }: Props) {
+export function CardGrid({ cards }: Props) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {cards.map(({ id, ref, onClick, children }) => (

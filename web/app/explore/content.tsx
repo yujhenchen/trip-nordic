@@ -1,14 +1,14 @@
 "use client";
 
-import FilterPanel from "./FilterPanel";
 import { X } from "lucide-react";
-import CardGrid, { CardProps } from "./CardGrid";
+import { CardGrid, CardProps } from "./CardGrid";
 import { CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { FilterOptionData, useFilterProvider } from "./FilterProvider";
 import { useDialog } from "../components/providers/DialogProvider";
 import { activityTestData } from "./activityTestData";
+import { FilterPanel } from "./FilterPanel";
 
-export function PageContent() {
+export function Content() {
   const { filters, updateFilters } = useFilterProvider();
   const { open } = useDialog();
 
