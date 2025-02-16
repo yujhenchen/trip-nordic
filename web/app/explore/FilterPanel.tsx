@@ -7,7 +7,7 @@ import {
 	FilterTitle,
 	FilterChip,
 } from "./Filter";
-import { FilterOptionType, FiltersType } from "./types";
+import type { FilterOptionType, FiltersType } from "./types";
 
 export interface Props {
 	filters: FiltersType;

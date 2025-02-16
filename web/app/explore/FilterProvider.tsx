@@ -38,16 +38,14 @@ export function FilterProvider({
 				const foundOptions = preFilters[key];
 				if (foundOptions) {
 					const newOptions = foundOptions.map((o) =>
-						o.value === option.value
-							? { ...o, isSelected: !o.isSelected }
-							: o
+						o.value === option.value ? { ...o, isSelected: !o.isSelected } : o,
 					);
 					newFilters[key] = newOptions;
 				}
 				return newFilters;
 			});
 		},
-		[]
+		[],
 	);
 
 	const resetFilterSelectedOptions = useCallback((key: string) => {

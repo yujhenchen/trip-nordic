@@ -7,7 +7,7 @@ import { useFilterProvider } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { activityTestData } from "./activityTestData";
 import { FilterPanel } from "./FilterPanel";
-import { FilterOptionType } from "./types";
+import type { FilterOptionType } from "./types";
 
 export function Content() {
 	const {
