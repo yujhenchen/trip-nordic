@@ -2,103 +2,102 @@
 
 import { nanoid } from "nanoid";
 import {
-  type ComponentProps,
-  type JSX,
-  Suspense,
-  createContext,
-  useCallback,
-  useContext,
-  useState,
+	type ComponentProps,
+	type JSX,
+	Suspense,
+	createContext,
+	useCallback,
+	useContext,
+	useState,
 } from "react";
 import { DialogManager, type DialogType } from "./DialogManager";
 
 interface DialogProviderProps {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }
 
 type DialogStructure = {
-  id: string;
-  component: () => JSX.Element;
+	id: string;
+	component: () => JSX.Element;
 };
 
 interface DialogProviderState {
-  activeDialogs: Array<DialogStructure>;
-  open: (
-    dialogType: DialogType,
-    props: Omit<
-      ComponentProps<(typeof DialogManager)[typeof dialogType]>,
-      "onClose"
-    >
-  ) => void;
-  close: (dialogId: string) => void;
+	activeDialogs: Array<DialogStructure>;
+	open: (
+		dialogType: DialogType,
+		props: Omit<
+			ComponentProps<(typeof DialogManager)[typeof dialogType]>,
+			"onClose"
+		>,
+	) => void;
+	close: (dialogId: string) => void;
 }
 
 const initialState: DialogProviderState = {
-  activeDialogs: [],
-  open: () => {},
-  close: () => {},
+	activeDialogs: [],
+	open: () => {},
+	close: () => {},
 };
 
 const DialogProviderContext = createContext<DialogProviderState>(initialState);
 
 export function DialogProvider({ children, ...props }: DialogProviderProps) {
-  const [activeDialogs, setActiveDialogs] = useState<Array<DialogStructure>>(
-    []
-  );
-  const close = useCallback((dialogId: string) => {
-    setActiveDialogs((prevDialogs) =>
-      prevDialogs.filter((dialog) => dialog.id !== dialogId)
-    );
-  }, []);
+	const [activeDialogs, setActiveDialogs] = useState<Array<DialogStructure>>(
+		[],
+	);
+	const close = useCallback((dialogId: string) => {
+		setActiveDialogs((prevDialogs) =>
+			prevDialogs.filter((dialog) => dialog.id !== dialogId),
+		);
+	}, []);
 
-  const open = useCallback(
-    (
-      dialogType: DialogType,
-      props: Omit<
-        ComponentProps<(typeof DialogManager)[typeof dialogType]>,
-        "onClose"
-      >
-    ) => {
-      const dialogId = nanoid();
-      const Component = DialogManager[dialogType];
+	const open = useCallback(
+		(
+			dialogType: DialogType,
+			props: Omit<
+				ComponentProps<(typeof DialogManager)[typeof dialogType]>,
+				"onClose"
+			>,
+		) => {
+			const dialogId = nanoid();
+			const Component = DialogManager[dialogType];
 
-      setActiveDialogs((prevDialogs) => [
-        ...prevDialogs,
-        {
-          id: dialogId,
-          component: () => (
-            <Component {...props} onClose={() => close(dialogId)} />
-          ),
-        },
-      ]);
-      return null;
-    },
-    [close]
-  );
-  const value = {
-    activeDialogs,
-    open,
-    close,
-  };
+			setActiveDialogs((prevDialogs) => [
+				...prevDialogs,
+				{
+					id: dialogId,
+					component: () => (
+						<Component {...props} onClose={() => close(dialogId)} />
+					),
+				},
+			]);
+			return null;
+		},
+		[close],
+	);
+	const value = {
+		activeDialogs,
+		open,
+		close,
+	};
 
-  return (
-    <DialogProviderContext.Provider value={value} {...props}>
-      {children}
-      <Suspense fallback={null}>
-        {value.activeDialogs &&
-          value.activeDialogs.map(({ id, component: LazyDialog }) => (
-            <LazyDialog key={id} />
-          ))}
-      </Suspense>
-    </DialogProviderContext.Provider>
-  );
+	return (
+		<DialogProviderContext.Provider value={value} {...props}>
+			{children}
+			<Suspense fallback={null}>
+				{value.activeDialogs?.map(({ id, component: LazyDialog }) => (
+					<LazyDialog key={id} />
+				))}
+			</Suspense>
+		</DialogProviderContext.Provider>
+	);
 }
 
 export const useDialog = () => {
-  const context = useContext(DialogProviderContext);
+	const context = useContext(DialogProviderContext);
 
-  if (context === undefined)
-    throw new Error("useDialog must be used within a DialogProvider");
+	if (context === undefined)
+		throw new Error("useDialog must be used within a DialogProvider");
 
-  return context;
+	return context;
 };

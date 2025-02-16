@@ -4,23 +4,23 @@ import { FilterProvider } from "./FilterProvider";
 import { Content } from "./content";
 
 export interface Activity {
-  id: string;
-  category: string;
-  city: string;
-  description: string;
-  name: string;
-  region: string;
-  seasons: string;
-  img?: {
-    src: string;
-    alt: string;
-  };
+	id: string;
+	category: string;
+	city: string;
+	description: string;
+	name: string;
+	region: string;
+	seasons: string;
+	img?: {
+		src: string;
+		alt: string;
+	};
 }
 
 export default function Page() {
-  return (
-    <FilterProvider filters={testFilters}>
-      <Content />
-    </FilterProvider>
-  );
+	return (
+		<FilterProvider filters={testFilters}>
+			<Content />
+		</FilterProvider>
+	);
 }

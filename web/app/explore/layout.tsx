@@ -1,13 +1,13 @@
 import { DialogProvider } from "../components/providers/DialogProvider";
 
 export default function ExploreLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return (
-    <DialogProvider>
-      <section>{children}</section>
-    </DialogProvider>
-  );
+	return (
+		<DialogProvider>
+			<section>{children}</section>
+		</DialogProvider>
+	);
 }
