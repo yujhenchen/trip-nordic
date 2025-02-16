@@ -19,9 +19,10 @@ export function Content() {
 	const { open } = useDialog();
 
 	const cards: Array<CardProps> = activityTestData
-		.filter((data) => {
-			// TODO: get  selected filters in each filter, if empty array, do not filter that property
-			return data;
+		.filter((activity) => {
+			// loop the key in filters
+			// if activity has key (case insensitive), get the value of the key, split into a string array
+			return activity;
 		})
 		.map((activity) => {
 			return {
@@ -34,13 +35,22 @@ export function Content() {
 						},
 						title: activity.name,
 						description: activity.description,
-						tags: ["A", "B", "C"],
+						tags: [
+							activity.city,
+							// TODO: perform default split with comma for API response
+							...activity.category.split(","),
+							activity.region,
+							...activity.seasons.split(","),
+						],
 					});
 				},
 				children: (
 					<CardHeader>
 						<img
-							src={activity.img?.src ?? "https://placehold.co/150x100"}
+							src={
+								activity.img?.src ??
+								"https://placehold.co/150x100"
+							}
 							alt={activity.img?.alt ?? "Card Image"}
 						/>
 						<CardTitle>{activity.name}</CardTitle>
