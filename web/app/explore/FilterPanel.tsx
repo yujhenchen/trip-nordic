@@ -8,7 +8,7 @@ import {
 	FilterChip,
 } from "./Filter";
 import {
-	FilterKeyType,
+	type FilterKeyType,
 	FilterKeyTitle,
 	type FilterOptionType,
 	type FiltersType,
