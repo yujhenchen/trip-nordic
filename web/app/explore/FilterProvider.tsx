@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useState } from "react";
-import { FilterOptionType, FiltersType } from "./types";
+import type { FilterOptionType, FiltersType } from "./types";
 
 type FilterProviderProps = {
 	children: React.ReactNode;
