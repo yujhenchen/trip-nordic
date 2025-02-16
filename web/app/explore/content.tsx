@@ -40,10 +40,7 @@ export function Content() {
 				children: (
 					<CardHeader>
 						<img
-							src={
-								activity.img?.src ??
-								"https://placehold.co/150x100"
-							}
+							src={activity.img?.src ?? "https://placehold.co/150x100"}
 							alt={activity.img?.alt ?? "Card Image"}
 						/>
 						<CardTitle>{activity.name}</CardTitle>

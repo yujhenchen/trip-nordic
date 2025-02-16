@@ -1,4 +1,4 @@
-import { FiltersType } from "../types";
+import type { FiltersType } from "../types";
 
 export const testFilters: FiltersType = {
 	Cities: [
