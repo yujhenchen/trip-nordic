@@ -44,6 +44,8 @@ pre-commit:
   parallel: true
   commands:
     lint:
+      root: "web"
       run: bun run lint
     format:
+      root: "web"
       run: bun run format
