@@ -3,13 +3,19 @@
 import { X } from "lucide-react";
 import { CardGrid, type CardProps } from "./CardGrid";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { type FilterOptionData, useFilterProvider } from "./FilterProvider";
+import { useFilterProvider } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { activityTestData } from "./activityTestData";
 import { FilterPanel } from "./FilterPanel";
+import { FilterOptionType } from "./types";
 
 export function Content() {
-	const { filters, updateFilters } = useFilterProvider();
+	const {
+		filters,
+		toggleFilterOption,
+		resetFilterSelectedOptions,
+		resetAllFilterSelected,
+	} = useFilterProvider();
 	const { open } = useDialog();
 
 	const cards: Array<CardProps> = activityTestData
@@ -34,7 +40,10 @@ export function Content() {
 				children: (
 					<CardHeader>
 						<img
-							src={activity.img?.src ?? "https://placehold.co/150x100"}
+							src={
+								activity.img?.src ??
+								"https://placehold.co/150x100"
+							}
 							alt={activity.img?.alt ?? "Card Image"}
 						/>
 						<CardTitle>{activity.name}</CardTitle>
@@ -46,17 +55,16 @@ export function Content() {
 			};
 		});
 
-	const handleClickOption = (rowStr: string, option: FilterOptionData) => {
-		const row = filters.find((filter) => filter.title === rowStr);
-		const newOptions =
-			row?.options.map((o) =>
-				o.value === option.value ? { ...o, isSelected: !o.isSelected } : o,
-			) ?? [];
-		updateFilters(rowStr, newOptions);
+	const handleToggleOption = (title: string, option: FilterOptionType) => {
+		toggleFilterOption(title, option);
 	};
 
-	const handleReset = () => {
-		// TODO: make all isSelected false
+	const handleReset = (title: string) => {
+		resetFilterSelectedOptions(title);
+	};
+
+	const handleResetAll = () => {
+		resetAllFilterSelected();
 	};
 
 	return (
@@ -64,8 +72,9 @@ export function Content() {
 			<FilterPanel
 				filters={filters}
 				chipIcon={<X size={16} />}
-				onClickOption={handleClickOption}
+				toggleOption={handleToggleOption}
 				onReset={handleReset}
+				onResetAll={handleResetAll}
 			/>
 
 			<CardGrid cards={cards} />

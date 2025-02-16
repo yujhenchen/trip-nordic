@@ -7,20 +7,21 @@ import {
 	FilterTitle,
 	FilterChip,
 } from "./Filter";
-import type { FilterOptionData, FiltersType } from "./FilterProvider";
+import { FilterOptionType, FiltersType } from "./types";
 
 export interface Props {
 	filters: FiltersType;
 	chipIcon: React.ReactNode;
-	onClickOption: (row: string, option: FilterOptionData) => void;
-	onReset: () => void;
+	toggleOption: (key: string, option: FilterOptionType) => void;
+	onReset: (key: string) => void;
+	onResetAll: () => void;
 	title?: string;
 	className?: string;
 }
 
 export interface FilterPanelRow {
 	title: string;
-	options: Array<FilterOptionData>;
+	options: Array<FilterOptionType>;
 }
 
 export function FilterPanel({
@@ -28,38 +29,46 @@ export function FilterPanel({
 	filters,
 	chipIcon,
 	className,
-	onClickOption,
+	toggleOption,
 	onReset,
+	onResetAll,
 }: Props) {
 	return (
 		<div className={className}>
 			{title ? <FilterTitle>{title}</FilterTitle> : null}
 			<FilterContent>
-				{filters.map((row) => (
-					<FilterRow key={row.title}>
+				{Object.entries(filters).map(([key, options]) => (
+					<FilterRow key={key}>
 						<FilterRowTitle className="flex-shrink-0 w-24">
-							{row.title}
+							{key}
 						</FilterRowTitle>
 						<FilterOptionsContainer>
-							{row.options.map((option) => (
+							{options.map((option) => (
 								<FilterChip
 									key={option.value}
 									selected={option.isSelected}
 									value={option.value}
 									selectedIcon={chipIcon}
-									onClick={() => onClickOption(row.title, option)}
+									onClick={() => toggleOption(key, option)}
 								/>
 							))}
 						</FilterOptionsContainer>
 						<Button
-							variant="secondary"
-							onClick={onReset}
+							variant="default"
+							onClick={() => onReset(key)}
 							className="rounded-full"
 						>
 							Reset
 						</Button>
 					</FilterRow>
 				))}
+				<Button
+					variant="default"
+					onClick={onResetAll}
+					className="rounded-full w-fit"
+				>
+					Reset All
+				</Button>
 			</FilterContent>
 		</div>
 	);

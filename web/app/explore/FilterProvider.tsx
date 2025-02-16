@@ -1,25 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
-
-export interface FilterOptionData {
-	isSelected: boolean;
-	value: string;
-}
-
-export type FilterOptionsType = Array<FilterOptionData>;
-
-export interface FilterData {
-	title: string;
-	options: FilterOptionsType;
-}
-
-export type FiltersType = Array<FilterData>;
-
-export type UpdateFiltersFn = (
-	title: string,
-	filters: FilterOptionsType,
-) => void;
+import { createContext, useCallback, useContext, useState } from "react";
+import { FilterOptionType, FiltersType } from "./types";
 
 type FilterProviderProps = {
 	children: React.ReactNode;
@@ -28,12 +10,16 @@ type FilterProviderProps = {
 
 type FilterProviderState = {
 	filters: FiltersType;
-	updateFilters: UpdateFiltersFn;
+	toggleFilterOption: (key: string, option: FilterOptionType) => void;
+	resetFilterSelectedOptions: (key: string) => void;
+	resetAllFilterSelected: () => void;
 };
 
 const initialState: FilterProviderState = {
-	filters: [],
-	updateFilters: () => {},
+	filters: {},
+	toggleFilterOption: () => {},
+	resetFilterSelectedOptions: () => {},
+	resetAllFilterSelected: () => {},
 };
 
 const FilterProviderContext = createContext<FilterProviderState>(initialState);
@@ -44,26 +30,67 @@ export function FilterProvider({
 	...props
 }: FilterProviderProps) {
 	const [providerFilters, setProviderFilters] = useState(filters);
-	const updateFilters: UpdateFiltersFn = (
-		title: string,
-		newOptions: FilterOptionsType,
-	) => {
-		document.startViewTransition(() => {
+
+	const toggleFilterOption = useCallback(
+		(key: string, option: FilterOptionType) => {
 			setProviderFilters((preFilters) => {
-				const newFilters = [...preFilters];
-				const found = newFilters.find((f) => f.title === title);
-				if (found) {
-					found.options = newOptions;
+				const newFilters = { ...preFilters };
+				const foundOptions = preFilters[key];
+				if (foundOptions) {
+					const newOptions = foundOptions.map((o) =>
+						o.value === option.value
+							? { ...o, isSelected: !o.isSelected }
+							: o
+					);
+					newFilters[key] = newOptions;
 				}
 				return newFilters;
 			});
+		},
+		[]
+	);
+
+	const resetFilterSelectedOptions = useCallback((key: string) => {
+		setProviderFilters((preFilters) => {
+			const newFilters = { ...preFilters };
+			const foundOptions = preFilters[key];
+			if (foundOptions) {
+				const newOptions = foundOptions.map((o) => ({
+					...o,
+					isSelected: false,
+				}));
+				newFilters[key] = newOptions;
+			}
+			return newFilters;
 		});
-	};
+	}, []);
+
+	const resetAllFilterSelected = useCallback(() => {
+		setProviderFilters((preFilters) => {
+			const newFilters = { ...preFilters };
+			for (const key in preFilters) {
+				const foundOptions = preFilters[key];
+				if (foundOptions) {
+					const newOptions = foundOptions.map((o) => ({
+						...o,
+						isSelected: false,
+					}));
+					newFilters[key] = newOptions;
+				}
+			}
+			return newFilters;
+		});
+	}, []);
 
 	return (
 		<FilterProviderContext.Provider
 			{...props}
-			value={{ filters: providerFilters, updateFilters }}
+			value={{
+				filters: providerFilters,
+				resetFilterSelectedOptions,
+				toggleFilterOption,
+				resetAllFilterSelected,
+			}}
 		>
 			{children}
 		</FilterProviderContext.Provider>
