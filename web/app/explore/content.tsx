@@ -30,56 +30,45 @@ export function Content() {
 		() =>
 			activityTestData
 				.filter((activity) => {
-					const selectedCities = getSelectedFilterValues(
-						filters.city
-					);
-					const selectedCategories = getSelectedFilterValues(
-						filters.category
-					);
-					const selectedRegions = getSelectedFilterValues(
-						filters.region
-					);
-					const selectedSeasons = getSelectedFilterValues(
-						filters.season
-					);
+					const selectedCities = getSelectedFilterValues(filters.city);
+					const selectedCategories = getSelectedFilterValues(filters.category);
+					const selectedRegions = getSelectedFilterValues(filters.region);
+					const selectedSeasons = getSelectedFilterValues(filters.season);
 
 					const isCategoryMatch =
 						selectedCategories.length > 0
 							? anySourceElementInTarget(
 									activity.category.split(","),
-									selectedCategories
-							  )
+									selectedCategories,
+								)
 							: true;
 
 					const isCityMatch =
 						selectedCities.length > 0
 							? anySourceElementInTarget(
 									activity.city.split(","),
-									selectedCities
-							  )
+									selectedCities,
+								)
 							: true;
 
 					const isRegionMatch =
 						selectedRegions.length > 0
 							? anySourceElementInTarget(
 									activity.region.split(","),
-									selectedRegions
-							  )
+									selectedRegions,
+								)
 							: true;
 
 					const isSeasonMatch =
 						selectedSeasons.length > 0
 							? anySourceElementInTarget(
 									activity.seasons.split(","),
-									selectedSeasons
-							  )
+									selectedSeasons,
+								)
 							: true;
 
 					return (
-						isCategoryMatch &&
-						isCityMatch &&
-						isRegionMatch &&
-						isSeasonMatch
+						isCategoryMatch && isCityMatch && isRegionMatch && isSeasonMatch
 					);
 				})
 				.map((activity) => {
@@ -105,10 +94,7 @@ export function Content() {
 						children: (
 							<CardHeader>
 								<img
-									src={
-										activity.img?.src ??
-										"https://placehold.co/150x100"
-									}
+									src={activity.img?.src ?? "https://placehold.co/150x100"}
 									alt={activity.img?.alt ?? "Card Image"}
 								/>
 								<CardTitle>{activity.name}</CardTitle>
@@ -119,7 +105,7 @@ export function Content() {
 						),
 					};
 				}),
-		[filters, open]
+		[filters, open],
 	);
 
 	const handleToggleOption = (title: string, option: FilterOptionType) => {
