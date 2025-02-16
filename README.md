@@ -19,39 +19,67 @@ MongoDB
 Not yet
 - [Testing and Benchmarking in Go](https://medium.com/hyperskill/testing-and-benchmarking-in-go-e33a54b413e)
 - [Benchmarking in Golang: Improving function performance](https://blog.logrocket.com/benchmarking-golang-improve-function-performance/)
-- 
-
-GraphQL
-- 
 
 Frontend development
 - [Learn to become a modern Frontend Developer in 2022](https://medium.com/@kamranahmedse/modern-frontend-developer-in-2018-4c2072fa2b9c)
 - [frontend-checklist](https://developerruhul.github.io/frontend-checklist/)
+- [Mastering Modal Dialogs in React Like a Pro](https://hackernoon.com/mastering-modal-dialogs-in-react-like-a-pro)
 
-tech stack and why choose them
-#### Frontend
+
+
+
+
+## Tech stack and why choose them
+
+#### Frontend - Vike (pending)
 - runtime: Bun
 - Frontend Framework: [Vike](https://vike.dev/)
 - UI Framework: [React]()
 - ???: [Bâti](https://batijs.dev/)
-- CSS: [Panda CSS](https://panda-css.com/)
-    - generate static CSS as build-time
 - UI Component Libraries: [shadcn](https://ui.shadcn.com/)
 
-#### Data
-- Auth: []()
-- Data fetching: []()
-- Server: []()
-- Database: []()
+#### Frontend - Next.js
+- runtime: Bun
+- Frontend Framework: [Next.js](https://vike.dev/)
+- UI Component Libraries: [shadcn](https://ui.shadcn.com/)
+- Git hooks manager [Lefthook](https://lefthook.dev/)
 
-#### Deployment
-Hosting: [Vercel]()
 
-#### Utilities
-- Linter: [Biome]()
-- Analytics: [Google Ana]()
-- Error tracking: [Sentry]()
+
+#### Backend
+- Script to crawl data from source websites - Go
+- 
+
+
+
 
 
 ## Features
 
+
+### General
+- [ ] header
+    - [ ] logo
+    - [ ] navbar 
+    - [ ] explore page, plan page, about page, sign in/ sign out button/ sign in status
+
+### Home
+- [ ] hero text
+- [ ] plan link, explore link
+
+### About
+
+### Explore
+- [ ] filter panel
+    - [ ] select/ unselect filters
+    - [ ] reset a row of filters
+    - [ ] reset all filters
+- [ ] activity card grid
+    - [ ] card
+        - [ ] image, title, description
+        - [ ] click to open card detail dialog
+    - [ ] display cards based on filters 
+- [ ] card detail dialog
+
+
+### Plan
