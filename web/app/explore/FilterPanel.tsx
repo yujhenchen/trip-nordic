@@ -7,7 +7,12 @@ import {
 	FilterTitle,
 	FilterChip,
 } from "./Filter";
-import type { FilterOptionType, FiltersType } from "./types";
+import {
+	FilterKeyType,
+	FilterKeyTitle,
+	type FilterOptionType,
+	type FiltersType,
+} from "./types";
 
 export interface Props {
 	filters: FiltersType;
@@ -40,7 +45,7 @@ export function FilterPanel({
 				{Object.entries(filters).map(([key, options]) => (
 					<FilterRow key={key}>
 						<FilterRowTitle className="flex-shrink-0 w-24">
-							{key}
+							{FilterKeyTitle[key as FilterKeyType]}
 						</FilterRowTitle>
 						<FilterOptionsContainer>
 							{options.map((option) => (

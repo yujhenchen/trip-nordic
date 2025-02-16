@@ -1,7 +1,7 @@
 import type { FiltersType } from "../types";
 
 export const testFilters: FiltersType = {
-	Cities: [
+	city: [
 		{ isSelected: true, value: "Hämeenlinna" },
 		{ isSelected: false, value: "Helsinki" },
 		{ isSelected: true, value: "Rovaniemi" },
@@ -16,7 +16,7 @@ export const testFilters: FiltersType = {
 		{ isSelected: true, value: "Oulu" },
 		{ isSelected: false, value: "Vaasa" },
 	],
-	Categories: [
+	category: [
 		{ isSelected: false, value: "shopping" },
 		{ isSelected: false, value: "arts" },
 		{ isSelected: false, value: "food" },
@@ -31,8 +31,8 @@ export const testFilters: FiltersType = {
 		{ isSelected: false, value: "history" },
 		{ isSelected: false, value: "museum" },
 	],
-	Countries: [{ isSelected: true, value: "Finland" }],
-	Regions: [
+	country: [{ isSelected: true, value: "Finland" }],
+	region: [
 		{ isSelected: true, value: "lakeland" },
 		{ isSelected: true, value: "southern-finland" },
 		{ isSelected: true, value: "lapland" },
@@ -43,7 +43,7 @@ export const testFilters: FiltersType = {
 		{ isSelected: false, value: "western-finland" },
 		{ isSelected: true, value: "northern-finland" },
 	],
-	Seasons: [
+	season: [
 		{ isSelected: true, value: "spring" },
 		{ isSelected: true, value: "summer" },
 		{ isSelected: true, value: "autumn" },

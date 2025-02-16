@@ -3,4 +3,14 @@ export type FilterOptionType = {
 	value: string;
 };
 
-export type FiltersType = Record<string, Array<FilterOptionType>>;
+export const FilterKeyTitle = {
+	city: "Cities",
+	category: "Categories",
+	country: "Countries",
+	region: "Region",
+	season: "Seasons",
+} as const;
+
+export type FilterKeyType = keyof typeof FilterKeyTitle;
+
+export type FiltersType = Record<FilterKeyType, Array<FilterOptionType>>;
