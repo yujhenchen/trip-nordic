@@ -31,9 +31,7 @@ export const testFilters: FiltersType = {
 		{ isSelected: false, value: "history" },
 		{ isSelected: false, value: "museum" },
 	],
-	Countries: [
-		{ isSelected: true, value: "Finland" },
-	],
+	Countries: [{ isSelected: true, value: "Finland" }],
 	Regions: [
 		{ isSelected: true, value: "lakeland" },
 		{ isSelected: true, value: "southern-finland" },
