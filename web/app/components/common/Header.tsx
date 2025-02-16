@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
-	Link,
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuLink,
@@ -11,7 +10,6 @@ import Logo from "./Logo";
 import { ModeToggle } from "./modeToggle";
 
 export function Header() {
-	// TODO: need to solve hydration issues
 	return (
 		<header className="flex py-8 items-center w-full">
 			<Logo />
