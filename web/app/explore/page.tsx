@@ -1,7 +1,6 @@
-import { testFilters } from "./filterTestData"; // TODO: replace with real data
-
 import { FilterProvider } from "./FilterProvider";
 import { Content } from "./content";
+import { testFilters } from "./data/filterTestData";
 
 export interface Activity {
 	id: string;

@@ -1,4 +1,4 @@
-import type { Activity } from "./page";
+import { Activity } from "../page";
 
 export const activityTestData: Array<Activity> = [
 	{

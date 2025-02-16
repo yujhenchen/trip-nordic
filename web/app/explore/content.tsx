@@ -5,9 +5,9 @@ import { CardGrid, type CardProps } from "./CardGrid";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFilterProvider } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
-import { activityTestData } from "./activityTestData";
 import { FilterPanel } from "./FilterPanel";
 import type { FilterOptionType } from "./types";
+import { activityTestData } from "./data/activityTestData";
 
 export function Content() {
 	const {
@@ -40,7 +40,10 @@ export function Content() {
 				children: (
 					<CardHeader>
 						<img
-							src={activity.img?.src ?? "https://placehold.co/150x100"}
+							src={
+								activity.img?.src ??
+								"https://placehold.co/150x100"
+							}
 							alt={activity.img?.alt ?? "Card Image"}
 						/>
 						<CardTitle>{activity.name}</CardTitle>
