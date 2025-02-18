@@ -1,8 +1,3 @@
-export type FilterOptionType = {
-	isSelected: boolean;
-	value: string;
-};
-
 export const FilterKeyTitle = {
 	city: "Cities",
 	category: "Categories",
@@ -13,4 +8,4 @@ export const FilterKeyTitle = {
 
 export type FilterKeyType = keyof typeof FilterKeyTitle;
 
-export type FiltersType = Record<FilterKeyType, Array<FilterOptionType>>;
+export type FiltersType = Partial<Record<FilterKeyType, Array<string>>>;

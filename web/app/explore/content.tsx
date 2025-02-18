@@ -3,72 +3,67 @@
 import { X } from "lucide-react";
 import { CardGrid, type CardProps } from "./CardGrid";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useFilterProvider } from "./FilterProvider";
+import { useFilters } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
-import type { FilterOptionType } from "./types";
 import { activityTestData } from "./data/activityTestData";
 import { anySourceElementInTarget } from "./utils";
 import { useMemo } from "react";
+import { FilterKeyType, FiltersType } from "./types";
 
-const getSelectedFilterValues = (options: Array<FilterOptionType>) => {
-	return options
-		.filter((option) => option.isSelected)
-		.map((option) => option.value);
+const isFilterMatch = (
+	filters: FiltersType,
+	filterKey: FilterKeyType,
+	activityTags: Array<string>
+) => {
+	const selectedFilters = filters[filterKey] ?? [];
+	return selectedFilters.length > 0
+		? anySourceElementInTarget(activityTags, selectedFilters)
+		: true;
 };
 
 export function Content() {
 	const {
-		filters,
+		currentFilters,
 		toggleFilterOption,
 		resetFilterSelectedOptions,
 		resetAllFilterSelected,
-	} = useFilterProvider();
+	} = useFilters();
 	const { open } = useDialog();
 
 	const cards: Array<CardProps> = useMemo(
 		() =>
 			activityTestData
 				.filter((activity) => {
-					const selectedCities = getSelectedFilterValues(filters.city);
-					const selectedCategories = getSelectedFilterValues(filters.category);
-					const selectedRegions = getSelectedFilterValues(filters.region);
-					const selectedSeasons = getSelectedFilterValues(filters.season);
+					const isCategoryMatch = isFilterMatch(
+						currentFilters,
+						"category",
+						activity.category.split(",")
+					);
 
-					const isCategoryMatch =
-						selectedCategories.length > 0
-							? anySourceElementInTarget(
-									activity.category.split(","),
-									selectedCategories,
-								)
-							: true;
+					const isCityMatch = isFilterMatch(
+						currentFilters,
+						"city",
+						activity.city.split(",")
+					);
 
-					const isCityMatch =
-						selectedCities.length > 0
-							? anySourceElementInTarget(
-									activity.city.split(","),
-									selectedCities,
-								)
-							: true;
+					const isRegionMatch = isFilterMatch(
+						currentFilters,
+						"region",
+						activity.region.split(",")
+					);
 
-					const isRegionMatch =
-						selectedRegions.length > 0
-							? anySourceElementInTarget(
-									activity.region.split(","),
-									selectedRegions,
-								)
-							: true;
-
-					const isSeasonMatch =
-						selectedSeasons.length > 0
-							? anySourceElementInTarget(
-									activity.seasons.split(","),
-									selectedSeasons,
-								)
-							: true;
+					const isSeasonMatch = isFilterMatch(
+						currentFilters,
+						"season",
+						activity.seasons.split(",")
+					);
 
 					return (
-						isCategoryMatch && isCityMatch && isRegionMatch && isSeasonMatch
+						isCategoryMatch &&
+						isCityMatch &&
+						isRegionMatch &&
+						isSeasonMatch
 					);
 				})
 				.map((activity) => {
@@ -94,7 +89,10 @@ export function Content() {
 						children: (
 							<CardHeader>
 								<img
-									src={activity.img?.src ?? "https://placehold.co/150x100"}
+									src={
+										activity.img?.src ??
+										"https://placehold.co/150x100"
+									}
 									alt={activity.img?.alt ?? "Card Image"}
 								/>
 								<CardTitle>{activity.name}</CardTitle>
@@ -105,15 +103,15 @@ export function Content() {
 						),
 					};
 				}),
-		[filters, open],
+		[currentFilters, open]
 	);
 
-	const handleToggleOption = (title: string, option: FilterOptionType) => {
-		toggleFilterOption(title, option);
+	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
+		toggleFilterOption(filterKey, option);
 	};
 
-	const handleReset = (title: string) => {
-		resetFilterSelectedOptions(title);
+	const handleReset = (filterKey: FilterKeyType) => {
+		resetFilterSelectedOptions(filterKey);
 	};
 
 	const handleResetAll = () => {
@@ -123,13 +121,11 @@ export function Content() {
 	return (
 		<>
 			<FilterPanel
-				filters={filters}
 				chipIcon={<X size={16} />}
 				toggleOption={handleToggleOption}
 				onReset={handleReset}
 				onResetAll={handleResetAll}
 			/>
-
 			<CardGrid cards={cards} />
 		</>
 	);
