@@ -39,11 +39,11 @@ Frontend development
 - UI Component Libraries: [shadcn](https://ui.shadcn.com/)
 
 #### Frontend - Next.js
-- runtime: Bun
+- Runtime: Bun
 - Frontend Framework: [Next.js](https://vike.dev/)
 - UI Component Libraries: [shadcn](https://ui.shadcn.com/)
 - Git hooks manager [Lefthook](https://lefthook.dev/)
-
+- Icon library: [Lucide](https://lucide.dev/)
 
 
 #### Backend
@@ -91,3 +91,28 @@ Frontend development
 
 
 ### Plan
+- [ ] left side bar
+	- [ ] drag/ drop activity from Keep into day card
+
+- [ ] right scroll panel
+	
+	- [ ] day card
+		- [ ] title
+			- [ ] edit: date picker
+			- [ ] display: text
+		- [ ] click + to create
+		- [ ] click ?? to remove
+			- [ ] confirm remove dialog
+		
+		- [ ] activity card
+			- [ ] click + to create
+			- [ ] click ?? to remove
+				- [ ] confirm remove dialog
+			- [ ] click to open activity dialog
+
+			- [ ] activity dialog
+				- [ ] click ?? to remove
+				- [ ] confirm remove dialog
+
+- [ ] right top save, copy link to clipboard
+
