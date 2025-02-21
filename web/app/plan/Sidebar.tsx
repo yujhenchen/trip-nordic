@@ -1,3 +1,55 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+import { useSidebar } from "../components/providers/SidebarProvider";
+import {
+	PanelBottomOpen,
+	PanelLeftOpen,
+	PanelRightOpen,
+	PanelTopOpen,
+} from "lucide-react";
+import { useMediaQuery } from "react-responsive";
+import { type JSX, useEffect, useMemo, useState } from "react";
+
 export function Sidebar() {
-	return <div className="w-1/6 h-full border">Sidebar</div>;
+	const { sidebarOpen } = useSidebar();
+	return (
+		<div
+			className={cn(
+				"border md:h-full flex place-content-center md:place-content-end",
+				{
+					"w-full h-1/4 md:w-1/6": sidebarOpen,
+				},
+				{
+					"w-full h-fit md:w-fit": !sidebarOpen,
+				}
+			)}
+		>
+			<ToggleButton />
+		</div>
+	);
+}
+
+function ToggleButton() {
+	const { sidebarOpen, toggleSidebar } = useSidebar();
+	const isTabletOrBigger = useMediaQuery({ query: "(min-width: 768px)" });
+	const [icon, setIcon] = useState<JSX.Element | null>(null);
+	const openIcon = useMemo(
+		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
+		[isTabletOrBigger]
+	);
+
+	const closeIcon = useMemo(
+		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
+		[isTabletOrBigger]
+	);
+
+	useEffect(() => {
+		setIcon(sidebarOpen ? openIcon : closeIcon);
+	}, [sidebarOpen, openIcon, closeIcon]);
+	return (
+		<button type="button" className="w-fit h-fit" onClick={toggleSidebar}>
+			{icon}
+		</button>
+	);
 }
