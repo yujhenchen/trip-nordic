@@ -7,6 +7,7 @@ export function PanelBlock() {
 			{testPanels.map((panel) => (
 				<Panel key={panel.id} {...panel} />
 			))}
+			<Panel.NewPanel />
 		</div>
 	);
 }
