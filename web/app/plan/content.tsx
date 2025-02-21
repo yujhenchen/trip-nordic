@@ -3,7 +3,7 @@ import { PanelBlock } from "./PanelBlock";
 
 export function Content() {
 	return (
-		<div className="grow overflow-hidden bg-gray-300">
+		<div className="w-full h-full overflow-hidden flex flex-col">
 			<ControlPanel />
 			<PanelBlock />
 		</div>

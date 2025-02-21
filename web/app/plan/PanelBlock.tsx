@@ -1,7 +1,12 @@
+import { testPanels } from "./data/testPanelData";
+import { Panel } from "./Panel";
+
 export function PanelBlock() {
 	return (
-		<div className="bg-pink-300 w-full h-full overflow-x-scroll">
-			PanelBlock
+		<div className="w-full h-96 overflow-x-scroll flex space-x-4 p-4">
+			{testPanels.map((panel) => (
+				<Panel key={panel.id} {...panel} />
+			))}
 		</div>
 	);
 }
