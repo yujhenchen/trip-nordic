@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useSidebar } from "../components/providers/SidebarProvider";
+import { useSidebar } from "@/components/providers/SidebarProvider";
 import {
 	PanelBottomOpen,
 	PanelLeftOpen,
@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
 import { type JSX, useEffect, useMemo, useState } from "react";
+import { IconButton } from "../components/common/IconButton";
 
 export function Sidebar() {
 	const { sidebarOpen } = useSidebar();
@@ -47,9 +48,5 @@ function ToggleButton() {
 	useEffect(() => {
 		setIcon(sidebarOpen ? openIcon : closeIcon);
 	}, [sidebarOpen, openIcon, closeIcon]);
-	return (
-		<button type="button" className="w-fit h-fit" onClick={toggleSidebar}>
-			{icon}
-		</button>
-	);
+	return <IconButton icon={icon} onClick={toggleSidebar} />;
 }

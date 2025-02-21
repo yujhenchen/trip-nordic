@@ -8,7 +8,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Ellipsis, Trash2 } from "lucide-react";
+import { Ellipsis, Plus, Trash2 } from "lucide-react";
 
 import {
 	DropdownMenu,
@@ -18,6 +18,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { IconButton } from "../components/common/IconButton";
 
 export type PanelCardType = { id: string; title: string; description: string };
 
@@ -47,7 +48,7 @@ function PanelContainer({
 		<Card
 			className={cn(
 				"bg-gray-200 overflow-hidden shrink-0 w-full h-full md:w-72 flex flex-col",
-				className,
+				className
 			)}
 			{...rest}
 		>
@@ -74,9 +75,7 @@ export function Panel({ title, cards, ...rest }: PanelProps) {
 Panel.NewPanel = function NewPanel() {
 	return (
 		<PanelContainer className="place-content-center items-center h-20 overflow-hidden">
-			<button type="button" className="w-full h-full">
-				+
-			</button>
+			<IconButton icon={<Plus />} />
 		</PanelContainer>
 	);
 };
@@ -147,9 +146,7 @@ Panel.Card = function PanelCard({ card, ...rest }: PanelCardProps) {
 				<CardDescription>{card.description}</CardDescription>
 			</CardHeader>
 			<CardFooter className="place-content-end">
-				<button type="button" className="w-fit h-fit">
-					<Trash2 size={18} />
-				</button>
+				<IconButton icon={<Trash2 size={18} />} />
 			</CardFooter>
 		</PanelCardContainer>
 	);
@@ -158,9 +155,7 @@ Panel.Card = function PanelCard({ card, ...rest }: PanelCardProps) {
 Panel.NewCard = function NewCard() {
 	return (
 		<PanelCardContainer className="h-20 flex place-content-center items-center overflow-hidden">
-			<button type="button" className="w-full h-full">
-				+
-			</button>
+			<IconButton icon={<Plus />} />
 		</PanelCardContainer>
 	);
 };
