@@ -36,7 +36,7 @@ function PanelContainer({
 		<Card
 			className={cn(
 				"bg-pink-300 overflow-hidden shrink-0 w-full h-full md:w-72 flex flex-col",
-				className
+				className,
 			)}
 			{...rest}
 		>

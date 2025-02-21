@@ -2,7 +2,8 @@ import type { PanelProps } from "../Panel";
 
 export const testPanels: Array<PanelProps> = [
 	{
-		title: "Panel 1", cards: [
+		title: "Panel 1",
+		cards: [
 			{
 				id: "1",
 				title: "Card 1",
@@ -53,17 +54,18 @@ export const testPanels: Array<PanelProps> = [
 				title: "Card 10",
 				description: "Card 10 description",
 			},
-		]
+		],
 	},
 	{ title: "Panel 2", cards: [] },
 	{
-		title: "Panel 3", cards: [
+		title: "Panel 3",
+		cards: [
 			{
 				id: "1",
 				title: "Card 1",
 				description: "Card 1 description",
-			}
-		]
+			},
+		],
 	},
 	{ title: "Panel 4", cards: [] },
 	{ title: "Panel 5", cards: [] },
@@ -75,7 +77,8 @@ export const testPanels: Array<PanelProps> = [
 	{ title: "Panel 11", cards: [] },
 	{ title: "Panel 12", cards: [] },
 	{
-		title: "Panel 13", cards: [
+		title: "Panel 13",
+		cards: [
 			{
 				id: "1",
 				title: "Card 1",
@@ -91,7 +94,7 @@ export const testPanels: Array<PanelProps> = [
 				title: "Card 3",
 				description: "Card 3 description",
 			},
-		]
+		],
 	},
 	{ title: "Panel 14", cards: [] },
 	{ title: "Panel 15", cards: [] },

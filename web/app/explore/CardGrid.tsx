@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 interface Props {
 	cards: Array<ComponentProps<typeof Card>>;
