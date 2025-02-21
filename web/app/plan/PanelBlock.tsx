@@ -1,5 +1,6 @@
 import { testPanels } from "./data/testPanelData";
 import { Panel } from "./Panel";
+import { PanelNew } from "./PanelNew";
 
 export function PanelBlock() {
 	return (
@@ -7,7 +8,7 @@ export function PanelBlock() {
 			{testPanels.map((panel) => (
 				<Panel key={panel.id} {...panel} />
 			))}
-			<Panel.NewPanel />
+			<PanelNew />
 		</div>
 	);
 }

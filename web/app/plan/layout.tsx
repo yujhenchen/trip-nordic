@@ -1,4 +1,4 @@
-import { DialogProvider } from "../components/providers/DialogProvider";
+import { DialogProvider } from "@/components/providers/DialogProvider";
 
 export default function PlanLayout({
 	children,

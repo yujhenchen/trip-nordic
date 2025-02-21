@@ -1,4 +1,4 @@
-import { SidebarProvider } from "../components/providers/SidebarProvider";
+import { SidebarProvider } from "@/components/providers/SidebarProvider";
 import { Content } from "./content";
 import { Sidebar } from "./Sidebar";
 
