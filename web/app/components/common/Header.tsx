@@ -12,7 +12,7 @@ import { ModeToggle } from "./modeToggle";
 
 export function Header() {
 	return (
-		<header className="flex py-8 items-center w-full">
+		<header className="flex m-4 p-4 py-8 items-center w-full">
 			<Logo />
 			<NavigationMenu className="w-full px-6">
 				<NavigationMenuList className="flex items-center">

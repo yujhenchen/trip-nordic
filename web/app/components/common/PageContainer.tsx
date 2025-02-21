@@ -1,8 +1,17 @@
+import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
-export function PageContainer({ children }: { children: ReactNode }) {
+interface Props {
+	className?: string;
+	children: ReactNode;
+}
+
+export function PageContainer({ children, className }: Props) {
 	return (
-		<main id="page-container" className="p-5 pb-12 min-h-screen">
+		<main
+			id="page-container"
+			className={cn("container flex-1 flex-col pb-12 mx-auto", className)}
+		>
 			{children}
 		</main>
 	);

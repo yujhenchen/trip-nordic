@@ -1,21 +1,23 @@
 import { TypographyH1 } from "@/components/typography/H1";
 import { Button } from "@/components/ui/button";
+import { PageContainer } from "@/components/common/PageContainer";
+import { NavLink } from "./components/common/NavLink";
 
 export default function Home() {
 	return (
-		<div className="flex flex-col gap-10">
+		<PageContainer>
 			<TypographyH1
 				text="Plan Your Next Nordic Adventure"
 				className="flex justify-center"
 			/>
-			<div className="flex gap-6 w-full place-content-center">
+			<div className="flex gap-6 w-full place-content-center pt-12">
 				<Button variant="link" size="lg" className="rounded-xl">
-					Plan
+					<NavLink href="/plan">Plan</NavLink>
 				</Button>
 				<Button variant="link" size="lg" className="rounded-xl">
-					Explore
+					<NavLink href="/explore">Explore</NavLink>
 				</Button>
 			</div>
-		</div>
+		</PageContainer>
 	);
 }

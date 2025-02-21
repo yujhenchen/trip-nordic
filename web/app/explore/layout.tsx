@@ -1,4 +1,5 @@
 import { DialogProvider } from "@/components/providers/DialogProvider";
+import { PageContainer } from "@/components/common/PageContainer";
 
 export default function ExploreLayout({
 	children,
@@ -7,7 +8,7 @@ export default function ExploreLayout({
 }) {
 	return (
 		<DialogProvider>
-			<section>{children}</section>
+			<PageContainer>{children}</PageContainer>
 		</DialogProvider>
 	);
 }
