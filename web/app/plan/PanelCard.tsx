@@ -8,7 +8,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import { IconButton } from "@/components/common/IconButton";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";

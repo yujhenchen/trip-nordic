@@ -1,9 +1,9 @@
 import type { ComponentProps, HTMLAttributes } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card } from "@/components/ui/card";
+import type { Card } from "@/components/ui/card";
 
 import { ActionDropdown } from "./ActionDropdown";
-import { PanelCard, PanelCardNew, PanelCardType } from "./PanelCard";
+import { PanelCard, PanelCardNew, type PanelCardType } from "./PanelCard";
 import { PanelContainer } from "./PanelContainer";
 
 export interface PanelProps extends ComponentProps<typeof Card> {
