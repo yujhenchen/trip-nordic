@@ -22,8 +22,8 @@ export function Sidebar() {
 					"w-full h-1/4 md:w-1/6": sidebarOpen,
 				},
 				{
-					"w-full h-fit md:w-fit": !sidebarOpen,
-				},
+					"w-full h-6 md:w-6": !sidebarOpen,
+				}
 			)}
 		>
 			<ToggleButton />
@@ -37,12 +37,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	useEffect(() => {
