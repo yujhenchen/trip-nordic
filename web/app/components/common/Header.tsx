@@ -12,7 +12,7 @@ import { ModeToggle } from "./modeToggle";
 
 export function Header() {
 	return (
-		<header className="flex p-4 items-center w-full">
+		<header className="flex p-4 items-center w-full h-24">
 			<Logo />
 			<NavigationMenu className="w-full px-6">
 				<NavigationMenuList className="flex items-center">

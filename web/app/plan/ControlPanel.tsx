@@ -1,14 +1,15 @@
-import { Button } from "../components/ui/button";
+import { Button } from "@/components/ui/button";
+import { ClipboardCopy, Save } from "lucide-react";
 
 export function ControlPanel() {
 	return (
-		<div className="w-full h-1/8 place-content-end flex space-x-2 bg-yellow-300">
-			<Button variant="link" size="lg" className="rounded-xl">
-				Save icon
-			</Button>
-			<Button variant="link" size="lg" className="rounded-xl">
-				Copy to clipboard icon
-			</Button>
+		<div className="w-full h-16 place-content-end flex space-x-4 border px-8 items-center">
+			<button type="button" className="w-fit h-fit">
+				<Save />
+			</button>
+			<button type="button" className="w-fit h-fit">
+				<ClipboardCopy />
+			</button>
 		</div>
 	);
 }

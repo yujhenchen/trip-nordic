@@ -3,10 +3,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import {
 	Card,
 	CardDescription,
+	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Ellipsis, Trash2 } from "lucide-react";
+
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export type PanelCardType = { id: string; title: string; description: string };
 
@@ -35,8 +46,8 @@ function PanelContainer({
 	return (
 		<Card
 			className={cn(
-				"bg-pink-300 overflow-hidden shrink-0 w-full h-full md:w-72 flex flex-col",
-				className,
+				"bg-gray-200 overflow-hidden shrink-0 w-full h-full md:w-72 flex flex-col",
+				className
 			)}
 			{...rest}
 		>
@@ -78,13 +89,28 @@ Panel.Title = function PanelTitle({ children, ...rest }: PanelTitleProps) {
 	);
 };
 
+function PanelActionDropdown() {
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger>
+				<Ellipsis />
+			</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuLabel>Actions</DropdownMenuLabel>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem>Remove List</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
+}
+
 Panel.ActionBar = function PanelActionBar({
 	// removePanel,
 	...rest
 }: PanelActionBarType) {
 	return (
 		<div className="w-full flex place-content-end px-4" {...rest}>
-			PanelActionBar
+			<PanelActionDropdown />
 		</div>
 	);
 };
@@ -120,6 +146,11 @@ Panel.Card = function PanelCard({ card, ...rest }: PanelCardProps) {
 				<CardTitle>{card.title}</CardTitle>
 				<CardDescription>{card.description}</CardDescription>
 			</CardHeader>
+			<CardFooter className="place-content-end">
+				<button type="button" className="w-fit h-fit">
+					<Trash2 size={18} />
+				</button>
+			</CardFooter>
 		</PanelCardContainer>
 	);
 };
