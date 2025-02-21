@@ -1,4 +1,4 @@
-import { PanelProps } from "../Panel";
+import type { PanelProps } from "../Panel";
 
 export const testPanels: Array<PanelProps> = [
 	{
