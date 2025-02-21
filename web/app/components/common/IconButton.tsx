@@ -6,11 +6,7 @@ interface Props extends React.HTMLAttributes<HTMLButtonElement> {
 
 export function IconButton({ icon, className, ...rest }: Props) {
 	return (
-		<button
-			type="button"
-			className={cn("w-fit h-fit", className)}
-			{...rest}
-		>
+		<button type="button" className={cn("w-fit h-fit", className)} {...rest}>
 			{icon}
 		</button>
 	);
