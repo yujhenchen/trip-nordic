@@ -11,4 +11,4 @@ class Contact(TimeStampedModel, ActivatorModel, TitleDescriptionModel, AbstractM
 	message = models.TextField(verbose_name='Message')
 
 	def __str__(self):
-		return f'{self.title}'
+		return self.name
