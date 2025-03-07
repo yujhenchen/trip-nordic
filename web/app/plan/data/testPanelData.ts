@@ -61,7 +61,7 @@ export const testPanels: Array<PanelProps> = [
 		title: "Panel 3",
 		cards: [
 			{
-				id: "1",
+				id: "21",
 				title: "Card 1",
 				description: "Card 1 description",
 			},
@@ -80,17 +80,17 @@ export const testPanels: Array<PanelProps> = [
 		title: "Panel 13",
 		cards: [
 			{
-				id: "1",
+				id: "31",
 				title: "Card 1",
 				description: "Card 1 description",
 			},
 			{
-				id: "2",
+				id: "32",
 				title: "Card 2",
 				description: "Card 2 description",
 			},
 			{
-				id: "3",
+				id: "33",
 				title: "Card 3",
 				description: "Card 3 description",
 			},
