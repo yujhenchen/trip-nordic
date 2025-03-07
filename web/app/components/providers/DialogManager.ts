@@ -1,4 +1,4 @@
-import { ComponentProps, lazy } from "react";
+import { type ComponentProps, lazy } from "react";
 
 export const DialogManager = {
 	DetailsDialog: lazy(() => import("@/components/dialog/DetailsDialog")),
@@ -8,5 +8,5 @@ export const DialogManager = {
 export type DialogType = keyof typeof DialogManager;
 
 export type DialogProps = {
-	[K in DialogType]: Omit<ComponentProps<typeof DialogManager[K]>, "onClose">;
+	[K in DialogType]: Omit<ComponentProps<(typeof DialogManager)[K]>, "onClose">;
 }[DialogType];
