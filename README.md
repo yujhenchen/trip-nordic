@@ -31,31 +31,25 @@ Frontend development
 
 ## Tech stack and why choose them
 
-#### Frontend - Vike (pending)
-- runtime: Bun
-- Frontend Framework: [Vike](https://vike.dev/)
-- UI Framework: [React]()
-- ???: [Bâti](https://batijs.dev/)
+#### Frontend
+- Runtime: [Bun](https://bun.sh/)
+- Frontend Framework: [Next.js](https://nextjs.org/)
+- Frontend library: [React](https://react.dev/)
+- Language: [TypeScript](https://www.typescriptlang.org/)
 - UI Component Libraries: [shadcn](https://ui.shadcn.com/)
-
-#### Frontend - Next.js
-- Runtime: Bun
-- Frontend Framework: [Next.js](https://vike.dev/)
-- UI Component Libraries: [shadcn](https://ui.shadcn.com/)
-- Git hooks manager [Lefthook](https://lefthook.dev/)
-- Icon library: [Lucide](https://lucide.dev/)
 
 
 #### Backend
-- Script to crawl data from source websites - Go
-- 
+- Script to crawl data from source websites [Go](https://go.dev/)
+- Database [Supabase](https://supabase.com/)
+- Restful API [Django REST framework](https://www.django-rest-framework.org/)
+- Language: [Python](https://www.python.org/)
 
 
 
 
 
 ## Features
-
 
 ### General
 - [ ] header
@@ -116,3 +110,8 @@ Frontend development
 
 - [ ] right top save, copy link to clipboard
 
+### Sign up
+- [ ] signup and receive confirmation email 
+
+### Login
+- [ ] login with the sign up username and pwd, using JWT auth
