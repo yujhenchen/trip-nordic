@@ -10,7 +10,7 @@ import {
 	useContext,
 	useState,
 } from "react";
-import { DialogManager, type DialogType } from "./DialogManager";
+import { DialogManager, DialogProps, type DialogType } from "./DialogManager";
 
 interface DialogProviderProps {
 	children: React.ReactNode;
@@ -28,7 +28,7 @@ interface DialogProviderState {
 		props: Omit<
 			ComponentProps<(typeof DialogManager)[typeof dialogType]>,
 			"onClose"
-		>,
+		>
 	) => void;
 	close: (dialogId: string) => void;
 }
@@ -43,37 +43,33 @@ const DialogProviderContext = createContext<DialogProviderState>(initialState);
 
 export function DialogProvider({ children, ...props }: DialogProviderProps) {
 	const [activeDialogs, setActiveDialogs] = useState<Array<DialogStructure>>(
-		[],
+		[]
 	);
 	const close = useCallback((dialogId: string) => {
 		setActiveDialogs((prevDialogs) =>
-			prevDialogs.filter((dialog) => dialog.id !== dialogId),
+			prevDialogs.filter((dialog) => dialog.id !== dialogId)
 		);
 	}, []);
 
 	const open = useCallback(
-		(
-			dialogType: DialogType,
-			props: Omit<
-				ComponentProps<(typeof DialogManager)[typeof dialogType]>,
-				"onClose"
-			>,
-		) => {
+		(dialogType: DialogType, props: DialogProps) => {
 			const dialogId = nanoid();
 			const Component = DialogManager[dialogType];
+			const newActiveDialog = {
+				id: dialogId,
+				component: () => (
+					// FIXME
+					<Component {...props} onClose={() => close(dialogId)} />
+				),
+			};
 
 			setActiveDialogs((prevDialogs) => [
 				...prevDialogs,
-				{
-					id: dialogId,
-					component: () => (
-						<Component {...props} onClose={() => close(dialogId)} />
-					),
-				},
+				newActiveDialog,
 			]);
 			return null;
 		},
-		[close],
+		[close]
 	);
 	const value = {
 		activeDialogs,
