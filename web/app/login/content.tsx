@@ -69,11 +69,7 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input
-									placeholder="abc123"
-									type="password"
-									{...field}
-								/>
+								<Input placeholder="abc123" type="password" {...field} />
 							</FormControl>
 
 							<FormMessage />
