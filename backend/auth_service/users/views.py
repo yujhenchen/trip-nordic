@@ -1,6 +1,5 @@
 from json import JSONDecodeError
 from django.http import JsonResponse
-from rest_framework.parsers import JSONParser
 from rest_framework import views, status
 from .serializers import UserSerializer
 from .models import User
@@ -18,15 +17,14 @@ def get_token_for_user(user):
 class SignUpView(views.APIView):
     def post(self, request):
         try:
-            user = JSONParser().parse(request)
-            serializer= UserSerializer(data=user)
+            serializer= UserSerializer(data=request.data)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
                 return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
             else: 
                 return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return JsonResponse({'error': 'Invalid request body'}, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(views.APIView):
     def post(self, request):
@@ -48,5 +46,5 @@ class LoginView(views.APIView):
             return JsonResponse({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
         except AuthenticationFailed:
             return JsonResponse({'error': 'Invalid email or password'}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except:
+            return JsonResponse({'error': 'Unknown error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
