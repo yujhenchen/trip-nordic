@@ -25,6 +25,17 @@ Frontend development
 - [frontend-checklist](https://developerruhul.github.io/frontend-checklist/)
 - [Mastering Modal Dialogs in React Like a Pro](https://hackernoon.com/mastering-modal-dialogs-in-react-like-a-pro)
 
+Django
+- [Creating a Custom User Model in Django](https://testdriven.io/blog/django-custom-user-model/)
+
+Custom model
+- [Creating a Custom User Model in Django](https://testdriven.io/blog/django-custom-user-model/)
+
+Auth token
+- [JWT Authentication in Django](https://code.tutsplus.com/how-to-authenticate-with-jwt-in-django--cms-30460t)
+- [Simple JWT](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html)
+- [How to use JWT Authentication with Django](https://appliku.com/post/how-use-jwt-authentication-django/#django-jwt-authentication-logout)
+- [JWT Logout — Django Rest Framework](https://medium.com/django-rest/logout-django-rest-framework-eb1b53ac6d35)
 
 
 
@@ -42,8 +53,10 @@ Frontend development
 #### Backend
 - Script to crawl data from source websites [Go](https://go.dev/)
 - Database [Supabase](https://supabase.com/)
+- [Poetry](https://python-poetry.org/)
 - Restful API [Django REST framework](https://www.django-rest-framework.org/)
 - Language: [Python](https://www.python.org/)
+- JWT auth [Simple JWT](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html#)
 
 
 
@@ -110,8 +123,16 @@ Frontend development
 
 - [ ] right top save, copy link to clipboard
 
-### Sign up
-- [ ] signup and receive confirmation email 
-
-### Login
-- [ ] login with the sign up username and pwd, using JWT auth
+### Auth
+- [ ] signup
+	- [ ] BE with confirmation email
+	- [ ] FE
+- [ ] login using JWT
+	- [x] BE
+	- [ ] FE
+- [ ] refresh token
+	- [x] BE
+	- [ ] FE
+- [ ] logout
+	- [x] BE
+	- [ ] FE
