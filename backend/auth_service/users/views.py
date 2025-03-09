@@ -17,16 +17,20 @@ def get_token_for_user(user):
 class SignUpView(views.APIView):
     def post(self, request):
         try:
-            serializer= UserSerializer(data=request.data)
+            user = request.data
+            if User.objects.filter(email=user['email']).exists():
+                return JsonResponse({'error': 'Email already exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+            serializer= UserSerializer(data=user)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
                 return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
             else: 
                 return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
-            return JsonResponse({'error': 'Invalid request body'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'error': 'Failed to create user'}, status=status.HTTP_400_BAD_REQUEST)
 
-class LoginView(views.APIView):
+class LogInView(views.APIView):
     def post(self, request):
         try:
             email = request.data['email']
@@ -49,7 +53,7 @@ class LoginView(views.APIView):
         except:
             return JsonResponse({'error': 'Unknown error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class LoginView(views.APIView):
+class LogOutView(views.APIView):
     def post(self, request):
         try:
             refresh_token = request.data['refresh']
