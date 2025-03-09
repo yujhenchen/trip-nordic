@@ -48,3 +48,19 @@ class LoginView(views.APIView):
             return JsonResponse({'error': 'Invalid email or password'}, status=status.HTTP_400_BAD_REQUEST)
         except:
             return JsonResponse({'error': 'Unknown error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class LoginView(views.APIView):
+    def post(self, request):
+        try:
+            refresh_token = request.data['refresh']
+            if not refresh_token:
+                return JsonResponse({"error": "Refresh token required"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return JsonResponse({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
+
+        except KeyError:
+            return JsonResponse({"error": "Refresh token required"}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return JsonResponse({'error': 'Unknown error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
