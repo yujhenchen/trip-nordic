@@ -1,4 +1,3 @@
-from json import JSONDecodeError
 from django.http import JsonResponse
 from rest_framework import views, status
 from .serializers import UserSerializer
