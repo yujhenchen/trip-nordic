@@ -19,6 +19,9 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
+import { AppProgress } from "@/components/common/AppProgress";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 const apiUrl: string = import.meta.env.VITE_AUTH_API_URL;
 const signUpUrl: string = `${apiUrl}/signup`;
@@ -72,8 +75,23 @@ export default function Content() {
 	}
 
 	if (mutation.isSuccess) {
-		toast.success("Congrats! You have signed up.");
-		mutation.reset();
+		return (
+			<div
+				className={cn(
+					"fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50",
+					"flex flex-col space-y-4",
+				)}
+			>
+				<Label className="text-white">Sign-up successful! Redirecting...</Label>
+				<AppProgress
+					defaultProgress={0}
+					finalProgress={100}
+					duration={1500}
+					callback={() => location.replace("/login")}
+					callbackDelay={1000}
+				/>
+			</div>
+		);
 	}
 
 	return (
