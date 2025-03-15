@@ -20,10 +20,13 @@ import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
 
+const apiUrl: string = import.meta.env.VITE_AUTH_API_URL;
+const signUpUrl: string = `${apiUrl}/signup`;
+
 export default function Content() {
 	const mutation = useMutation({
 		mutationFn: async (data: SignUpDataType) => {
-			const response = await fetch("http://127.0.0.1:8000/api/signup", {
+			const response = await fetch(signUpUrl, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
