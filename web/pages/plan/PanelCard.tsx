@@ -55,10 +55,7 @@ export function PanelCard({ card, ...rest }: PanelCardProps) {
 export function PanelCardNew() {
 	return (
 		<PanelCardContainer className="h-20 flex place-content-center items-center overflow-hidden">
-			<IconButton
-				icon={<Plus />}
-				onClick={() => toast("New card added")}
-			/>
+			<IconButton icon={<Plus />} onClick={() => toast("New card added")} />
 		</PanelCardContainer>
 	);
 }
