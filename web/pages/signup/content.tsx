@@ -67,12 +67,12 @@ export default function Content() {
 		);
 
 	if (mutation.isError) {
-		toast(`Error: ${mutation.error}`);
+		toast.error(`${mutation.error}`);
 		mutation.reset();
 	}
 
 	if (mutation.isSuccess) {
-		toast("Congrats! You have signed up.");
+		toast.success("Congrats! You have signed up.");
 		mutation.reset();
 	}
 
@@ -89,7 +89,11 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Email</FormLabel>
 							<FormControl>
-								<Input type="email" placeholder="123@example.com" {...field} />
+								<Input
+									type="email"
+									placeholder="test123@example.com"
+									{...field}
+								/>
 							</FormControl>
 
 							<FormMessage />
@@ -104,7 +108,7 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input placeholder="abc123" type="password" {...field} />
+								<Input type="password" {...field} />
 							</FormControl>
 
 							<FormMessage />
@@ -119,7 +123,7 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Confirm Password</FormLabel>
 							<FormControl>
-								<Input placeholder="abc123" type="password" {...field} />
+								<Input type="password" {...field} />
 							</FormControl>
 
 							<FormMessage />
