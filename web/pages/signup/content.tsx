@@ -11,11 +11,35 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { formSchema, type FormType } from "@/lib/definitions";
+import {
+	type SignUpDataType,
+	signUpFormSchema,
+	type SignUpFormType,
+} from "@/lib/definitions";
+import { useMutation } from "@tanstack/react-query";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { toast } from "sonner";
 
 export default function Content() {
-	const form = useForm<FormType>({
-		resolver: zodResolver(formSchema),
+	const mutation = useMutation({
+		mutationFn: async (data: SignUpDataType) => {
+			const response = await fetch("http://127.0.0.1:8000/api/signup", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			});
+
+			if (!response.ok) {
+				throw new Error(response.statusText);
+			}
+			return response.json();
+		},
+	});
+
+	const form = useForm<SignUpFormType>({
+		resolver: zodResolver(signUpFormSchema),
 		defaultValues: {
 			email: "",
 			passwords: {
@@ -25,10 +49,28 @@ export default function Content() {
 		},
 	});
 
-	function onSubmit(values: FormType) {
-		console.log("Form submitted.");
-		// console.log(values);
-		singUp(values);
+	async function onSubmit(values: SignUpFormType) {
+		mutation.mutate({
+			email: values.email,
+			password: values.passwords.password,
+		});
+	}
+
+	if (mutation.isPending)
+		return (
+			<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+				<LoadingSpinner variant="default" />
+			</div>
+		);
+
+	if (mutation.isError) {
+		toast(`Error: ${mutation.error}`);
+		mutation.reset();
+	}
+
+	if (mutation.isSuccess) {
+		toast("Congrats! You have signed up.");
+		mutation.reset();
 	}
 
 	return (
@@ -44,7 +86,11 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Email</FormLabel>
 							<FormControl>
-								<Input type="email" placeholder="123@example.com" {...field} />
+								<Input
+									type="email"
+									placeholder="123@example.com"
+									{...field}
+								/>
 							</FormControl>
 
 							<FormMessage />
@@ -59,7 +105,11 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input placeholder="abc123" type="password" {...field} />
+								<Input
+									placeholder="abc123"
+									type="password"
+									{...field}
+								/>
 							</FormControl>
 
 							<FormMessage />
@@ -74,7 +124,11 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Confirm Password</FormLabel>
 							<FormControl>
-								<Input placeholder="abc123" type="password" {...field} />
+								<Input
+									placeholder="abc123"
+									type="password"
+									{...field}
+								/>
 							</FormControl>
 
 							<FormMessage />
