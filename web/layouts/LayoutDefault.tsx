@@ -2,7 +2,7 @@ import "./style.css";
 
 import "./tailwind.css";
 
-import React from "react";
+import type React from "react";
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
 import { Toaster } from "@/components/ui/sonner";

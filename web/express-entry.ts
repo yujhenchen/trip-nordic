@@ -9,8 +9,8 @@ import express from "express";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const root = __dirname;
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
-const hmrPort = process.env.HMR_PORT ? parseInt(process.env.HMR_PORT, 10) : 24678;
+const port = process.env.PORT ? Number.parseInt(process.env.PORT, 10) : 3000;
+const hmrPort = process.env.HMR_PORT ? Number.parseInt(process.env.HMR_PORT, 10) : 24678;
 
 export default (await startServer()) as unknown;
 

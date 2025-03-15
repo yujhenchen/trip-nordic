@@ -17,7 +17,7 @@ import type { FilterKeyType, FiltersType } from "./types";
 const isFilterMatch = (
 	filters: FiltersType,
 	filterKey: FilterKeyType,
-	activityTags: Array<string>
+	activityTags: Array<string>,
 ) => {
 	const selectedFilters = filters[filterKey] ?? [];
 	return selectedFilters.length > 0
@@ -41,32 +41,29 @@ export function Content() {
 					const isCategoryMatch = isFilterMatch(
 						currentFilters,
 						"category",
-						activity.category.split(",")
+						activity.category.split(","),
 					);
 
 					const isCityMatch = isFilterMatch(
 						currentFilters,
 						"city",
-						activity.city.split(",")
+						activity.city.split(","),
 					);
 
 					const isRegionMatch = isFilterMatch(
 						currentFilters,
 						"region",
-						activity.region.split(",")
+						activity.region.split(","),
 					);
 
 					const isSeasonMatch = isFilterMatch(
 						currentFilters,
 						"season",
-						activity.seasons.split(",")
+						activity.seasons.split(","),
 					);
 
 					return (
-						isCategoryMatch &&
-						isCityMatch &&
-						isRegionMatch &&
-						isSeasonMatch
+						isCategoryMatch && isCityMatch && isRegionMatch && isSeasonMatch
 					);
 				})
 				.map((activity) => {
@@ -92,10 +89,7 @@ export function Content() {
 						children: (
 							<CardHeader>
 								<img
-									src={
-										activity.img?.src ??
-										"https://placehold.co/150x100"
-									}
+									src={activity.img?.src ?? "https://placehold.co/150x100"}
 									alt={activity.img?.alt ?? "Card Image"}
 								/>
 								<CardTitle>{activity.name}</CardTitle>
@@ -106,7 +100,7 @@ export function Content() {
 						),
 					};
 				}),
-		[currentFilters, open]
+		[currentFilters, open],
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {

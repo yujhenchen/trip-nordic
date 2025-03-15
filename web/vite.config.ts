@@ -3,15 +3,15 @@ import { defineConfig } from "vite";
 import vike from "vike/plugin";
 
 export default defineConfig({
-  plugins: [vike({}), react({})],
+	plugins: [vike({}), react({})],
 
-  build: {
-    target: "es2022",
-  },
+	build: {
+		target: "es2022",
+	},
 
-  resolve: {
-    alias: {
-      "@": new URL("./", import.meta.url).pathname,
-    },
-  },
+	resolve: {
+		alias: {
+			"@": new URL("./", import.meta.url).pathname,
+		},
+	},
 });

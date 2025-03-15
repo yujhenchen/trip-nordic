@@ -30,7 +30,7 @@ interface DialogProviderState {
 		props: Omit<
 			ComponentProps<(typeof DialogManager)[typeof dialogType]>,
 			"onClose"
-		>
+		>,
 	) => void;
 	close: (dialogId: string) => void;
 }
@@ -45,11 +45,11 @@ const DialogProviderContext = createContext<DialogProviderState>(initialState);
 
 export function DialogProvider({ children, ...props }: DialogProviderProps) {
 	const [activeDialogs, setActiveDialogs] = useState<Array<DialogStructure>>(
-		[]
+		[],
 	);
 	const close = useCallback((dialogId: string) => {
 		setActiveDialogs((prevDialogs) =>
-			prevDialogs.filter((dialog) => dialog.id !== dialogId)
+			prevDialogs.filter((dialog) => dialog.id !== dialogId),
 		);
 	}, []);
 
@@ -65,13 +65,10 @@ export function DialogProvider({ children, ...props }: DialogProviderProps) {
 				),
 			};
 
-			setActiveDialogs((prevDialogs) => [
-				...prevDialogs,
-				newActiveDialog,
-			]);
+			setActiveDialogs((prevDialogs) => [...prevDialogs, newActiveDialog]);
 			return null;
 		},
-		[close]
+		[close],
 	);
 	const value = {
 		activeDialogs,

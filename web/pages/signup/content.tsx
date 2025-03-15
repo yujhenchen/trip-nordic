@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { formSchema, FormType } from "@/lib/definitions";
+import { formSchema, type FormType } from "@/lib/definitions";
 
 export default function Content() {
 	const form = useForm<FormType>({
@@ -44,11 +44,7 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Email</FormLabel>
 							<FormControl>
-								<Input
-									type="email"
-									placeholder="123@example.com"
-									{...field}
-								/>
+								<Input type="email" placeholder="123@example.com" {...field} />
 							</FormControl>
 
 							<FormMessage />
@@ -63,11 +59,7 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input
-									placeholder="abc123"
-									type="password"
-									{...field}
-								/>
+								<Input placeholder="abc123" type="password" {...field} />
 							</FormControl>
 
 							<FormMessage />
@@ -82,11 +74,7 @@ export default function Content() {
 						<FormItem>
 							<FormLabel>Confirm Password</FormLabel>
 							<FormControl>
-								<Input
-									placeholder="abc123"
-									type="password"
-									{...field}
-								/>
+								<Input placeholder="abc123" type="password" {...field} />
 							</FormControl>
 
 							<FormMessage />

@@ -29,9 +29,7 @@ export function SidebarProvider({ children }: Props) {
 	};
 
 	return (
-		<SidebarContext.Provider value={value}>
-			{children}
-		</SidebarContext.Provider>
+		<SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
 	);
 }
 
