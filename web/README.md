@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Generated with [vike.dev/new](https://vike.dev/new) ([version 410](https://www.npmjs.com/package/create-vike/v/0.0.410)) using this command:
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+bun create vike@latest --react --tailwindcss --shadcn-ui --express --biome
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contents
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* [React](#react)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+  * [`/pages/+config.ts`](#pagesconfigts)
+  * [Routing](#routing)
+  * [`/pages/_error/+Page.jsx`](#pages_errorpagejsx)
+  * [`/pages/+onPageTransitionStart.ts` and `/pages/+onPageTransitionEnd.ts`](#pagesonpagetransitionstartts-and-pagesonpagetransitionendts)
+  * [SSR](#ssr)
+  * [HTML Streaming](#html-streaming)
 
-## Learn More
+* [shadcn/ui](#shadcnui)
 
-To learn more about Next.js, take a look at the following resources:
+  * [Configuration](#configuration)
+  * [Add Components to Your Project](#add-components-to-your-project)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## React
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This app is ready to start. It's powered by [Vike](https://vike.dev) and [React](https://react.dev/learn).
 
-## Deploy on Vercel
+### `/pages/+config.ts`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Such `+` files are [the interface](https://vike.dev/config) between Vike and your code. It defines:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* A default [`<Layout>` component](https://vike.dev/Layout) (that wraps your [`<Page>` components](https://vike.dev/Page)).
+* A default [`title`](https://vike.dev/title).
+* Global [`<head>` tags](https://vike.dev/head-tags).
+
+### Routing
+
+[Vike's built-in router](https://vike.dev/routing) lets you choose between:
+
+* [Filesystem Routing](https://vike.dev/filesystem-routing) (the URL of a page is determined based on where its `+Page.jsx` file is located on the filesystem)
+* [Route Strings](https://vike.dev/route-string)
+* [Route Functions](https://vike.dev/route-function)
+
+### `/pages/_error/+Page.jsx`
+
+The [error page](https://vike.dev/error-page) which is rendered when errors occur.
+
+### `/pages/+onPageTransitionStart.ts` and `/pages/+onPageTransitionEnd.ts`
+
+The [`onPageTransitionStart()` hook](https://vike.dev/onPageTransitionStart), together with [`onPageTransitionEnd()`](https://vike.dev/onPageTransitionEnd), enables you to implement page transition animations.
+
+### SSR
+
+SSR is enabled by default. You can [disable it](https://vike.dev/ssr) for all your pages or only for some pages.
+
+### HTML Streaming
+
+You can enable/disable [HTML streaming](https://vike.dev/stream) for all your pages, or only for some pages while still using it for others.
+
+## shadcn/ui
+
+Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open Source.
+
+### Configuration
+
+see [shadcn/ui theming](https://ui.shadcn.com/docs/theming)
+
+Base Configuration can be found in `components.json` file.
+
+> \[!NOTE]
+> changes to the `components.json` file **will not** be reflected in existing components. Only new components will be affected.
+
+### Add Components to Your Project
+
+**Example:** add a component to your project.
+`pnpm shadcn add button`
+
+use the `<Button />` component in your project:
+`import { Button } from "@/components/ui/button";`
+
+more [shadcn/ui components](https://ui.shadcn.com/docs/components/accordion)
+
