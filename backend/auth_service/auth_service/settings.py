@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import environ
 import os
-from datetime import timedelta
 
 env = environ.Env()
 
@@ -181,3 +180,5 @@ CORS_ALLOW_HEADERS = (
 )
 
 CORS_ALLOW_CREDENTIALS = True
+
+CLIENT_DOMAIN = env.str('CLIENT_DOMAIN', default='localhost')

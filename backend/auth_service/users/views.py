@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 from django.middleware import csrf
+from django.conf import settings
 
 def get_token_for_user(user):
     refresh = RefreshToken.for_user(user)
@@ -56,7 +57,7 @@ class LogInView(views.APIView):
 				httponly = True,
                 secure = True,
 				samesite = 'None',
-				domain = '127.0.0.1',
+				domain = settings.CLIENT_DOMAIN,
                 path='/',
 			)
             # TODO: what is this
