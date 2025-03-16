@@ -17,11 +17,9 @@ import {
 	type SignUpFormType,
 } from "@/lib/authSchemas";
 import { useMutation } from "@tanstack/react-query";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
-import { AppProgress } from "@/components/common/AppProgress";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import { RedirectOverlay } from "@/components/common/RedirectOverlay";
+import { LoadingOverlay } from "@/components/common/LoadingOverlay";
 
 const apiUrl: string = import.meta.env.VITE_AUTH_API_URL;
 const signUpUrl: string = `${apiUrl}/signup`;
@@ -62,12 +60,7 @@ export default function Content() {
 		});
 	}
 
-	if (mutation.isPending)
-		return (
-			<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-				<LoadingSpinner variant="default" />
-			</div>
-		);
+	if (mutation.isPending) return <LoadingOverlay />;
 
 	if (mutation.isError) {
 		toast.error(`${mutation.error}`);
@@ -76,21 +69,11 @@ export default function Content() {
 
 	if (mutation.isSuccess) {
 		return (
-			<div
-				className={cn(
-					"fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50",
-					"flex flex-col space-y-4",
-				)}
-			>
-				<Label className="text-white">Sign-up successful! Redirecting...</Label>
-				<AppProgress
-					defaultProgress={0}
-					finalProgress={100}
-					duration={1500}
-					callback={() => location.replace("/login")}
-					callbackDelay={1000}
-				/>
-			</div>
+			<RedirectOverlay
+				message="Sign-up successful! Redirecting..."
+				callback={() => location.assign("/login")}
+				callbackDelay={1000}
+			/>
 		);
 	}
 
