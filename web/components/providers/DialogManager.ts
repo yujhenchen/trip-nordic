@@ -3,6 +3,7 @@ import { type ComponentProps, lazy } from "react";
 export const DialogManager = {
 	DetailsDialog: lazy(() => import("@/components/dialog/DetailsDialog")),
 	AppAlertDialog: lazy(() => import("@/components/dialog/AppAlertDialog")),
+	CardDialog: lazy(() => import("@/components/dialog/CardDialog")),
 } as const;
 
 export type DialogType = keyof typeof DialogManager;

@@ -24,7 +24,7 @@ function PanelCardContainer({
 	...rest
 }: ComponentProps<typeof Card>) {
 	return (
-		<Card className={cn("my-2 h-36", className)} {...rest} onClick={() => {}}>
+		<Card className={cn("my-2 h-36", className)} {...rest}>
 			{children}
 		</Card>
 	);
@@ -33,7 +33,15 @@ function PanelCardContainer({
 export function PanelCard({ card, ...rest }: PanelCardProps) {
 	const { open } = useDialog();
 	return (
-		<PanelCardContainer {...rest}>
+		<PanelCardContainer
+			{...rest}
+			onClick={() => {
+				open("CardDialog", {
+					title: "test title",
+					description: "test description",
+				});
+			}}
+		>
 			<CardHeader>
 				<CardTitle>{card.title}</CardTitle>
 				<CardDescription>{card.description}</CardDescription>
@@ -41,7 +49,8 @@ export function PanelCard({ card, ...rest }: PanelCardProps) {
 			<CardFooter className="place-content-end">
 				<IconButton
 					icon={<Trash2 size={18} />}
-					onClick={() => {
+					onClick={(e) => {
+						e.stopPropagation();
 						open("AppAlertDialog", {
 							title: "Are you sure to remove this card?",
 						});
