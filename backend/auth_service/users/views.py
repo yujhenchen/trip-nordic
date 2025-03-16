@@ -5,6 +5,7 @@ from .models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
+from django.middleware import csrf
 
 def get_token_for_user(user):
     refresh = RefreshToken.for_user(user)
@@ -40,16 +41,30 @@ class LogInView(views.APIView):
             
             user = authenticate(email=email, password=password)
             if not user:
-                raise AuthenticationFailed("Invalid credentials")
+                raise AuthenticationFailed('Invalid credentials')
+            
+			# TODO: check active user?
         
             tokens = get_token_for_user(user)
-            return JsonResponse(tokens, status=status.HTTP_200_OK)
-
+            response = JsonResponse(tokens, status=status.HTTP_200_OK)
+            response.set_cookie(
+                key='access_token',
+                value = tokens['access'],
+                # NOTE: use default expires
+                # expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+				secure = True,
+				httponly = True,
+				samesite = 'None'
+			)
+            # TODO: what is this
+            # csrf.get_token(request)
+            return response
         except KeyError:
             return JsonResponse({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
         except AuthenticationFailed:
             return JsonResponse({'error': 'Invalid email or password'}, status=status.HTTP_400_BAD_REQUEST)
-        except:
+        except Exception as e:
+            print(e)
             return JsonResponse({'error': 'Unknown error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class LogOutView(views.APIView):

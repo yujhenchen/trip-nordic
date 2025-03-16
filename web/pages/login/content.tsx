@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { loginFormSchema, LoginFormType } from "@/lib/authSchemas";
+import { loginFormSchema, type LoginFormType } from "@/lib/authSchemas";
 import { useMutation } from "@tanstack/react-query";
 import { Label } from "@/components/ui/label";
 import { AppProgress } from "@/components/common/AppProgress";
@@ -32,6 +32,7 @@ export default function Content() {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify(data),
+				credentials: "include",
 			});
 
 			if (!response.ok) {
@@ -50,6 +51,9 @@ export default function Content() {
 	});
 
 	function onSubmit(values: LoginFormType) {
+		// TODO: is it correct to mutate at client side and get jwt token from response like this?
+		// TODO: HTTP-Only Cookies
+		// TODO: refresh token
 		console.log("Form submitted.");
 		mutation.mutate(values);
 	}
@@ -81,7 +85,7 @@ export default function Content() {
 					defaultProgress={0}
 					finalProgress={100}
 					duration={1500}
-					callback={() => location.replace("/")}
+					callback={() => location.assign("/")}
 					callbackDelay={1000}
 				/>
 			</div>
