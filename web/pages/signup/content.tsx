@@ -15,7 +15,7 @@ import {
 	type SignUpDataType,
 	signUpFormSchema,
 	type SignUpFormType,
-} from "@/lib/definitions";
+} from "@/lib/authSchemas";
 import { useMutation } from "@tanstack/react-query";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { toast } from "sonner";
@@ -79,10 +79,12 @@ export default function Content() {
 			<div
 				className={cn(
 					"fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50",
-					"flex flex-col space-y-4",
+					"flex flex-col space-y-4"
 				)}
 			>
-				<Label className="text-white">Sign-up successful! Redirecting...</Label>
+				<Label className="text-white">
+					Sign-up successful! Redirecting...
+				</Label>
 				<AppProgress
 					defaultProgress={0}
 					finalProgress={100}

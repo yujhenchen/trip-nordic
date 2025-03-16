@@ -12,31 +12,80 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import { loginFormSchema, LoginFormType } from "@/lib/authSchemas";
+import { useMutation } from "@tanstack/react-query";
+import { Label } from "@/components/ui/label";
+import { AppProgress } from "@/components/common/AppProgress";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
-const formSchema = z.object({
-	username: z
-		.string()
-		.min(2, {
-			message: "Username must be at least 2 characters.",
-		})
-		.max(30, {
-			message: "Username must not exceed 30 characters.",
-		}),
-	password: z.string().min(1).max(30),
-});
+const apiUrl: string = import.meta.env.VITE_AUTH_API_URL;
+const loginUrl: string = `${apiUrl}/login`;
 
 export default function Content() {
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+	const mutation = useMutation({
+		mutationFn: async (data: LoginFormType) => {
+			const response = await fetch(loginUrl, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			});
+
+			if (!response.ok) {
+				throw new Error(response.statusText);
+			}
+			return response.json();
+		},
+	});
+
+	const form = useForm<LoginFormType>({
+		resolver: zodResolver(loginFormSchema),
 		defaultValues: {
-			username: "",
+			email: "",
 			password: "",
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	function onSubmit(values: LoginFormType) {
 		console.log("Form submitted.");
-		console.log(values);
+		mutation.mutate(values);
+	}
+
+	if (mutation.isPending)
+		return (
+			<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+				<LoadingSpinner variant="default" />
+			</div>
+		);
+
+	if (mutation.isError) {
+		toast.error(`${mutation.error}`);
+		mutation.reset();
+	}
+
+	if (mutation.isSuccess) {
+		return (
+			<div
+				className={cn(
+					"fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50",
+					"flex flex-col space-y-4"
+				)}
+			>
+				<Label className="text-white">
+					Login successful! Redirecting...
+				</Label>
+				<AppProgress
+					defaultProgress={0}
+					finalProgress={100}
+					duration={1500}
+					callback={() => location.replace("/")}
+					callbackDelay={1000}
+				/>
+			</div>
+		);
 	}
 
 	return (
@@ -47,12 +96,16 @@ export default function Content() {
 			>
 				<FormField
 					control={form.control}
-					name="username"
+					name="email"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Username</FormLabel>
+							<FormLabel>Email</FormLabel>
 							<FormControl>
-								<Input placeholder="my name" {...field} />
+								<Input
+									type="email"
+									placeholder="test123@example.com"
+									{...field}
+								/>
 							</FormControl>
 
 							<FormMessage />

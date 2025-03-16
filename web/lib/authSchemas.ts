@@ -18,9 +18,16 @@ export const signUpFormSchema = z.object({
 	passwords: passwordForm,
 });
 
+export const loginFormSchema = z.object({
+	email: z.string().email({ message: "Please enter a valid email." }).trim(),
+	password: z.string().min(6).max(30),
+});
+
 export type SignUpFormType = z.infer<typeof signUpFormSchema>;
 
 export type SignUpDataType = {
 	email: SignUpFormType["email"];
 	password: SignUpFormType["passwords"]["password"];
 };
+
+export type LoginFormType = z.infer<typeof loginFormSchema>;
