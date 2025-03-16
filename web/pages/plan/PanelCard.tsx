@@ -14,6 +14,11 @@ import { toast } from "sonner";
 
 export type PanelCardType = { id: string; title: string; description: string };
 
+export const TARGET_IDS = {
+	BUTTON_DELETE: "delete-card-btn",
+	CARD_CONTAINER: "card-container",
+} as const;
+
 interface PanelCardProps extends ComponentProps<typeof Card> {
 	card: PanelCardType;
 }
@@ -36,12 +41,12 @@ export function PanelCard({ card, ...rest }: PanelCardProps) {
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
 		const id = (event.currentTarget as HTMLElement).id;
 
-		if (id === "card") {
+		if (id === TARGET_IDS.CARD_CONTAINER) {
 			open("CardDialog", {
 				title: "test title",
 				description: "test description",
 			});
-		} else if (id === "delete-card-btn") {
+		} else if (id === TARGET_IDS.BUTTON_DELETE) {
 			event.stopPropagation();
 			open("AppAlertDialog", {
 				title: "Are you sure to remove this card?",
@@ -50,14 +55,18 @@ export function PanelCard({ card, ...rest }: PanelCardProps) {
 	};
 
 	return (
-		<PanelCardContainer id="card" {...rest} onClick={handleClick}>
+		<PanelCardContainer
+			id={TARGET_IDS.CARD_CONTAINER}
+			{...rest}
+			onClick={handleClick}
+		>
 			<CardHeader>
 				<CardTitle>{card.title}</CardTitle>
 				<CardDescription>{card.description}</CardDescription>
 			</CardHeader>
 			<CardFooter className="place-content-end">
 				<IconButton
-					id="delete-card-btn"
+					id={TARGET_IDS.BUTTON_DELETE}
 					icon={<Trash2 size={18} />}
 					onClick={handleClick}
 				/>
