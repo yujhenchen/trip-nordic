@@ -75,12 +75,10 @@ export default function Content() {
 			<div
 				className={cn(
 					"fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50",
-					"flex flex-col space-y-4"
+					"flex flex-col space-y-4",
 				)}
 			>
-				<Label className="text-white">
-					Login successful! Redirecting...
-				</Label>
+				<Label className="text-white">Login successful! Redirecting...</Label>
 				<AppProgress
 					defaultProgress={0}
 					finalProgress={100}
