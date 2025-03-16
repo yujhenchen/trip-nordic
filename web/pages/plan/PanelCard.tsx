@@ -24,7 +24,7 @@ function PanelCardContainer({
 	...rest
 }: ComponentProps<typeof Card>) {
 	return (
-		<Card className={cn("my-2 h-36", className)} {...rest}>
+		<Card className={cn("my-2 h-36", className)} {...rest} onClick={() => {}}>
 			{children}
 		</Card>
 	);
