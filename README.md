@@ -37,6 +37,14 @@ Auth token
 - [How to use JWT Authentication with Django](https://appliku.com/post/how-use-jwt-authentication-django/#django-jwt-authentication-logout)
 - [JWT Logout — Django Rest Framework](https://medium.com/django-rest/logout-django-rest-framework-eb1b53ac6d35)
 
+CORS with HTTPOnly Cookie
+- [JWT token as HttpOnly cookie in Django](https://www.procoding.org/jwt-token-as-httponly-cookie-in-django)
+- [How to Enable CORS with HTTPOnly Cookie to Secure Token?](https://geekflare.com/cybersecurity/enable-cors-httponly-cookie-secure-token/) 
+- [Auth with JWT in React and Django #1 - JWT, Web security & Auth server set-up](https://blog.zjzhang.org/post/Auth-with-JWT-in-React-and-Django-part1)
+- [django-cors-headers 4.7.0](https://pypi.org/project/django-cors-headers/)
+- [Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies)
+- [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
+- [Request: credentials property](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials)
 
 
 
