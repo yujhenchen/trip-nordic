@@ -6,7 +6,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
-import type { ComponentProps } from "react";
+import type { ComponentProps, MouseEvent } from "react";
 import { IconButton } from "@/components/common/IconButton";
 import { cn } from "@/lib/utils";
 import { useDialog } from "@/components/providers/DialogProvider";
@@ -32,29 +32,34 @@ function PanelCardContainer({
 
 export function PanelCard({ card, ...rest }: PanelCardProps) {
 	const { open } = useDialog();
+
+	const handleClick = (event: MouseEvent<HTMLElement>) => {
+		const id = (event.currentTarget as HTMLElement).id;
+
+		if (id === "card") {
+			open("CardDialog", {
+				title: "test title",
+				description: "test description",
+			});
+		} else if (id === "delete-card-btn") {
+			event.stopPropagation();
+			open("AppAlertDialog", {
+				title: "Are you sure to remove this card?",
+			});
+		}
+	};
+
 	return (
-		<PanelCardContainer
-			{...rest}
-			onClick={() => {
-				open("CardDialog", {
-					title: "test title",
-					description: "test description",
-				});
-			}}
-		>
+		<PanelCardContainer id="card" {...rest} onClick={handleClick}>
 			<CardHeader>
 				<CardTitle>{card.title}</CardTitle>
 				<CardDescription>{card.description}</CardDescription>
 			</CardHeader>
 			<CardFooter className="place-content-end">
 				<IconButton
+					id="delete-card-btn"
 					icon={<Trash2 size={18} />}
-					onClick={(e) => {
-						e.stopPropagation();
-						open("AppAlertDialog", {
-							title: "Are you sure to remove this card?",
-						});
-					}}
+					onClick={handleClick}
 				/>
 			</CardFooter>
 		</PanelCardContainer>
