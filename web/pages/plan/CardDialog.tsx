@@ -41,9 +41,7 @@ export default function CardDialog({ onClose, title, description }: Props) {
 						) : (
 							<Textarea
 								defaultValue={description}
-								onKeyDown={(e) =>
-									e.key === "Enter" && setMode(cardMode.VIEW)
-								}
+								onKeyDown={(e) => e.key === "Enter" && setMode(cardMode.VIEW)}
 							/>
 						)}
 					</DialogHeader>
