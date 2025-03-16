@@ -29,7 +29,7 @@ export default function DetailsDialog({
 	return (
 		<Dialog open onOpenChange={onClose}>
 			{/* <DialogTrigger>Open</DialogTrigger> */}
-			<DialogContent className="p-10 w-full md:w-2/3 xl:w-2/5 max-w-full max-h-screen overflow-scroll">
+			<DialogContent className="p-10 w-full md:w-2/3 xl:w-2/5 max-w-full max-h-screen overflow-auto">
 				<img
 					src={headerImage.src}
 					alt={headerImage.alt}
@@ -43,7 +43,7 @@ export default function DetailsDialog({
 
 					<div className="flex space-y-4 flex-col w-2/5">
 						{tags.length > 0 ? (
-							<FilterRow className="w-full overflow-x-scroll">
+							<FilterRow className="w-full overflow-x-auto">
 								{tags.map((tag) => (
 									<FilterChip
 										key={tag}

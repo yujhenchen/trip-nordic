@@ -13,7 +13,7 @@ export function RedirectOverlay({ message, callback, callbackDelay }: Props) {
 		<div
 			className={cn(
 				"fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50",
-				"flex flex-col space-y-4"
+				"flex flex-col space-y-4",
 			)}
 		>
 			<Label className="text-white">{message}</Label>
