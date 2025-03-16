@@ -50,11 +50,14 @@ class LogInView(views.APIView):
             response.set_cookie(
                 key='access_token',
                 value = tokens['access'],
-                # NOTE: use default expires
-                # expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-				secure = True,
+                # NOTE: do not set max_age and expires to make it become a session cookie
+                # max_age =
+                # expires =
 				httponly = True,
-				samesite = 'None'
+                secure = True,
+				samesite = 'None',
+				domain = '127.0.0.1',
+                path='/',
 			)
             # TODO: what is this
             # csrf.get_token(request)
