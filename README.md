@@ -51,20 +51,27 @@ CORS with HTTPOnly Cookie
 ## Tech stack and why choose them
 
 #### Frontend
-- Runtime: [Bun](https://bun.sh/)
-- Frontend Framework: [Next.js](https://nextjs.org/)
-- Frontend library: [React](https://react.dev/)
-- Language: [TypeScript](https://www.typescriptlang.org/)
-- UI Component Libraries: [shadcn](https://ui.shadcn.com/)
+[![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-6-purple?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+[![Radix UI](https://img.shields.io/badge/Radix_UI-%23181717.svg?style=for-the-badge&logo=radix-ui&logoColor=white)](https://radix-ui.com/)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3-blue?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+[![Express.js](https://img.shields.io/badge/Express-4-gray?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![Zod](https://img.shields.io/badge/Zod-3-green?style=for-the-badge)](https://zod.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![TanStack Query](https://img.shields.io/badge/TanStack_Query-5-red?style=for-the-badge&logo=react-query)](https://tanstack.com/query)
+[![Vike](https://img.shields.io/badge/Vike-%23000000.svg?style=for-the-badge)](https://vike.dev/)
+
 
 
 #### Backend
-- Script to crawl data from source websites [Go](https://go.dev/)
-- Database [Supabase](https://supabase.com/)
-- [Poetry](https://python-poetry.org/)
-- Restful API [Django REST framework](https://www.django-rest-framework.org/)
-- Language: [Python](https://www.python.org/)
-- JWT auth [Simple JWT](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html#)
+[![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev/)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![Poetry](https://img.shields.io/badge/Poetry-000000?style=for-the-badge&logo=python&logoColor=white)](https://python-poetry.org/)
+[![Django REST framework](https://img.shields.io/badge/Django_REST_Framework-092D2D?style=for-the-badge&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Simple JWT](https://img.shields.io/badge/Simple_JWT-1F5D4E?style=for-the-badge&logo=python&logoColor=white)](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html#)
+
+
 
 
 
