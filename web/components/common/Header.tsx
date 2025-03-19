@@ -9,6 +9,7 @@ import {
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import Logo from "./Logo";
 import { ModeToggle } from "./modeToggle";
+import { ProfileLink } from "./ProfileLink";
 
 export function Header() {
 	return (
@@ -47,15 +48,7 @@ export function Header() {
 
 					<div className="flex gap-6 items-center">
 						<NavigationMenuItem>
-							<Link href="/login">
-								<Avatar>
-									<AvatarImage
-										src="https://placehold.co/150"
-										className="rounded-full w-12 aspect-square"
-									/>
-									<AvatarFallback>CN</AvatarFallback>
-								</Avatar>
-							</Link>
+							<ProfileLink />
 						</NavigationMenuItem>
 
 						<NavigationMenuItem>

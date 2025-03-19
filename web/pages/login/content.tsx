@@ -17,11 +17,14 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { RedirectOverlay } from "@/components/common/RedirectOverlay";
 import { LoadingOverlay } from "@/components/common/LoadingOverlay";
+import useAuthStore from "@/states/useAuthStore";
 
 const apiUrl: string = import.meta.env.VITE_AUTH_API_URL;
 const loginUrl: string = `${apiUrl}/login`;
 
 export default function Content() {
+	const { setUser } = useAuthStore();
+
 	const mutation = useMutation({
 		mutationFn: async (data: LoginFormType) => {
 			const response = await fetch(loginUrl, {
@@ -36,7 +39,9 @@ export default function Content() {
 			if (!response.ok) {
 				throw new Error(response.statusText);
 			}
-			return response.json();
+			const jsonData = await response.json();
+			setUser(jsonData.user);
+			return jsonData;
 		},
 	});
 
@@ -52,7 +57,6 @@ export default function Content() {
 		// TODO: is it correct to mutate at client side and get jwt token from response like this?
 		// TODO: HTTP-Only Cookies
 		// TODO: refresh token
-		console.log("Form submitted.");
 		mutation.mutate(values);
 	}
 
