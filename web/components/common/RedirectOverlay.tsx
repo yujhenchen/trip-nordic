@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 import { AppProgress } from "./AppProgress";
+import { Overlay } from "./overlay";
 
 interface Props {
 	message: string;
@@ -10,12 +10,7 @@ interface Props {
 
 export function RedirectOverlay({ message, callback, callbackDelay }: Props) {
 	return (
-		<div
-			className={cn(
-				"fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50",
-				"flex flex-col space-y-4",
-			)}
-		>
+		<Overlay>
 			<Label className="text-white">{message}</Label>
 			<AppProgress
 				defaultProgress={0}
@@ -24,6 +19,6 @@ export function RedirectOverlay({ message, callback, callbackDelay }: Props) {
 				callback={callback}
 				callbackDelay={callbackDelay}
 			/>
-		</div>
+		</Overlay>
 	);
 }
