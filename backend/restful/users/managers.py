@@ -9,6 +9,7 @@ class UserManager(BaseUserManager):
 			raise ValueError(_("The Email must be set"))
 		
 		email = self.normalize_email(email)
+		# TODO: transaction
 		with transaction.atomic():
 			user = self.model(email=email, **extra_fields)
 			user.set_password(password)

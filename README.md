@@ -45,7 +45,7 @@ CORS with HTTPOnly Cookie
 - [Using HTTP cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies)
 - [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
 - [Request: credentials property](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials)
-
+- [Secure JWT Authentication - Where to store the JWT Token. How to store JWT token in httpOnly cookies](https://www.youtube.com/watch?app=desktop&v=894seNhONF8)
 
 
 ## Tech stack and why choose them
@@ -138,16 +138,46 @@ CORS with HTTPOnly Cookie
 
 - [ ] right top save, copy link to clipboard
 
+### Dashboard
+
+
 ### Auth
 - [ ] signup
-	- [ ] BE with confirmation email
+	- [ ] BE
+		- [ ] with confirmation email
 	- [ ] FE
+		- [ ] cancel request
+		- [ ] API loading
+		- [ ] API success
+		- [ ] API error
+		- [ ] redirect to login page after successfully sign up
+		- [ ] nav to sign up page
+			- [ ] redirect to last page if already login
+			- [ ] stay if token expired
+		- [ ] form error messages
+
 - [ ] login using JWT
 	- [x] BE
 	- [ ] FE
+		- [x] store user state after login successfully
+		- [x] cancel request
+		- [x] API loading
+		- [x] API success
+		- [x] API error
+		- [ ] redirect to last page after successfully login
+		- [ ] nav to login page
+			- [ ] redirect to last page if already login
+			- [ ] stay if token expired
+		- [ ] form error messages
+
 - [ ] refresh token
 	- [x] BE
 	- [ ] FE
 - [ ] logout
 	- [x] BE
 	- [ ] FE
+
+
+### Security
+- [ ] prevent exposing backend URLs (use API Routes)
+- [ ] form data

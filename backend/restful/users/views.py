@@ -47,10 +47,23 @@ class LogInView(views.APIView):
 			# TODO: check active user?
         
             tokens = get_token_for_user(user)
-            response = JsonResponse(tokens, status=status.HTTP_200_OK)
+            response = JsonResponse( {'user': {'email': user.email}}, status=status.HTTP_200_OK)
             response.set_cookie(
                 key='access_token',
                 value = tokens['access'],
+                # NOTE: do not set max_age and expires to make it become a session cookie
+                # max_age =
+                # expires =
+				httponly = True,
+                secure = True,
+				samesite = 'None',
+				domain = settings.CLIENT_DOMAIN,
+                path='/',
+			)
+            # refresh token
+            response.set_cookie(
+                key='refresh_token',
+                value = tokens['refresh'],
                 # NOTE: do not set max_age and expires to make it become a session cookie
                 # max_age =
                 # expires =
