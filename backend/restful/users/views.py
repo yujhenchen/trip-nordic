@@ -17,6 +17,19 @@ def get_token_for_user(user):
         settings.ACCESS_TOKEN_COOKIE_NAME: str(refresh.access_token),
     }
 
+def set_auth_cookies(response, tokens):
+    for token_name in [settings.ACCESS_TOKEN_COOKIE_NAME, settings.REFRESH_TOKEN_COOKIE_NAME]:
+        response.set_cookie(
+            key=token_name,
+            value=tokens[token_name],
+            # Session cookie: Do not set max_age/expires
+            httponly=True,
+            secure=True,
+            samesite='None',
+            domain=settings.CLIENT_DOMAIN,
+            path='/',
+        )
+
 class SignUpView(views.APIView):
     def post(self, request):
         try:
@@ -50,31 +63,7 @@ class LogInView(views.APIView):
         
             tokens = get_token_for_user(user)
             response = JsonResponse( {'user': {'email': user.email}}, status=status.HTTP_200_OK)
-            response.set_cookie(
-                key = settings.ACCESS_TOKEN_COOKIE_NAME,
-                value = tokens[settings.ACCESS_TOKEN_COOKIE_NAME],
-                # NOTE: do not set max_age and expires to make it become a session cookie
-                # max_age =
-                # expires =
-				httponly = True,
-                secure = True,
-				samesite = 'None',
-				domain = settings.CLIENT_DOMAIN,
-                path='/',
-			)
-            # refresh token
-            response.set_cookie(
-                key = settings.REFRESH_TOKEN_COOKIE_NAME,
-                value = tokens[settings.REFRESH_TOKEN_COOKIE_NAME],
-                # NOTE: do not set max_age and expires to make it become a session cookie
-                # max_age =
-                # expires =
-				httponly = True,
-                secure = True,
-				samesite = 'None',
-				domain = settings.CLIENT_DOMAIN,
-                path='/',
-			)
+            set_auth_cookies(response, tokens)
             # TODO: what is this
             # csrf.get_token(request)
             return response
