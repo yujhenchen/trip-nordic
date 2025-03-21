@@ -22,26 +22,32 @@ import { AuthFormWrapper } from "@/components/common/authFormWrapper";
 const apiUrl: string = import.meta.env.VITE_AUTH_API_URL;
 const loginUrl: string = `${apiUrl}/login`;
 
+const login = async (data: LoginFormType) => {
+	const response = await fetch(loginUrl, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data),
+		credentials: "include",
+	});
+
+	if (!response.ok) {
+		throw new Error(response.statusText);
+	}
+	return await response.json();
+};
+
 export function LogInForm() {
 	const { setUser } = useAuthStore();
 
 	const mutation = useMutation({
-		mutationFn: async (data: LoginFormType) => {
-			const response = await fetch(loginUrl, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(data),
-				credentials: "include",
-			});
-
-			if (!response.ok) {
-				throw new Error(response.statusText);
-			}
-			const jsonData = await response.json();
-			setUser(jsonData.user);
-			return jsonData;
+		mutationFn: login,
+		onSuccess: (data) => {
+			setUser(data.user);
+		},
+		onError: (error) => {
+			toast.error(`${error}`);
 		},
 	});
 
@@ -61,11 +67,6 @@ export function LogInForm() {
 	}
 
 	if (mutation.isPending) return <LoadingOverlay />;
-
-	if (mutation.isError) {
-		toast.error(`${mutation.error}`);
-		mutation.reset();
-	}
 
 	if (mutation.isSuccess) {
 		return (
