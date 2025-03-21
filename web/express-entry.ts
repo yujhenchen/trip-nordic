@@ -2,11 +2,11 @@ import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { createTodoHandler } from "./server/create-todo-handler";
-import { vikeHandler } from "./server/vike-handler";
 import { createHandler } from "@universal-middleware/express";
 import express from "express";
-import { createDevMiddleware } from "vike/server";
+import { createDevMiddleware, renderPage } from "vike/server";
 import dotenv from "dotenv";
+import type { Request } from "express";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -16,9 +16,13 @@ const root = __dirname;
 const protocol = process.env.PROTOCOL ?? "http";
 const domain = process.env.DOMAIN ?? "localhost";
 const port = process.env.PORT ? Number.parseInt(process.env.PORT, 10) : 3000;
-const hmrPort = process.env.HMR_PORT
-	? Number.parseInt(process.env.HMR_PORT, 10)
-	: 24678;
+// const hmrPort = process.env.HMR_PORT
+// 	? Number.parseInt(process.env.HMR_PORT, 10)
+// 	: 24678;
+
+interface AppRequest extends Request {
+	user?: Record<string, unknown>;
+}
 
 export default (await startServer()) as unknown;
 
@@ -42,7 +46,30 @@ async function startServer() {
 	 *
 	 * @link {@see https://vike.dev}
 	 **/
-	app.all("*", createHandler(vikeHandler)());
+	app.all("*", async (req: AppRequest, res) => {
+
+		const pageContextInit = {
+			// Required: the URL of the page
+			urlOriginal: req.originalUrl,
+
+			// Optional: the HTTP Headers
+			headersOriginal: req.headers,
+
+			// Optional: information about the logged-in user (when using an
+			// Express.js authentication middleware that defines `req.user`).
+			user: 'TODO: fix this to correct value',
+
+			// ... we can provide any additional information about the request here ...
+		};
+
+		const pageContext = await renderPage(pageContextInit);
+
+		const { body, statusCode, headers } = pageContext.httpResponse;
+		for (const [name, value] of headers) {
+			res.setHeader(name, value);
+		}
+		res.status(statusCode).send(body);
+	});
 
 	app.listen(port, () => {
 		console.log(`Server listening on ${protocol}://${domain}:${port}`);
