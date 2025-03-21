@@ -5,7 +5,7 @@ import {
 	NavigationMenuList,
 } from "@radix-ui/react-navigation-menu";
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
-import { CopyRight } from "./CopyRight";
+import { CopyRight } from "./copyRight";
 
 export function Footer() {
 	return (

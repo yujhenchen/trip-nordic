@@ -5,9 +5,9 @@ import {
 	NavigationMenuList,
 } from "@radix-ui/react-navigation-menu";
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
-import Logo from "./Logo";
 import { ModeToggle } from "./modeToggle";
 import { ProfileLink } from "./profileLink";
+import Logo from "./logo";
 
 export function Header() {
 	return (

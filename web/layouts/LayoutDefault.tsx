@@ -5,10 +5,10 @@ import "./tailwind.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import type React from "react";
-import { Header } from "@/components/common/Header";
-import { Footer } from "@/components/common/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { Header } from "@/components/common/header";
+import { Footer } from "@/components/common/footer";
 
 const queryClient = new QueryClient();
 

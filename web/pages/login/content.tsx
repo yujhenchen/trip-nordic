@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { LogInForm } from "./logInForm";
-import { ContentContainer } from "@/components/common/ContentContainer";
+import { ContentContainer } from "@/components/common/contentContainer";
+import { LogInForm } from "./loginForm";
 
 export function Content() {
 	return (

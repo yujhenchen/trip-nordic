@@ -18,8 +18,8 @@ import {
 } from "@/lib/authSchemas";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { RedirectOverlay } from "@/components/common/RedirectOverlay";
-import { LoadingOverlay } from "@/components/common/LoadingOverlay";
+import { RedirectOverlay } from "@/components/common/redirectOverlay";
+import { LoadingOverlay } from "@/components/common/loadingOverlay";
 import { AuthFormWrapper } from "@/components/common/authFormWrapper";
 
 const apiUrl: string = import.meta.env.VITE_AUTH_API_URL;

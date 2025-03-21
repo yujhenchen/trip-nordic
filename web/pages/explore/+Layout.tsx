@@ -1,5 +1,5 @@
 import { DialogProvider } from "@/components/providers/DialogProvider";
-import { PageContainer } from "@/components/common/PageContainer";
+import { PageContainer } from "@/components/common/pageContainer";
 
 export default function ExploreLayout({
 	children,

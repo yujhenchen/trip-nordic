@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 
-import { IconButton } from "@/components/common/IconButton";
+import { IconButton } from "@/components/common/iconButton";
 import { PanelContainer } from "./PanelContainer";
 import { toast } from "sonner";
 

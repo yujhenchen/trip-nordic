@@ -1,4 +1,4 @@
-import { PageContainer } from "@/components/common/PageContainer";
+import { PageContainer } from "@/components/common/pageContainer";
 import { Content } from "./content";
 
 export default function LoginPage() {

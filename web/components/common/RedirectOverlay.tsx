@@ -1,5 +1,5 @@
 import { Label } from "../ui/label";
-import { AppProgress } from "./AppProgress";
+import { AppProgress } from "./appProgress";
 import { Overlay } from "./overlay";
 
 interface Props {

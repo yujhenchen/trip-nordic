@@ -14,8 +14,8 @@ import { useForm } from "react-hook-form";
 import { loginFormSchema, type LoginFormType } from "@/lib/authSchemas";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { RedirectOverlay } from "@/components/common/RedirectOverlay";
-import { LoadingOverlay } from "@/components/common/LoadingOverlay";
+import { RedirectOverlay } from "@/components/common/redirectOverlay";
+import { LoadingOverlay } from "@/components/common/loadingOverlay";
 import useAuthStore from "@/states/useAuthStore";
 import { AuthFormWrapper } from "@/components/common/authFormWrapper";
 

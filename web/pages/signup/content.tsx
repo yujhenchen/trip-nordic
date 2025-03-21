@@ -1,4 +1,4 @@
-import { ContentContainer } from "@/components/common/ContentContainer";
+import { ContentContainer } from "@/components/common/contentContainer";
 import { SignUpForm } from "./signUpForm";
 
 export function Content() {

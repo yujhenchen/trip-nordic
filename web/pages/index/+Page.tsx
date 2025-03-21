@@ -1,7 +1,7 @@
 import { H1 } from "@/components/typography/H1";
 import { Button } from "@/components/ui/button";
-import { PageContainer } from "@/components/common/PageContainer";
-import { NavLink } from "@/components/common/NavLink";
+import { PageContainer } from "@/components/common/pageContainer";
+import { NavLink } from "@/components/common/navLink";
 
 export default function Page() {
 	return (

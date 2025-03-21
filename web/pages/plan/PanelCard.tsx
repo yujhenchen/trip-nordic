@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
 import type { ComponentProps, MouseEvent } from "react";
-import { IconButton } from "@/components/common/IconButton";
+import { IconButton } from "@/components/common/iconButton";
 import { cn } from "@/lib/utils";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { toast } from "sonner";
