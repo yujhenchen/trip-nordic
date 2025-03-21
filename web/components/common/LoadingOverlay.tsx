@@ -1,9 +1,10 @@
 import { LoadingSpinner } from "../ui/loading-spinner";
+import { Overlay } from "./overlay";
 
 export function LoadingOverlay() {
 	return (
-		<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+		<Overlay>
 			<LoadingSpinner variant="default" />
-		</div>
+		</Overlay>
 	);
 }
