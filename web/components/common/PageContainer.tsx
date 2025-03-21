@@ -10,7 +10,10 @@ export function PageContainer({ children, className }: Props) {
 	return (
 		<main
 			id="page-container"
-			className={cn("container flex-1 flex-col pb-12 mx-auto", className)}
+			className={cn(
+				"container flex flex-1 flex-col pb-12 mx-auto",
+				className
+			)}
 		>
 			{children}
 		</main>
