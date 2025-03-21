@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from datetime import timedelta
+
 from pathlib import Path
 import environ
 import os
@@ -182,3 +184,14 @@ CORS_ALLOW_HEADERS = (
 CORS_ALLOW_CREDENTIALS = True
 
 CLIENT_DOMAIN = env.str('CLIENT_DOMAIN', default='localhost')
+
+SIMPLE_JWT = {
+	"ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+
+	"ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
+
+ACCESS_TOKEN_COOKIE_NAME = 'access'
+REFRESH_TOKEN_COOKIE_NAME = 'refresh'
