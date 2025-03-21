@@ -1,6 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
-	Link,
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuLink,
@@ -9,7 +7,7 @@ import {
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import Logo from "./Logo";
 import { ModeToggle } from "./modeToggle";
-import { ProfileLink } from "./ProfileLink";
+import { ProfileLink } from "./profileLink";
 
 export function Header() {
 	return (
