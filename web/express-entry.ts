@@ -5,10 +5,16 @@ import { createTodoHandler } from "./server/create-todo-handler";
 import { vikeHandler } from "./server/vike-handler";
 import { createHandler } from "@universal-middleware/express";
 import express from "express";
+import { createDevMiddleware } from 'vike/server';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const root = __dirname;
+
+const protocol = process.env.PROTOCOL ?? "http";
+const domain = process.env.DOMAIN ?? "localhost";
 const port = process.env.PORT ? Number.parseInt(process.env.PORT, 10) : 3000;
 const hmrPort = process.env.HMR_PORT
 	? Number.parseInt(process.env.HMR_PORT, 10)
@@ -25,14 +31,8 @@ async function startServer() {
 		// Instantiate Vite's development server and integrate its middleware to our server.
 		// ⚠️ We should instantiate it *only* in development. (It isn't needed in production
 		// and would unnecessarily bloat our server in production.)
-		const vite = await import("vite");
-		const viteDevMiddleware = (
-			await vite.createServer({
-				root,
-				server: { middlewareMode: true, hmr: { port: hmrPort } },
-			})
-		).middlewares;
-		app.use(viteDevMiddleware);
+		const { devMiddleware } = await createDevMiddleware({ root })
+		app.use(devMiddleware)
 	}
 
 	app.post("/api/todo/create", createHandler(createTodoHandler)());
@@ -45,7 +45,7 @@ async function startServer() {
 	app.all("*", createHandler(vikeHandler)());
 
 	app.listen(port, () => {
-		console.log(`Server listening on http://localhost:${port}`);
+		console.log(`Server listening on ${protocol}://${domain}:${port}`);
 	});
 
 	return app;
