@@ -1,4 +1,4 @@
-import { BarChart3, Home, Settings, User } from "lucide-react";
+import { Settings, User } from "lucide-react";
 
 import {
 	Sidebar,
@@ -50,7 +50,9 @@ export function Content() {
 				<Sidebar className="h-full border-r">
 					<SidebarHeader>
 						<div className="flex h-14 items-center px-4">
-							<h2 className="text-lg font-semibold">My Dashboard</h2>
+							<h2 className="text-lg font-semibold">
+								My Dashboard
+							</h2>
 						</div>
 					</SidebarHeader>
 					<SidebarContent className="h-full">
@@ -75,8 +77,9 @@ export function Content() {
 						{isMobile ? <SidebarTrigger className="mr-2" /> : null}
 						<h1 className="text-xl font-semibold">
 							{
-								contentSections[activeItem as keyof typeof contentSections]
-									.title
+								contentSections[
+									activeItem as keyof typeof contentSections
+								].title
 							}
 						</h1>
 					</header>
@@ -84,14 +87,16 @@ export function Content() {
 						<div className="rounded-lg border p-6">
 							<h2 className="mb-4 text-2xl font-semibold">
 								{
-									contentSections[activeItem as keyof typeof contentSections]
-										.title
+									contentSections[
+										activeItem as keyof typeof contentSections
+									].title
 								}
 							</h2>
 							<p>
 								{
-									contentSections[activeItem as keyof typeof contentSections]
-										.content
+									contentSections[
+										activeItem as keyof typeof contentSections
+									].content
 								}
 							</p>
 						</div>
