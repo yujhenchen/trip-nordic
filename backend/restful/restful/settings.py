@@ -35,6 +35,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
+SIGNING_KEY = env('SIGNING_KEY').replace("\\n", "\n")
+VERIFYING_KEY = env('VERIFYING_KEY').replace("\\n", "\n")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = env.bool('DEBUG', default=False)
@@ -191,6 +194,10 @@ SIMPLE_JWT = {
 
 	"ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
+
+	"ALGORITHM": "RS256",
+	"SIGNING_KEY": SIGNING_KEY,
+	"VERIFYING_KEY": VERIFYING_KEY
 }
 
 ACCESS_TOKEN_COOKIE_NAME = 'access'
