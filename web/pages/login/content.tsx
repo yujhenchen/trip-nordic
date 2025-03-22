@@ -1,11 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { ContentContainer } from "@/components/common/contentContainer";
 import { LogInForm } from "./loginForm";
+import { useState } from "react";
+import { LoadingOverlay } from "@/components/common/loadingOverlay";
 
 export function Content() {
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	const startLoading = () => setIsLoading(true);
+	const stopLoading = () => setIsLoading(false);
+
+	if (isLoading) {
+		return <LoadingOverlay />;
+	}
 	return (
 		<ContentContainer>
-			<LogInForm />
+			<LogInForm
+				onMutateCallback={startLoading}
+				onSettledCallback={stopLoading}
+			/>
 			<Button
 				type="button"
 				variant="link"

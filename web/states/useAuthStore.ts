@@ -9,10 +9,13 @@ interface AuthState {
 
 const useAuthStore = create<AuthState>()(
 	persist(
-		(set, get) => ({
+		(set) => ({
 			user: null,
 			setUser: (user) => set({ user }),
-			logout: () => set({ user: null }),
+			logout: () => {
+				set({ user: null });
+				// TODO: call API to logout
+			},
 		}),
 		{
 			name: "auth",

@@ -15,7 +15,6 @@ import { loginFormSchema, type LoginFormType } from "@/lib/authSchemas";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { RedirectOverlay } from "@/components/common/redirectOverlay";
-import { LoadingOverlay } from "@/components/common/loadingOverlay";
 import useAuthStore from "@/states/useAuthStore";
 import { AuthFormWrapper } from "@/components/common/authFormWrapper";
 
@@ -38,7 +37,12 @@ const login = async (data: LoginFormType) => {
 	return await response.json();
 };
 
-export function LogInForm() {
+interface Props {
+	onMutateCallback: () => void;
+	onSettledCallback: () => void;
+}
+
+export function LogInForm({ onMutateCallback, onSettledCallback }: Props) {
 	const { setUser } = useAuthStore();
 
 	const mutation = useMutation({
@@ -49,6 +53,8 @@ export function LogInForm() {
 		onError: (error) => {
 			toast.error(`${error}`);
 		},
+		onMutate: onMutateCallback,
+		onSettled: onSettledCallback,
 	});
 
 	const form = useForm<LoginFormType>({
@@ -60,13 +66,8 @@ export function LogInForm() {
 	});
 
 	function onSubmit(values: LoginFormType) {
-		// TODO: is it correct to mutate at client side and get jwt token from response like this?
-		// TODO: HTTP-Only Cookies
-		// TODO: refresh token
 		mutation.mutate(values);
 	}
-
-	if (mutation.isPending) return <LoadingOverlay />;
 
 	if (mutation.isSuccess) {
 		return (
