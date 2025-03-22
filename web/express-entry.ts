@@ -1,12 +1,12 @@
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { createTodoHandler } from "./server/create-todo-handler";
-import { createHandler } from "@universal-middleware/express";
 import express from "express";
 import { createDevMiddleware, renderPage } from "vike/server";
 import dotenv from "dotenv";
 import type { Request } from "express";
+import cookieParser from "cookie-parser";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -16,15 +16,36 @@ const root = __dirname;
 const protocol = process.env.PROTOCOL ?? "http";
 const domain = process.env.DOMAIN ?? "localhost";
 const port = process.env.PORT ? Number.parseInt(process.env.PORT, 10) : 3000;
-// const hmrPort = process.env.HMR_PORT
-// 	? Number.parseInt(process.env.HMR_PORT, 10)
-// 	: 24678;
+
+const VERIFYING_KEY = (process.env.VERIFYING_KEY ?? "").replace(/\\n/g, "\n");
 
 interface AppRequest extends Request {
 	user?: Record<string, unknown>;
 }
 
 export default (await startServer()) as unknown;
+
+const getUser = (request: AppRequest): string | null => {
+	const cookies = request.cookies;
+
+	const accessToken = cookies.access;
+	if (!accessToken) {
+		return null;
+	}
+
+	let user: string | null = null;
+	if (accessToken) {
+		try {
+			const decoded = jwt.verify(accessToken, VERIFYING_KEY);
+			if (typeof decoded === "object" && "user_id" in decoded) {
+				user = decoded.user_id;
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+	return user;
+};
 
 async function startServer() {
 	const app = express();
@@ -39,14 +60,16 @@ async function startServer() {
 		app.use(devMiddleware);
 	}
 
-	app.post("/api/todo/create", createHandler(createTodoHandler)());
-
 	/**
 	 * Vike route
 	 *
 	 * @link {@see https://vike.dev}
 	 **/
+
+	app.use(cookieParser());
+
 	app.all("*", async (req: AppRequest, res) => {
+		const user = getUser(req);
 
 		const pageContextInit = {
 			// Required: the URL of the page
@@ -57,7 +80,7 @@ async function startServer() {
 
 			// Optional: information about the logged-in user (when using an
 			// Express.js authentication middleware that defines `req.user`).
-			user: 'TODO: fix this to correct value',
+			user, //"TODO: fix this to correct value",
 
 			// ... we can provide any additional information about the request here ...
 		};
