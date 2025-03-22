@@ -40,7 +40,7 @@ class SignUpView(views.APIView):
             serializer= UserSerializer(data=user)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
-                return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+                return JsonResponse({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
             else: 
                 return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
