@@ -1,7 +1,7 @@
-import { PageContextServer } from 'vike/types'
+import type { PageContextServer } from "vike/types";
 
 export interface AppPageContext extends PageContextServer {
 	user: string | null;
 }
 
-export type PageContextUserType = AppPageContext['user'];
+export type PageContextUserType = AppPageContext["user"];

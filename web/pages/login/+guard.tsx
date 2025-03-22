@@ -1,4 +1,4 @@
-import { AppPageContext } from "@/types/pageContext";
+import type { AppPageContext } from "@/types/pageContext";
 import { redirect } from "vike/abort";
 
 // This guard() hook protects all pages /pages/admin/**/+Page.js
