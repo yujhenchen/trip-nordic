@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import type { Request } from "express";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
+import { PageContextUserType } from "./types/pageContext";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -25,7 +26,7 @@ interface AppRequest extends Request {
 
 export default (await startServer()) as unknown;
 
-const getUser = (request: AppRequest): string | null => {
+const getUser = (request: AppRequest): PageContextUserType => {
 	const cookies = request.cookies;
 
 	const accessToken = cookies.access;
@@ -33,7 +34,7 @@ const getUser = (request: AppRequest): string | null => {
 		return null;
 	}
 
-	let user: string | null = null;
+	let user: PageContextUserType = null;
 	if (accessToken) {
 		try {
 			const decoded = jwt.verify(accessToken, VERIFYING_KEY);
