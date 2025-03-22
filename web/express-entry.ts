@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import type { Request } from "express";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
-import { PageContextUserType } from "./types/pageContext";
+import type { PageContextUserType } from "./types/pageContext";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
