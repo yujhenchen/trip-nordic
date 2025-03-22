@@ -78,7 +78,7 @@ class LogInView(views.APIView):
 class LogOutView(views.APIView):
     def post(self, request):
         try:
-            refresh_token = request.data[settings.REFRESH_TOKEN_COOKIE_NAME]
+            refresh_token = request.COOKIES[settings.REFRESH_TOKEN_COOKIE_NAME]
             if not refresh_token:
                 return JsonResponse({"error": "Refresh token required"}, status=status.HTTP_400_BAD_REQUEST)
             
