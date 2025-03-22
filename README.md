@@ -82,10 +82,10 @@ CORS with HTTPOnly Cookie
 ### General
 - [ ] header
     - [ ] logo
-    - [ ] navbar 
+    - [x] navbar 
     	- [x] explore page, plan page, about page, sign in/ sign out button
-		- [ ] sign in/ out status
-		- [ ] toggle theme
+		- [x] sign in/ out status
+		- [x] toggle theme
 - [x] footer
 	- [x] copyright
 	- [x] navbar
@@ -147,13 +147,13 @@ CORS with HTTPOnly Cookie
 		- [ ] with confirmation email
 	- [ ] FE
 		- [ ] cancel request
-		- [ ] API loading
-		- [ ] API success
-		- [ ] API error
-		- [ ] redirect to login page after successfully sign up
+		- [x] API loading
+		- [x] API success
+		- [x] API error
+		- [x] redirect to login page after successfully sign up
 		- [ ] nav to sign up page
 			- [ ] redirect to last page if already login
-			- [ ] stay if token expired
+			- [x] stay if token expired
 		- [ ] form error messages
 
 - [ ] login using JWT
@@ -167,7 +167,7 @@ CORS with HTTPOnly Cookie
 		- [ ] redirect to last page after successfully login
 		- [ ] nav to login page
 			- [ ] redirect to last page if already login
-			- [ ] stay if token expired
+			- [x] stay if token expired
 		- [ ] form error messages
 
 - [ ] refresh token
