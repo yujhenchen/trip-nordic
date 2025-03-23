@@ -3,7 +3,7 @@ import { AppProgress } from "./appProgress";
 import { Overlay } from "./overlay";
 
 interface Props {
-	message: string;
+	message?: string;
 	callback?: () => void;
 	callbackDelay?: number;
 }
@@ -11,7 +11,7 @@ interface Props {
 export function RedirectOverlay({ message, callback, callbackDelay }: Props) {
 	return (
 		<Overlay>
-			<Label className="text-white">{message}</Label>
+			{message ? <Label className="text-white">{message}</Label> : null}
 			<AppProgress
 				defaultProgress={0}
 				finalProgress={100}
