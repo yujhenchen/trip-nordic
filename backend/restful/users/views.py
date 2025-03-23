@@ -87,6 +87,7 @@ class LogOutView(views.APIView):
             token = RefreshToken(refresh_token)
             token.blacklist()
             
+            response.delete_cookie(settings.ACCESS_TOKEN_COOKIE_NAME)
             response.delete_cookie(settings.REFRESH_TOKEN_COOKIE_NAME)
             return response
         except TokenError as e:
