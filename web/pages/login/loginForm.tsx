@@ -17,25 +17,7 @@ import { toast } from "sonner";
 import { RedirectOverlay } from "@/components/common/redirectOverlay";
 import useAuthStore from "@/states/useAuthStore";
 import { AuthFormWrapper } from "@/components/common/authFormWrapper";
-
-const apiUrl: string = import.meta.env.VITE_AUTH_API_URL;
-const loginUrl: string = `${apiUrl}/login`;
-
-const login = async (data: LoginFormType) => {
-	const response = await fetch(loginUrl, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data),
-		credentials: "include",
-	});
-
-	if (!response.ok) {
-		throw new Error(response.statusText);
-	}
-	return await response.json();
-};
+import { login } from "@/apis";
 
 interface Props {
 	onMutateCallback: () => void;

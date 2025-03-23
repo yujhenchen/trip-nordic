@@ -21,27 +21,10 @@ import { toast } from "sonner";
 import { RedirectOverlay } from "@/components/common/redirectOverlay";
 import { LoadingOverlay } from "@/components/common/loadingOverlay";
 import { AuthFormWrapper } from "@/components/common/authFormWrapper";
-
-const apiUrl: string = import.meta.env.VITE_AUTH_API_URL;
-const signUpUrl: string = `${apiUrl}/signup`;
+import { signUp } from "@/apis";
 
 export function SignUpForm() {
-	const mutation = useMutation({
-		mutationFn: async (data: SignUpDataType) => {
-			const response = await fetch(signUpUrl, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(data),
-			});
-
-			if (!response.ok) {
-				throw new Error(response.statusText);
-			}
-			return response.json();
-		},
-	});
+	const mutation = useMutation({ mutationFn: signUp });
 
 	const form = useForm<SignUpFormType>({
 		resolver: zodResolver(signUpFormSchema),
