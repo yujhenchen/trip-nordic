@@ -28,8 +28,9 @@ export function LogInForm({ onMutateCallback, onSettledCallback }: Props) {
 	const { setUser } = useAuthStore();
 
 	const mutation = useMutation({
-		mutationFn: login,
+		mutationFn: login<LoginFormType>,
 		onSuccess: (data) => {
+			toast.success("Login successful!");
 			setUser(data.user);
 		},
 		onError: (error) => {
@@ -54,7 +55,6 @@ export function LogInForm({ onMutateCallback, onSettledCallback }: Props) {
 	if (mutation.isSuccess) {
 		return (
 			<RedirectOverlay
-				message="Login successful! Redirecting..."
 				callback={() => location.assign("/")}
 				callbackDelay={1000}
 			/>

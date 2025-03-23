@@ -24,7 +24,18 @@ import { AuthFormWrapper } from "@/components/common/authFormWrapper";
 import { signUp } from "@/apis";
 
 export function SignUpForm() {
-	const mutation = useMutation({ mutationFn: signUp });
+	const mutation = useMutation({
+		mutationFn: signUp<SignUpDataType>,
+		onSuccess: () => {
+			toast.success("Sign-up successful!");
+		},
+		onError: () => {
+			toast.error(`${mutation.error}`);
+		},
+		onSettled: () => {
+			mutation.reset();
+		},
+	});
 
 	const form = useForm<SignUpFormType>({
 		resolver: zodResolver(signUpFormSchema),
@@ -46,15 +57,9 @@ export function SignUpForm() {
 
 	if (mutation.isPending) return <LoadingOverlay />;
 
-	if (mutation.isError) {
-		toast.error(`${mutation.error}`);
-		mutation.reset();
-	}
-
 	if (mutation.isSuccess) {
 		return (
 			<RedirectOverlay
-				message="Sign-up successful! Redirecting..."
 				callback={() => location.assign("/login")}
 				callbackDelay={1000}
 			/>
