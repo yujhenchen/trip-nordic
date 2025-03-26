@@ -8,27 +8,8 @@ from rest_framework_simplejwt.exceptions import TokenError
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 from django.middleware import csrf
+from utils.token import get_tokens_for_user, set_auth_cookies
 from django.conf import settings
-
-def get_token_for_user(user):
-    refresh = RefreshToken.for_user(user)
-    return {
-        settings.REFRESH_TOKEN_COOKIE_NAME: str(refresh),
-        settings.ACCESS_TOKEN_COOKIE_NAME: str(refresh.access_token),
-    }
-
-def set_auth_cookies(response, tokens):
-    for token_name in [settings.ACCESS_TOKEN_COOKIE_NAME, settings.REFRESH_TOKEN_COOKIE_NAME]:
-        response.set_cookie(
-            key=token_name,
-            value=tokens[token_name],
-            # Session cookie: Do not set max_age/expires
-            httponly=True,
-            secure=True,
-            samesite='None',
-            domain=settings.CLIENT_DOMAIN,
-            path='/',
-        )
 
 class SignUpView(views.APIView):
     def post(self, request):
@@ -45,6 +26,10 @@ class SignUpView(views.APIView):
                 return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
             return JsonResponse({'error': 'Failed to create user'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def get(self, request):
+        return JsonResponse({'message': 'get signup'}, status=status.HTTP_200_OK)
+
 
 class LogInView(views.APIView):
     def post(self, request):
@@ -60,8 +45,7 @@ class LogInView(views.APIView):
                 raise AuthenticationFailed('Invalid credentials')
             
 			# TODO: check active user?
-        
-            tokens = get_token_for_user(user)
+            tokens = get_tokens_for_user(user)
             response = JsonResponse( {'user': {'email': user.email}}, status=status.HTTP_200_OK)
             set_auth_cookies(response, tokens)
             # TODO: what is this
@@ -74,6 +58,10 @@ class LogInView(views.APIView):
         except Exception as e:
             print(e)
             return JsonResponse({'error': 'Unknown error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		
+    def get(self, request):
+        return JsonResponse({'message': 'get login'}, status=status.HTTP_200_OK)
+
 
 class LogOutView(views.APIView):
     def post(self, request):
