@@ -72,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'common.middleware.SilenceAuthMiddleware',
 ]
 
 ROOT_URLCONF = 'restful.urls'
@@ -189,7 +190,7 @@ CORS_ALLOW_CREDENTIALS = True
 CLIENT_DOMAIN = env.str('CLIENT_DOMAIN', default='localhost')
 
 SIMPLE_JWT = {
-	"ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+	"ACCESS_TOKEN_LIFETIME": timedelta(seconds=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 
 	"ROTATE_REFRESH_TOKENS": True,
@@ -202,3 +203,5 @@ SIMPLE_JWT = {
 
 ACCESS_TOKEN_COOKIE_NAME = 'access'
 REFRESH_TOKEN_COOKIE_NAME = 'refresh'
+
+HTTP_GET_PROTECTED_ENDPOINTS = ['/api/login', '/api/signup']
