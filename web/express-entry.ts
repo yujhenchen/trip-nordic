@@ -7,7 +7,11 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import type { AppRequest } from "./pageHandler";
 
-import { clearAuthCookies, getPayload, handleTokenRefresh } from "./utils/authHelper";
+import {
+	clearAuthCookies,
+	getPayload,
+	handleTokenRefresh,
+} from "./utils/authHelper";
 import { JWTExpired } from "jose/errors";
 
 dotenv.config();
@@ -54,7 +58,6 @@ async function startServer() {
 	app.use(cookieParser());
 
 	app.all("*", async (req: AppRequest, res) => {
-
 		const accessToken = req.cookies[accessTokenKey];
 		const refreshToken = req.cookies[refreshTokenKey];
 

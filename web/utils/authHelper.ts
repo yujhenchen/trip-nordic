@@ -17,7 +17,11 @@ export const getTokens = async (apiUrl: string, refresh: string) => {
 	return response;
 };
 
-export const clearAuthCookies = (res: Response, accessTokenKey: string, refreshTokenKey: string) => {
+export const clearAuthCookies = (
+	res: Response,
+	accessTokenKey: string,
+	refreshTokenKey: string,
+) => {
 	res
 		.clearCookie(accessTokenKey, {
 			httpOnly: true,
