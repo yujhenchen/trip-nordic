@@ -59,7 +59,10 @@ async function startServer() {
 			return response;
 		};
 
-		async function handleTokenRefresh(refresh: string, res: Response): Promise<void> {
+		async function handleTokenRefresh(
+			refresh: string,
+			res: Response,
+		): Promise<void> {
 			try {
 				const response = await getTokens(refresh);
 				const data = await response.json();
@@ -68,31 +71,35 @@ async function startServer() {
 				const accessToken = data.access;
 				const refreshToken = data.refresh;
 
-				res.cookie("access", accessToken, {
-					httpOnly: true,
-					secure: true,
-					sameSite: "strict",
-					path: "/",
-				}).cookie("refresh", refreshToken, {
-					httpOnly: true,
-					secure: true,
-					sameSite: "strict",
-					path: "/",
-				});
+				res
+					.cookie("access", accessToken, {
+						httpOnly: true,
+						secure: true,
+						sameSite: "strict",
+						path: "/",
+					})
+					.cookie("refresh", refreshToken, {
+						httpOnly: true,
+						secure: true,
+						sameSite: "strict",
+						path: "/",
+					});
 			} catch (error) {
 				console.error("handleTokenRefresh", error);
 
-				res.clearCookie(accessTokenKey, {
-					httpOnly: true,
-					secure: true,
-					sameSite: "strict",
-					path: "/",
-				}).clearCookie(refreshTokenKey, {
-					httpOnly: true,
-					secure: true,
-					sameSite: "strict",
-					path: "/",
-				});
+				res
+					.clearCookie(accessTokenKey, {
+						httpOnly: true,
+						secure: true,
+						sameSite: "strict",
+						path: "/",
+					})
+					.clearCookie(refreshTokenKey, {
+						httpOnly: true,
+						secure: true,
+						sameSite: "strict",
+						path: "/",
+					});
 			}
 		}
 
@@ -108,7 +115,10 @@ async function startServer() {
 			return await jose.importSPKI(spki, alg);
 		};
 
-		const getPayload = async (access: string, publicKey: CryptoKey): Promise<jose.JWTPayload | null> => {
+		const getPayload = async (
+			access: string,
+			publicKey: CryptoKey,
+		): Promise<jose.JWTPayload | null> => {
 			try {
 				const { payload } = await jose.jwtVerify(access, publicKey);
 				return payload;
