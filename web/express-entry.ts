@@ -59,44 +59,40 @@ async function startServer() {
 			return response;
 		};
 
-		async function handleTokenRefresh(refresh: string, res: Response) {
+		async function handleTokenRefresh(refresh: string, res: Response): Promise<void> {
 			try {
 				const response = await getTokens(refresh);
 				const data = await response.json();
-				console.log("data", data);
+				// console.log("data", data);
 
 				const accessToken = data.access;
 				const refreshToken = data.refresh;
 
-				res
-					.cookie("access", accessToken, {
-						httpOnly: true,
-						secure: true,
-						sameSite: "strict",
-						path: "/",
-					})
-					.cookie("refresh", refreshToken, {
-						httpOnly: true,
-						secure: true,
-						sameSite: "strict",
-						path: "/",
-					});
+				res.cookie("access", accessToken, {
+					httpOnly: true,
+					secure: true,
+					sameSite: "strict",
+					path: "/",
+				}).cookie("refresh", refreshToken, {
+					httpOnly: true,
+					secure: true,
+					sameSite: "strict",
+					path: "/",
+				});
 			} catch (error) {
 				console.error("handleTokenRefresh", error);
 
-				res
-					.clearCookie(accessTokenKey, {
-						httpOnly: true,
-						secure: true,
-						sameSite: "strict",
-						path: "/",
-					})
-					.clearCookie(refreshTokenKey, {
-						httpOnly: true,
-						secure: true,
-						sameSite: "strict",
-						path: "/",
-					});
+				res.clearCookie(accessTokenKey, {
+					httpOnly: true,
+					secure: true,
+					sameSite: "strict",
+					path: "/",
+				}).clearCookie(refreshTokenKey, {
+					httpOnly: true,
+					secure: true,
+					sameSite: "strict",
+					path: "/",
+				});
 			}
 		}
 
@@ -106,24 +102,39 @@ async function startServer() {
 		const refreshTokenKey = process.env.REFRESH_TOKEN_COOKIE_NAME ?? "refresh";
 		const refreshToken = req.cookies[refreshTokenKey];
 
-		if (accessToken) {
+		const getPublicKey = async (): Promise<CryptoKey> => {
 			const alg = "RS256";
 			const spki = process.env.VERIFYING_KEY?.replace(/\\n/g, "\n") ?? "";
-			const publicKey = await jose.importSPKI(spki, alg);
+			return await jose.importSPKI(spki, alg);
+		};
 
+		const getPayload = async (access: string, publicKey: CryptoKey): Promise<jose.JWTPayload | null> => {
 			try {
-				const { payload } = await jose.jwtVerify(accessToken, publicKey);
-				const exp = payload.exp as number;
+				const { payload } = await jose.jwtVerify(access, publicKey);
+				return payload;
+			} catch (error) {
+				console.error("getPayload", error);
+				return null;
+			}
+		};
+
+		if (accessToken) {
+			try {
+				const publicKey = await getPublicKey();
+				const payload = await getPayload(accessToken, publicKey);
+
+				const exp = payload?.exp as number;
 				const currentTime = Math.floor(Date.now() / 1000);
-				console.log("exp", exp);
-				console.log("currentTime", currentTime);
-				console.log("exp - currentTime", exp - currentTime);
+				// console.log("exp", exp);
+				// console.log("currentTime", currentTime);
+				// console.log("exp - currentTime", exp - currentTime);
 
 				if (exp - currentTime < 290) {
-					console.log("refresh token");
+					// console.log("refresh token");
 					await handleTokenRefresh(refreshToken, res);
 				}
 			} catch (error) {
+				console.error(error);
 				await handleTokenRefresh(refreshToken, res);
 			}
 		}
