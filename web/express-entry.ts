@@ -43,7 +43,6 @@ async function startServer() {
 	app.use(cookieParser());
 
 	app.all("*", async (req: AppRequest, res) => {
-
 		const apiUrl = process.env.VITE_AUTH_API_URL ?? "";
 		const getTokens = async (refresh: string) => {
 			const refreshUrl = `${apiUrl}/token/refresh`;
@@ -69,31 +68,35 @@ async function startServer() {
 				const accessToken = data.access;
 				const refreshToken = data.refresh;
 
-				res.cookie('access', accessToken, {
-					httpOnly: true,
-					secure: true,
-					sameSite: 'strict',
-					path: '/',
-				}).cookie('refresh', refreshToken, {
-					httpOnly: true,
-					secure: true,
-					sameSite: 'strict',
-					path: '/',
-				});
+				res
+					.cookie("access", accessToken, {
+						httpOnly: true,
+						secure: true,
+						sameSite: "strict",
+						path: "/",
+					})
+					.cookie("refresh", refreshToken, {
+						httpOnly: true,
+						secure: true,
+						sameSite: "strict",
+						path: "/",
+					});
 			} catch (error) {
 				console.error("handleTokenRefresh", error);
 
-				res.clearCookie(accessTokenKey, {
-					httpOnly: true,
-					secure: true,
-					sameSite: 'strict',
-					path: '/',
-				}).clearCookie(refreshTokenKey, {
-					httpOnly: true,
-					secure: true,
-					sameSite: 'strict',
-					path: '/',
-				});
+				res
+					.clearCookie(accessTokenKey, {
+						httpOnly: true,
+						secure: true,
+						sameSite: "strict",
+						path: "/",
+					})
+					.clearCookie(refreshTokenKey, {
+						httpOnly: true,
+						secure: true,
+						sameSite: "strict",
+						path: "/",
+					});
 			}
 		}
 
