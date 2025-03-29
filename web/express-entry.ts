@@ -57,14 +57,13 @@ async function startServer() {
 
 	app.use(cookieParser());
 
-	app.all("*", async (req: AppRequest, res) => {
+	app.all("*", async (req: AppRequest, res, next) => {
 		const accessToken = req.cookies[accessTokenKey];
 		const refreshToken = req.cookies[refreshTokenKey];
 
 		if (accessToken) {
 			try {
 				const payload = await getPayload(accessToken, verifyingKey);
-
 				const exp = payload?.exp as number;
 				const currentTime = Math.floor(Date.now() / 1000);
 
@@ -89,13 +88,25 @@ async function startServer() {
 						refreshTokenKey,
 					);
 				} else {
-					console.error("middleware", error);
+					console.error("middleware: silent authentication:", error);
 					clearAuthCookies(res, accessTokenKey, refreshTokenKey);
 				}
 			}
 		}
 
+		next();
+	});
+
+	app.all("*", async (req, res) => {
 		// TODO: get user from token
+		const accessToken = req.cookies[accessTokenKey];
+		let user: string | null = null;
+		try {
+			const payload = await getPayload(accessToken, verifyingKey);
+			user = payload?.user_id as string ?? null;
+		} catch (error) {
+			console.error("middleware: get user:", error);
+		}
 
 		const pageContextInit = {
 			// Required: the URL of the page
@@ -106,7 +117,7 @@ async function startServer() {
 
 			// Optional: information about the logged-in user (when using an
 			// Express.js authentication middleware that defines `req.user`).
-			user: null, //"TODO: fix this to correct value",
+			user, //"TODO: fix this to correct value",
 
 			// ... we can provide any additional information about the request here ...
 		};
