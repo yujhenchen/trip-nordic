@@ -22,7 +22,7 @@ export async function handleTokenRefresh(
 	refresh: string,
 	res: Response,
 	accessTokenKey: string,
-	refreshTokenKey: string
+	refreshTokenKey: string,
 ): Promise<void> {
 	try {
 		const response = await getTokens(apiUrl, refresh);
@@ -64,21 +64,13 @@ export async function handleTokenRefresh(
 	}
 }
 
-export const getPublicKey = async (): Promise<CryptoKey> => {
-	const alg = "RS256";
-	const spki = process.env.VERIFYING_KEY?.replace(/\\n/g, "\n") ?? "";
-	return await jose.importSPKI(spki, alg);
-};
-
 export const getPayload = async (
 	access: string,
-	publicKey: CryptoKey,
+	verifyingKey: string,
 ): Promise<jose.JWTPayload | null> => {
-	try {
-		const { payload } = await jose.jwtVerify(access, publicKey);
-		return payload;
-	} catch (error) {
-		console.error("getPayload", error);
-		return null;
-	}
+	const alg = "RS256";
+	const spki = verifyingKey.replace(/\\n/g, "\n") ?? "";
+	const publicKey = await jose.importSPKI(spki, alg);
+	const { payload } = await jose.jwtVerify(access, publicKey);
+	return payload;
 };

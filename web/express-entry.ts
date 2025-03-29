@@ -7,7 +7,11 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import type { AppRequest } from "./pageHandler";
 
-import { getPayload, getPublicKey, handleTokenRefresh } from "./utils/authHelper";
+import {
+	getPayload,
+	handleTokenRefresh,
+} from "./utils/authHelper";
+import { JWTExpired } from "jose/errors";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -52,8 +56,8 @@ async function startServer() {
 
 		if (accessToken) {
 			try {
-				const publicKey = await getPublicKey();
-				const payload = await getPayload(accessToken, publicKey);
+				const verifyingKey = process.env.VERIFYING_KEY?.replace(/\\n/g, "\n") ?? "";
+				const payload = await getPayload(accessToken, verifyingKey);
 
 				const exp = payload?.exp as number;
 				const currentTime = Math.floor(Date.now() / 1000);
@@ -61,15 +65,36 @@ async function startServer() {
 				// console.log("currentTime", currentTime);
 				// console.log("exp - currentTime", exp - currentTime);
 
-				if (exp - currentTime < 290) {
-					// console.log("refresh token");
-					await handleTokenRefresh(apiUrl, refreshToken, res, accessTokenKey, refreshTokenKey);
+				const TOKEN_EXPIRED_THRESHOLD = Number(process.env.TOKEN_EXPIRED_THRESHOLD ?? 60);
+
+				if (exp - currentTime < TOKEN_EXPIRED_THRESHOLD) {
+					console.log("refresh token");
+					await handleTokenRefresh(
+						apiUrl,
+						refreshToken,
+						res,
+						accessTokenKey,
+						refreshTokenKey,
+					);
 				}
 			} catch (error) {
-				console.error(error);
-				await handleTokenRefresh(apiUrl, refreshToken, res, accessTokenKey, refreshTokenKey);
+				if (error instanceof JWTExpired) {
+					// console.error("middleware JWTExpired:", error);
+					await handleTokenRefresh(
+						apiUrl,
+						refreshToken,
+						res,
+						accessTokenKey,
+						refreshTokenKey,
+					);
+				}
+				else {
+					console.error("middleware", error);
+				}
 			}
 		}
+
+		// TODO: get user from token
 
 		const pageContextInit = {
 			// Required: the URL of the page
