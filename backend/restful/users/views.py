@@ -4,6 +4,7 @@ from .serializers import UserSerializer
 from .models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+import json
 
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
@@ -12,6 +13,7 @@ from utils.token import (
     get_tokens_for_user,
     set_auth_cookies,
     delete_auth_cookies,
+    get_tokens,
 )
 from django.conf import settings
 
@@ -67,12 +69,13 @@ class LogInView(views.APIView):
             # TODO: what is this
             # csrf.get_token(request)
             return response
-        except KeyError:
-            return JsonResponse(
-                {"error": "Email and password are required"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        except AuthenticationFailed:
+        # except KeyError:
+        #     return JsonResponse(
+        #         {"error": "Email and password are required"},
+        #         status=status.HTTP_400_BAD_REQUEST,
+        #     )
+        except AuthenticationFailed as e:
+            print(e)
             return JsonResponse(
                 {"error": "Invalid email or password"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -117,3 +120,46 @@ class LogOutView(views.APIView):
             return JsonResponse(
                 {"error": "Unknown error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class TokenRefreshView(views.APIView):
+    def post(self, request):
+        try:
+            # refresh_token = request.COOKIES[settings.REFRESH_TOKEN_COOKIE_NAME]
+            # if not refresh_token:
+            #     return JsonResponse(
+            #         {"error": "Refresh token required"},
+            #         status=status.HTTP_400_BAD_REQUEST,
+            #     )
+
+            # get refresh token from request body
+            data = json.loads(request.body)
+            refresh_token = data.get("refresh")
+
+            if not refresh_token:
+                return JsonResponse(
+                    {"error": "Refresh token required"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            tokens = get_tokens(refresh_token)
+            response = JsonResponse(
+                {"message": "Tokens refreshed successfully"}, status=status.HTTP_200_OK
+            )
+            # TODO: get user id from token
+            set_auth_cookies(response, tokens, "fake user id")
+            return response
+        except TokenError as e:
+            print("TokenError", e)
+            response = JsonResponse(
+                {"error": "invalid Refresh token"}, status=status.HTTP_400_BAD_REQUEST
+            )
+            delete_auth_cookies(response)
+            return response
+        except Exception as e:
+            print("Exception", e)
+            response = JsonResponse(
+                {"error": "Unknown error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+            delete_auth_cookies(response)
+            return response

@@ -33,6 +33,23 @@ export const signUp = async <T extends Record<string, unknown>>(data: T) => {
 	return response.json();
 };
 
+// export const user = async () => {
+// 	const userUrl = `${apiUrl}/user`;
+// 	const response = await fetch(userUrl, {
+// 		method: "GET",
+// 		headers: {
+// 			"Content-Type": "application/json",
+// 		},
+// 		credentials: "include",
+// 	});
+// 	console.log(response);
+
+// 	if (!response.ok) {
+// 		throw new Error(response.statusText);
+// 	}
+// 	return await response.json();
+// }
+
 export const logout = async () => {
 	const logoutUrl = `${apiUrl}/logout`;
 	const response = await fetch(logoutUrl, {
@@ -49,21 +66,21 @@ export const logout = async () => {
 	return await response.json();
 };
 
-export const getTokens = async (refresh: string) => {
-	const refreshUrl = `${apiUrl}/token/refresh`;
-	const response = await fetch(refreshUrl, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			refresh,
-		}),
-		credentials: "include",
-	});
+// export const getTokens = async () => {
+// 	const refreshUrl = `${apiUrl}/refresh`;
+// 	const response = await fetch(refreshUrl, {
+// 		method: "POST",
+// 		headers: {
+// 			"Content-Type": "application/json",
+// 		},
+// 		// body: JSON.stringify({
+// 		// 	refresh,
+// 		// }),
+// 		credentials: "include",
+// 	});
 
-	if (!response.ok) {
-		throw new Error(response.statusText);
-	}
-	return await response.json();
-};
+// 	if (!response.ok) {
+// 		throw new Error(response.statusText);
+// 	}
+// 	return await response.json();
+// };
