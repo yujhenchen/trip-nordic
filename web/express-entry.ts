@@ -4,13 +4,11 @@ import { fileURLToPath } from "node:url";
 import express from "express";
 import { createDevMiddleware, renderPage } from "vike/server";
 import dotenv from "dotenv";
-// import type { Request, Response } from "express";
+import type { Response } from "express";
 import cookieParser from "cookie-parser";
-// import { getUser } from "./apis";
 import type { AppRequest } from "./pageHandler";
 
 import * as jose from "jose";
-// import { getTokens } from "./apis";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -44,20 +42,11 @@ async function startServer() {
 
 	app.use(cookieParser());
 
-	// app.get("/login", handlePageRequest);
-	// app.get("/signup", handlePageRequest);
-	// app.get("*", handlePageRequest);
-
 	app.all("*", async (req: AppRequest, res) => {
-		// const user = getUser(req);
-		console.log("req.url", req.url);
 
-		// TODO:
-		// check if token is about to expired, call refresh if so
-		// get user from cookie
 		const apiUrl = process.env.VITE_AUTH_API_URL ?? "";
 		const getTokens = async (refresh: string) => {
-			const refreshUrl = `${apiUrl}/refresh`;
+			const refreshUrl = `${apiUrl}/token/refresh`;
 			const response = await fetch(refreshUrl, {
 				method: "POST",
 				headers: {
@@ -68,19 +57,52 @@ async function startServer() {
 				}),
 				credentials: "include",
 			});
-
-			if (!response.ok) {
-				throw new Error(response.statusText);
-			}
-			return await response.json();
+			return response;
 		};
+
+		async function handleTokenRefresh(refresh: string, res: Response) {
+			try {
+				const response = await getTokens(refresh);
+				const data = await response.json();
+				console.log("data", data);
+
+				const accessToken = data.access;
+				const refreshToken = data.refresh;
+
+				res.cookie('access', accessToken, {
+					httpOnly: true,
+					secure: true,
+					sameSite: 'strict',
+					path: '/',
+				}).cookie('refresh', refreshToken, {
+					httpOnly: true,
+					secure: true,
+					sameSite: 'strict',
+					path: '/',
+				});
+			} catch (error) {
+				console.error("handleTokenRefresh", error);
+
+				res.clearCookie(accessTokenKey, {
+					httpOnly: true,
+					secure: true,
+					sameSite: 'strict',
+					path: '/',
+				}).clearCookie(refreshTokenKey, {
+					httpOnly: true,
+					secure: true,
+					sameSite: 'strict',
+					path: '/',
+				});
+			}
+		}
 
 		const accessTokenKey = process.env.ACCESS_TOKEN_COOKIE_NAME ?? "access";
 		const accessToken = req.cookies[accessTokenKey];
 
 		const refreshTokenKey = process.env.REFRESH_TOKEN_COOKIE_NAME ?? "refresh";
 		const refreshToken = req.cookies[refreshTokenKey];
-		console.log("accessToken", accessToken);
+
 		if (accessToken) {
 			const alg = "RS256";
 			const spki = process.env.VERIFYING_KEY?.replace(/\\n/g, "\n") ?? "";
@@ -95,19 +117,11 @@ async function startServer() {
 				console.log("exp - currentTime", exp - currentTime);
 
 				if (exp - currentTime < 290) {
-					try {
-						await getTokens(refreshToken);
-					} catch (error) {
-						console.error(error);
-					}
+					console.log("refresh token");
+					await handleTokenRefresh(refreshToken, res);
 				}
 			} catch (error) {
-				try {
-					// TODO; when access token has already expired
-					console.log("do something");
-				} catch (error) {
-					console.error("client", error);
-				}
+				await handleTokenRefresh(refreshToken, res);
 			}
 		}
 
