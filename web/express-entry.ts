@@ -103,7 +103,7 @@ async function startServer() {
 		let user: string | null = null;
 		try {
 			const payload = await getPayload(accessToken, verifyingKey);
-			user = payload?.user_id as string ?? null;
+			user = (payload?.user_id as string) ?? null;
 		} catch (error) {
 			console.error("middleware: get user:", error);
 		}
