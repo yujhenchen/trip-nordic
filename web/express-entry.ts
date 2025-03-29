@@ -48,15 +48,14 @@ async function startServer() {
 	// app.get("/signup", handlePageRequest);
 	// app.get("*", handlePageRequest);
 
-
 	app.all("*", async (req: AppRequest, res) => {
 		// const user = getUser(req);
-		console.log("req.url", req.url)
+		console.log("req.url", req.url);
 
-		// TODO: 
+		// TODO:
 		// check if token is about to expired, call refresh if so
 		// get user from cookie
-		const apiUrl = process.env.VITE_AUTH_API_URL ?? '';
+		const apiUrl = process.env.VITE_AUTH_API_URL ?? "";
 		const getTokens = async (refresh: string) => {
 			const refreshUrl = `${apiUrl}/refresh`;
 			const response = await fetch(refreshUrl, {
@@ -76,26 +75,24 @@ async function startServer() {
 			return await response.json();
 		};
 
-
-
-		const accessTokenKey = process.env.ACCESS_TOKEN_COOKIE_NAME ?? 'access';
+		const accessTokenKey = process.env.ACCESS_TOKEN_COOKIE_NAME ?? "access";
 		const accessToken = req.cookies[accessTokenKey];
 
-		const refreshTokenKey = process.env.REFRESH_TOKEN_COOKIE_NAME ?? 'refresh';
+		const refreshTokenKey = process.env.REFRESH_TOKEN_COOKIE_NAME ?? "refresh";
 		const refreshToken = req.cookies[refreshTokenKey];
-		console.log("accessToken", accessToken)
+		console.log("accessToken", accessToken);
 		if (accessToken) {
-			const alg = 'RS256';
-			const spki = process.env.VERIFYING_KEY?.replace(/\\n/g, '\n') ?? '';
-			const publicKey = await jose.importSPKI(spki, alg)
+			const alg = "RS256";
+			const spki = process.env.VERIFYING_KEY?.replace(/\\n/g, "\n") ?? "";
+			const publicKey = await jose.importSPKI(spki, alg);
 
 			try {
 				const { payload } = await jose.jwtVerify(accessToken, publicKey);
 				const exp = payload.exp as number;
 				const currentTime = Math.floor(Date.now() / 1000);
-				console.log("exp", exp)
-				console.log("currentTime", currentTime)
-				console.log("exp - currentTime", exp - currentTime)
+				console.log("exp", exp);
+				console.log("currentTime", currentTime);
+				console.log("exp - currentTime", exp - currentTime);
 
 				if (exp - currentTime < 290) {
 					try {
@@ -107,14 +104,12 @@ async function startServer() {
 			} catch (error) {
 				try {
 					// TODO; when access token has already expired
-					console.log("do something")
+					console.log("do something");
 				} catch (error) {
 					console.error("client", error);
 				}
 			}
-
 		}
-
 
 		const pageContextInit = {
 			// Required: the URL of the page
