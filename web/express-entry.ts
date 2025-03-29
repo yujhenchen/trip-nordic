@@ -4,11 +4,10 @@ import { fileURLToPath } from "node:url";
 import express from "express";
 import { createDevMiddleware, renderPage } from "vike/server";
 import dotenv from "dotenv";
-import type { Response } from "express";
 import cookieParser from "cookie-parser";
 import type { AppRequest } from "./pageHandler";
 
-import * as jose from "jose";
+import { getPayload, getPublicKey, handleTokenRefresh } from "./utils/authHelper";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -44,89 +43,12 @@ async function startServer() {
 
 	app.all("*", async (req: AppRequest, res) => {
 		const apiUrl = process.env.VITE_AUTH_API_URL ?? "";
-		const getTokens = async (refresh: string) => {
-			const refreshUrl = `${apiUrl}/token/refresh`;
-			const response = await fetch(refreshUrl, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					refresh,
-				}),
-				credentials: "include",
-			});
-			return response;
-		};
-
-		async function handleTokenRefresh(
-			refresh: string,
-			res: Response,
-		): Promise<void> {
-			try {
-				const response = await getTokens(refresh);
-				const data = await response.json();
-				// console.log("data", data);
-
-				const accessToken = data.access;
-				const refreshToken = data.refresh;
-
-				res
-					.cookie("access", accessToken, {
-						httpOnly: true,
-						secure: true,
-						sameSite: "strict",
-						path: "/",
-					})
-					.cookie("refresh", refreshToken, {
-						httpOnly: true,
-						secure: true,
-						sameSite: "strict",
-						path: "/",
-					});
-			} catch (error) {
-				console.error("handleTokenRefresh", error);
-
-				res
-					.clearCookie(accessTokenKey, {
-						httpOnly: true,
-						secure: true,
-						sameSite: "strict",
-						path: "/",
-					})
-					.clearCookie(refreshTokenKey, {
-						httpOnly: true,
-						secure: true,
-						sameSite: "strict",
-						path: "/",
-					});
-			}
-		}
 
 		const accessTokenKey = process.env.ACCESS_TOKEN_COOKIE_NAME ?? "access";
 		const accessToken = req.cookies[accessTokenKey];
 
 		const refreshTokenKey = process.env.REFRESH_TOKEN_COOKIE_NAME ?? "refresh";
 		const refreshToken = req.cookies[refreshTokenKey];
-
-		const getPublicKey = async (): Promise<CryptoKey> => {
-			const alg = "RS256";
-			const spki = process.env.VERIFYING_KEY?.replace(/\\n/g, "\n") ?? "";
-			return await jose.importSPKI(spki, alg);
-		};
-
-		const getPayload = async (
-			access: string,
-			publicKey: CryptoKey,
-		): Promise<jose.JWTPayload | null> => {
-			try {
-				const { payload } = await jose.jwtVerify(access, publicKey);
-				return payload;
-			} catch (error) {
-				console.error("getPayload", error);
-				return null;
-			}
-		};
 
 		if (accessToken) {
 			try {
@@ -141,11 +63,11 @@ async function startServer() {
 
 				if (exp - currentTime < 290) {
 					// console.log("refresh token");
-					await handleTokenRefresh(refreshToken, res);
+					await handleTokenRefresh(apiUrl, refreshToken, res, accessTokenKey, refreshTokenKey);
 				}
 			} catch (error) {
 				console.error(error);
-				await handleTokenRefresh(refreshToken, res);
+				await handleTokenRefresh(apiUrl, refreshToken, res, accessTokenKey, refreshTokenKey);
 			}
 		}
 
