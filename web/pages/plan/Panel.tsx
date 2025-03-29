@@ -5,13 +5,15 @@ import type { Card } from "@/components/ui/card";
 import { ActionDropdown } from "./ActionDropdown";
 import { PanelCard, PanelCardNew, type PanelCardType } from "./PanelCard";
 import { PanelContainer } from "./PanelContainer";
+import { DatePicker } from "@/components/common/datePicker";
+import { cn } from "@/lib/utils";
 
 export interface PanelProps extends ComponentProps<typeof Card> {
 	title: string;
 	cards: Array<PanelCardType>;
 }
 
-interface PanelTitleProps extends HTMLAttributes<HTMLParagraphElement> {}
+interface PanelTitleProps extends HTMLAttributes<HTMLDivElement> {}
 
 interface PanelContentProps extends ComponentProps<typeof ScrollArea> {}
 
@@ -20,7 +22,10 @@ interface PanelActionBarType extends HTMLAttributes<HTMLDivElement> {}
 export function Panel({ title, cards, ...rest }: PanelProps) {
 	return (
 		<PanelContainer {...rest}>
-			<Panel.Title>{title}</Panel.Title>
+			<Panel.Title>
+				{title}
+				<DatePicker />
+			</Panel.Title>
 			<Panel.ActionBar />
 			<Panel.Content>
 				{cards.map((card) => (
@@ -32,11 +37,21 @@ export function Panel({ title, cards, ...rest }: PanelProps) {
 	);
 }
 
-Panel.Title = function PanelTitle({ children, ...rest }: PanelTitleProps) {
+Panel.Title = function PanelTitle({
+	children,
+	className,
+	...rest
+}: PanelTitleProps) {
 	return (
-		<p className="flex place-content-center w-full p-4" {...rest}>
+		<div
+			className={cn(
+				"flex flex-col place-content-center text-center w-full p-4",
+				className
+			)}
+			{...rest}
+		>
 			{children}
-		</p>
+		</div>
 	);
 };
 
