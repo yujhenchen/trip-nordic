@@ -7,10 +7,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import type { AppRequest } from "./pageHandler";
 
-import {
-	getPayload,
-	handleTokenRefresh,
-} from "./utils/authHelper";
+import { clearAuthCookies, getPayload, handleTokenRefresh } from "./utils/authHelper";
 import { JWTExpired } from "jose/errors";
 
 dotenv.config();
@@ -21,6 +18,17 @@ const root = __dirname;
 const protocol = process.env.PROTOCOL ?? "http";
 const domain = process.env.DOMAIN ?? "localhost";
 const port = process.env.PORT ? Number.parseInt(process.env.PORT, 10) : 3000;
+
+const apiUrl = process.env.VITE_AUTH_API_URL ?? "";
+
+const accessTokenKey = process.env.ACCESS_TOKEN_COOKIE_NAME ?? "access";
+const refreshTokenKey = process.env.REFRESH_TOKEN_COOKIE_NAME ?? "refresh";
+
+const verifyingKey = process.env.VERIFYING_KEY?.replace(/\\n/g, "\n") ?? "";
+
+const TOKEN_EXPIRED_THRESHOLD = Number(
+	process.env.TOKEN_EXPIRED_THRESHOLD ?? 60,
+);
 
 export default (await startServer()) as unknown;
 
@@ -46,29 +54,19 @@ async function startServer() {
 	app.use(cookieParser());
 
 	app.all("*", async (req: AppRequest, res) => {
-		const apiUrl = process.env.VITE_AUTH_API_URL ?? "";
 
-		const accessTokenKey = process.env.ACCESS_TOKEN_COOKIE_NAME ?? "access";
 		const accessToken = req.cookies[accessTokenKey];
-
-		const refreshTokenKey = process.env.REFRESH_TOKEN_COOKIE_NAME ?? "refresh";
 		const refreshToken = req.cookies[refreshTokenKey];
 
 		if (accessToken) {
 			try {
-				const verifyingKey = process.env.VERIFYING_KEY?.replace(/\\n/g, "\n") ?? "";
 				const payload = await getPayload(accessToken, verifyingKey);
 
 				const exp = payload?.exp as number;
 				const currentTime = Math.floor(Date.now() / 1000);
-				// console.log("exp", exp);
-				// console.log("currentTime", currentTime);
-				// console.log("exp - currentTime", exp - currentTime);
-
-				const TOKEN_EXPIRED_THRESHOLD = Number(process.env.TOKEN_EXPIRED_THRESHOLD ?? 60);
 
 				if (exp - currentTime < TOKEN_EXPIRED_THRESHOLD) {
-					console.log("refresh token");
+					// console.log("refresh token");
 					await handleTokenRefresh(
 						apiUrl,
 						refreshToken,
@@ -87,9 +85,9 @@ async function startServer() {
 						accessTokenKey,
 						refreshTokenKey,
 					);
-				}
-				else {
+				} else {
 					console.error("middleware", error);
+					clearAuthCookies(res, accessTokenKey, refreshTokenKey);
 				}
 			}
 		}

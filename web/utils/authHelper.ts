@@ -17,6 +17,22 @@ export const getTokens = async (apiUrl: string, refresh: string) => {
 	return response;
 };
 
+export const clearAuthCookies = (res: Response, accessTokenKey: string, refreshTokenKey: string) => {
+	res
+		.clearCookie(accessTokenKey, {
+			httpOnly: true,
+			secure: true,
+			sameSite: "strict",
+			path: "/",
+		})
+		.clearCookie(refreshTokenKey, {
+			httpOnly: true,
+			secure: true,
+			sameSite: "strict",
+			path: "/",
+		});
+};
+
 export async function handleTokenRefresh(
 	apiUrl: string,
 	refresh: string,
@@ -47,20 +63,7 @@ export async function handleTokenRefresh(
 			});
 	} catch (error) {
 		console.error("handleTokenRefresh", error);
-
-		res
-			.clearCookie(accessTokenKey, {
-				httpOnly: true,
-				secure: true,
-				sameSite: "strict",
-				path: "/",
-			})
-			.clearCookie(refreshTokenKey, {
-				httpOnly: true,
-				secure: true,
-				sameSite: "strict",
-				path: "/",
-			});
+		clearAuthCookies(res, accessTokenKey, refreshTokenKey);
 	}
 }
 
