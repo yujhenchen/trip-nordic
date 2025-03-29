@@ -71,7 +71,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # 'common.middleware.SilenceAuthMiddleware',
 ]
 
 ROOT_URLCONF = "restful.urls"
@@ -208,7 +207,3 @@ SIMPLE_JWT = {
 ACCESS_TOKEN_COOKIE_NAME = "access"
 REFRESH_TOKEN_COOKIE_NAME = "refresh"
 USER_ID_COOKIE_NAME = "user_id"
-
-# HTTP_GET_PROTECTED_ENDPOINTS = ['/api/user']
-
-# HTTP_PROTECTED_ENDPOINTS = {"GET": ["/api/user"]}
