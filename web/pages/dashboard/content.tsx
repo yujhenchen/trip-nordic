@@ -1,4 +1,4 @@
-import { Settings, User } from "lucide-react";
+import { Settings, TentTree, User } from "lucide-react";
 
 import {
 	Sidebar,
@@ -29,6 +29,11 @@ export function Content() {
 			label: "Settings",
 			icon: Settings,
 		},
+		{
+			id: "trips",
+			label: "Trips",
+			icon: TentTree,
+		},
 	];
 
 	// Content for each section
@@ -40,6 +45,10 @@ export function Content() {
 		settings: {
 			title: "Settings",
 			content: "Configure your dashboard preferences and notifications.",
+		},
+		trips: {
+			title: "Trips",
+			content: "View and manage your upcoming and past trips.",
 		},
 	};
 
