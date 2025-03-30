@@ -20,12 +20,12 @@ export default function LayoutDefault({
 	return (
 		<ThemeProvider>
 			<div className={"flex flex-col min-h-screen"}>
-				<Header />
 				<QueryClientProvider client={queryClient}>
+					<Header />
 					{children}
+					<Footer />
+					<Toaster />
 				</QueryClientProvider>
-				<Footer />
-				<Toaster />
 			</div>
 		</ThemeProvider>
 	);

@@ -4,16 +4,21 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useAuthStore from "@/states/useAuthStore";
+import { useLogout } from "@/hooks/useLogout";
 import { LayoutDashboardIcon, LogOutIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { LoadingOverlay } from "./loadingOverlay";
 
 interface Pros {
 	trigger: ReactNode;
 }
 
 export function ProfileDropdown({ trigger }: Pros) {
-	const { logout } = useAuthStore();
+	const { logout, isLoading } = useLogout();
+
+	if (isLoading) {
+		return <LoadingOverlay />;
+	}
 
 	return (
 		<DropdownMenu>
@@ -24,7 +29,7 @@ export function ProfileDropdown({ trigger }: Pros) {
 					Dashboard
 				</DropdownMenuItem>
 
-				<DropdownMenuItem onClick={logout}>
+				<DropdownMenuItem onClick={() => logout()}>
 					<LogOutIcon />
 					Log out
 				</DropdownMenuItem>
