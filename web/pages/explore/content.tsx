@@ -11,7 +11,12 @@ import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
 import { activityTestData } from "./data/activityTestData";
 import { anySourceElementInTarget } from "./utils";
-import { type ComponentProps, useCallback, useMemo, type MouseEvent } from "react";
+import {
+	type ComponentProps,
+	useCallback,
+	useMemo,
+	type MouseEvent,
+} from "react";
 import type { Activity, FilterKeyType, FiltersType } from "./types";
 import useKeepStore from "@/states/useKeepStore";
 
@@ -118,17 +123,6 @@ export function Content() {
 						onClick: (event) => handleClickCard(event)(activity),
 						children: (
 							<CardHeader>
-								<img
-									src={
-										activity.img?.src ??
-										"https://placehold.co/150x100"
-									}
-									alt={activity.img?.alt ?? "Card Image"}
-								/>
-								<CardTitle>{activity.name}</CardTitle>
-								<CardDescription className=" line-clamp-3">
-									{activity.description}
-								</CardDescription>
 								<Bookmark
 									id={IDS.KEEP_ICON}
 									className="self-end"
@@ -141,6 +135,17 @@ export function Content() {
 											: "none"
 									}
 								/>
+								<img
+									src={
+										activity.img?.src ??
+										"https://placehold.co/150x100"
+									}
+									alt={activity.img?.alt ?? "Card Image"}
+								/>
+								<CardTitle>{activity.name}</CardTitle>
+								<CardDescription className=" line-clamp-3">
+									{activity.description}
+								</CardDescription>
 							</CardHeader>
 						),
 					};
