@@ -15,13 +15,12 @@ export function PlanSidebar() {
 	return (
 		<div
 			className={cn(
-				"border md:h-full flex place-content-center md:place-content-end",
-				{
-					"w-full h-1/4 md:w-1/6": sidebarOpen,
-				},
-				{
-					"w-full h-6 md:w-6": !sidebarOpen,
-				},
+				"flex place-content-center md:place-content-end",
+				"border md:h-full",
+				"transition-all duration-300 ease-in-out",
+				sidebarOpen
+					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
+					: "w-full h-6 md:w-6"
 			)}
 		>
 			<ToggleButton />
@@ -35,12 +34,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	useEffect(() => {
