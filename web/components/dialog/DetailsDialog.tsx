@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { FilterRow } from "@/pages/explore/Filter";
 import { Badge } from "../ui/badge";
+import { Bookmark } from "lucide-react";
 
 interface Props {
 	onClose: () => void;
@@ -62,6 +63,7 @@ export default function DetailsDialog({
 					size="lg"
 					className="rounded-xl w-fit mx-auto"
 				>
+					<Bookmark />
 					Keep
 				</Button>
 			</DialogContent>

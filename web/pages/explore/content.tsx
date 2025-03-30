@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { Bookmark, X } from "lucide-react";
 import { CardGrid } from "./CardGrid";
 import {
 	type Card,
@@ -11,13 +11,13 @@ import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
 import { activityTestData } from "./data/activityTestData";
 import { anySourceElementInTarget } from "./utils";
-import { type ComponentProps, useMemo } from "react";
-import type { FilterKeyType, FiltersType } from "./types";
+import { type ComponentProps, useCallback, useMemo } from "react";
+import type { Activity, FilterKeyType, FiltersType } from "./types";
 
 const isFilterMatch = (
 	filters: FiltersType,
 	filterKey: FilterKeyType,
-	activityTags: Array<string>,
+	activityTags: Array<string>
 ) => {
 	const selectedFilters = filters[filterKey] ?? [];
 	return selectedFilters.length > 0
@@ -34,6 +34,29 @@ export function Content() {
 	} = useFilters();
 	const { open } = useDialog();
 
+	const handleClickCard = useCallback(
+		(activity: Activity) => {
+			const { name, description, city, category, region, seasons } =
+				activity;
+			open("DetailsDialog", {
+				headerImage: {
+					src: "https://placehold.co/300x200",
+					alt: "",
+				},
+				title: name,
+				description: description,
+				tags: [
+					city,
+					// TODO: perform default split with comma for API response
+					...category.split(","),
+					region,
+					...seasons.split(","),
+				],
+			});
+		},
+		[open]
+	);
+
 	const cards: Array<ComponentProps<typeof Card>> = useMemo(
 		() =>
 			activityTestData
@@ -41,66 +64,57 @@ export function Content() {
 					const isCategoryMatch = isFilterMatch(
 						currentFilters,
 						"category",
-						activity.category.split(","),
+						activity.category.split(",")
 					);
 
 					const isCityMatch = isFilterMatch(
 						currentFilters,
 						"city",
-						activity.city.split(","),
+						activity.city.split(",")
 					);
 
 					const isRegionMatch = isFilterMatch(
 						currentFilters,
 						"region",
-						activity.region.split(","),
+						activity.region.split(",")
 					);
 
 					const isSeasonMatch = isFilterMatch(
 						currentFilters,
 						"season",
-						activity.seasons.split(","),
+						activity.seasons.split(",")
 					);
 
 					return (
-						isCategoryMatch && isCityMatch && isRegionMatch && isSeasonMatch
+						isCategoryMatch &&
+						isCityMatch &&
+						isRegionMatch &&
+						isSeasonMatch
 					);
 				})
 				.map((activity) => {
 					return {
 						id: activity.id,
-						onClick: () => {
-							open("DetailsDialog", {
-								headerImage: {
-									src: "https://placehold.co/300x200",
-									alt: "",
-								},
-								title: activity.name,
-								description: activity.description,
-								tags: [
-									activity.city,
-									// TODO: perform default split with comma for API response
-									...activity.category.split(","),
-									activity.region,
-									...activity.seasons.split(","),
-								],
-							});
-						},
+						onClick: () => handleClickCard(activity),
 						children: (
 							<CardHeader>
 								<img
-									src={activity.img?.src ?? "https://placehold.co/150x100"}
+									src={
+										activity.img?.src ??
+										"https://placehold.co/150x100"
+									}
 									alt={activity.img?.alt ?? "Card Image"}
 								/>
 								<CardTitle>{activity.name}</CardTitle>
 								<CardDescription className=" line-clamp-3">
 									{activity.description}
 								</CardDescription>
+								<Bookmark className="self-end" />
 							</CardHeader>
 						),
 					};
 				}),
-		[currentFilters, open],
+		[currentFilters, handleClickCard]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {

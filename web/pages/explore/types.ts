@@ -9,3 +9,17 @@ export const FilterKeyTitle = {
 export type FilterKeyType = keyof typeof FilterKeyTitle;
 
 export type FiltersType = Partial<Record<FilterKeyType, Array<string>>>;
+
+export interface Activity {
+	id: string;
+	category: string;
+	city: string;
+	description: string;
+	name: string;
+	region: string;
+	seasons: string;
+	img?: {
+		src: string;
+		alt: string;
+	};
+}
