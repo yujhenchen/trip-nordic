@@ -6,7 +6,8 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { FilterChip, FilterRow } from "@/pages/explore/Filter";
+import { FilterRow } from "@/pages/explore/Filter";
+import { Badge } from "../ui/badge";
 
 interface Props {
 	onClose: () => void;
@@ -39,12 +40,13 @@ export default function DetailsDialog({
 				{tags.length > 0 ? (
 					<FilterRow className="w-full overflow-x-auto">
 						{tags.map((tag) => (
-							<FilterChip
+							<Badge
 								key={tag}
-								selected={false}
-								value={tag}
-								selectedIcon={null}
-							/>
+								variant="default"
+								className="text-center"
+							>
+								{tag}
+							</Badge>
 						))}
 					</FilterRow>
 				) : null}
