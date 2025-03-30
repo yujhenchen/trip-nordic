@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from urllib.parse import quote_plus
+import django_mongodb_backend
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "graphene_django",
+    "activities",
 ]
 
 MIDDLEWARE = [
@@ -73,11 +78,19 @@ WSGI_APPLICATION = 'graph.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+username = quote_plus(MONGO_USERNAME)  # Replace with your actual username
+password = quote_plus(MONGO_PASSWORD)  # Replace with your actual password
+
+# Form the MongoDB URI with escaped username and password
+mongo_uri = f"mongodb+srv://{username}:{password}@cluster0.b3eemve.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+   'default': django_mongodb_backend.parse_uri(mongo_uri, db_name=MONGO_DB_NAME),
 }
 
 
