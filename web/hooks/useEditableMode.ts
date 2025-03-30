@@ -26,6 +26,6 @@ export function useEditableMode() {
 		mode,
 		edit,
 		save,
-		cancel
-	}
+		cancel,
+	};
 }

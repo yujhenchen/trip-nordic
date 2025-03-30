@@ -50,9 +50,7 @@ const Desc = ({ text }: { text: string }) => {
 	return (
 		<>
 			{mode === MODE.VIEW ? (
-				<DialogDescription onDoubleClick={edit}>
-					{text}
-				</DialogDescription>
+				<DialogDescription onDoubleClick={edit}>{text}</DialogDescription>
 			) : (
 				<div className="flex items-center">
 					<Textarea
