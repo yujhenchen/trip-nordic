@@ -7,13 +7,19 @@ import { PanelCard, PanelCardNew, type PanelCardType } from "./PanelCard";
 import { PanelContainer } from "./PanelContainer";
 import { DatePicker } from "@/components/common/datePicker";
 import { cn } from "@/lib/utils";
+import { MODE, useEditableMode } from "@/hooks/useEditableMode";
+import { Input } from "@/components/ui/input";
+import { IconButton } from "@/components/common/iconButton";
+import { CheckIcon, X } from "lucide-react";
 
 export interface PanelProps extends ComponentProps<typeof Card> {
 	title: string;
 	cards: Array<PanelCardType>;
 }
 
-interface PanelTitleProps extends HTMLAttributes<HTMLDivElement> {}
+interface PanelTitleProps extends HTMLAttributes<HTMLDivElement> {
+	text: string;
+}
 
 interface PanelContentProps extends ComponentProps<typeof ScrollArea> {}
 
@@ -22,10 +28,7 @@ interface PanelActionBarType extends HTMLAttributes<HTMLDivElement> {}
 export function Panel({ title, cards, ...rest }: PanelProps) {
 	return (
 		<PanelContainer {...rest}>
-			<Panel.Title>
-				{title}
-				<DatePicker />
-			</Panel.Title>
+			<Panel.Title text={title} />
 			<Panel.ActionBar />
 			<Panel.Content>
 				{cards.map((card) => (
@@ -38,19 +41,34 @@ export function Panel({ title, cards, ...rest }: PanelProps) {
 }
 
 Panel.Title = function PanelTitle({
-	children,
+	text,
 	className,
 	...rest
 }: PanelTitleProps) {
+	const { mode, edit, save, cancel } = useEditableMode();
+
 	return (
 		<div
 			className={cn(
-				"flex flex-col place-content-center text-center w-full p-4",
-				className,
+				"flex flex-col place-content-center text-center w-full p-4 space-y-2",
+				className
 			)}
 			{...rest}
 		>
-			{children}
+			{mode === MODE.VIEW ? (
+				<p onDoubleClick={edit}>{text}</p>
+			) : (
+				<div className="flex items-center">
+					<Input
+						// id="panel-title-id"
+						defaultValue={text}
+						onKeyDown={(e) => e.key === "Enter" && save()}
+					/>
+					<IconButton icon={<CheckIcon />} onClick={save} />
+					<IconButton icon={<X />} onClick={cancel} />
+				</div>
+			)}
+			<DatePicker />
 		</div>
 	);
 };
