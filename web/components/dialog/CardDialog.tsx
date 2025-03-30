@@ -6,12 +6,12 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
 import { Input } from "../ui/input";
 import { CheckIcon, X } from "lucide-react";
 import { IconButton } from "../common/iconButton";
+import { MODE, useEditableMode } from "@/hooks/useEditableMode";
 
-interface Props {
+interface CardDialogProps {
 	onClose: () => void;
 	title: string;
 	description: string;
@@ -22,26 +22,8 @@ export const IDS = {
 	CONTENT_EDIT: "content-edit",
 } as const;
 
-const MODE = {
-	EDIT: "EDIT",
-	VIEW: "VIEW",
-} as const;
-
-type ModeType = keyof typeof MODE;
-
 const Title = ({ text }: { text: string }) => {
-	const [mode, setMode] = useState<ModeType>(MODE.VIEW);
-	const edit = () => {
-		setMode(MODE.EDIT);
-	};
-
-	const save = () => {
-		setMode(MODE.VIEW);
-	};
-
-	const cancel = () => {
-		setMode(MODE.VIEW);
-	};
+	const { mode, edit, save, cancel } = useEditableMode();
 
 	return (
 		<>
@@ -63,28 +45,12 @@ const Title = ({ text }: { text: string }) => {
 };
 
 const Desc = ({ text }: { text: string }) => {
-	const [mode, setMode] = useState<ModeType>(MODE.VIEW);
-
-	const edit = () => {
-		setMode(MODE.EDIT);
-	};
-
-	const save = () => {
-		setMode(MODE.VIEW);
-	};
-
-	const cancel = () => {
-		setMode(MODE.VIEW);
-	};
+	const { mode, edit, save, cancel } = useEditableMode();
 
 	return (
 		<>
 			{mode === MODE.VIEW ? (
-				<DialogDescription
-					onDoubleClick={() => {
-						setMode(MODE.EDIT);
-					}}
-				>
+				<DialogDescription onDoubleClick={edit}>
 					{text}
 				</DialogDescription>
 			) : (
@@ -102,7 +68,11 @@ const Desc = ({ text }: { text: string }) => {
 	);
 };
 
-export default function CardDialog({ onClose, title, description }: Props) {
+export default function CardDialog({
+	onClose,
+	title,
+	description,
+}: CardDialogProps) {
 	return (
 		<Dialog open onOpenChange={onClose}>
 			{/* <DialogTrigger>Open</DialogTrigger> */}
