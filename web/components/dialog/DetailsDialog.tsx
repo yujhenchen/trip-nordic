@@ -9,6 +9,7 @@ import {
 import { FilterRow } from "@/pages/explore/Filter";
 import { Badge } from "../ui/badge";
 import { Bookmark } from "lucide-react";
+import useKeepStore from "@/states/useKeepStore";
 
 interface Props {
 	onClose: () => void;
@@ -19,6 +20,7 @@ interface Props {
 	title: string;
 	description: string;
 	tags: Array<string>;
+	activityId: string;
 }
 
 export default function DetailsDialog({
@@ -27,7 +29,20 @@ export default function DetailsDialog({
 	title,
 	description,
 	tags,
+	activityId,
 }: Props) {
+	const { keeps, addKeep, removeKeep } = useKeepStore();
+
+	const handleKeep = () => {
+		if (keeps.includes(activityId)) {
+			removeKeep(activityId);
+		} else {
+			addKeep(activityId);
+		}
+	};
+
+	const isKept = keeps.includes(activityId);
+
 	return (
 		<Dialog open onOpenChange={onClose}>
 			{/* <DialogTrigger>Open</DialogTrigger> */}
@@ -41,7 +56,11 @@ export default function DetailsDialog({
 				{tags.length > 0 ? (
 					<FilterRow className="w-full overflow-x-auto">
 						{tags.map((tag) => (
-							<Badge key={tag} variant="default" className="text-center">
+							<Badge
+								key={tag}
+								variant="default"
+								className="text-center"
+							>
 								{tag}
 							</Badge>
 						))}
@@ -62,8 +81,9 @@ export default function DetailsDialog({
 					variant="default"
 					size="lg"
 					className="rounded-xl w-fit mx-auto"
+					onClick={handleKeep}
 				>
-					<Bookmark />
+					<Bookmark fill={isKept ? "currentColor" : "none"} />
 					Keep
 				</Button>
 			</DialogContent>
