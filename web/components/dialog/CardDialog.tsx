@@ -8,8 +8,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { Input } from "../ui/input";
-import { IconButton } from "../common/IconButton";
-import { CheckIcon, CrossIcon, X } from "lucide-react";
+import { CheckIcon, X } from "lucide-react";
+import { IconButton } from "../common/iconButton";
 
 interface Props {
 	onClose: () => void;
