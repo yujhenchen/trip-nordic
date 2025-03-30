@@ -36,6 +36,7 @@ Auth token
 - [Simple JWT](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html)
 - [How to use JWT Authentication with Django](https://appliku.com/post/how-use-jwt-authentication-django/#django-jwt-authentication-logout)
 - [JWT Logout — Django Rest Framework](https://medium.com/django-rest/logout-django-rest-framework-eb1b53ac6d35)
+- [rest_framework_simplejwt/exceptions.py](https://github.com/jazzband/djangorestframework-simplejwt/blob/master/rest_framework_simplejwt/exceptions.py)
 
 CORS with HTTPOnly Cookie
 - [JWT token as HttpOnly cookie in Django](https://www.procoding.org/jwt-token-as-httponly-cookie-in-django)
@@ -172,12 +173,19 @@ CORS with HTTPOnly Cookie
 
 - [ ] refresh token
 	- [x] BE
+		- [x] rotate refresh token 
 	- [ ] FE
+		- [ ] silent authentication
 - [ ] logout
 	- [x] BE
 	- [ ] FE
 
 
 ### Security
-- [ ] prevent exposing backend URLs (use API Routes)
+- [ ] prevent exposing backend URLs (use tRPC to implement server actions)
 - [ ] form data
+
+
+## Bugs
+- [ ] after login success, need to redirect to last page before landing on login page
+- [ ] after login success, need to redirect to login page
