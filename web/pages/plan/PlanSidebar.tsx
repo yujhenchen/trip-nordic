@@ -20,7 +20,7 @@ function Content() {
 			className={cn(
 				"flex p-4",
 				"space-x-4 overflow-x-auto overflow-y-hidden",
-				"md:space-x-0 md:overflow-x-hidden md:flex-col md:overflow-y-auto md:space-y-4"
+				"md:space-x-0 md:overflow-x-hidden md:flex-col md:overflow-y-auto md:space-y-4",
 			)}
 		>
 			{keeps.map((keep) => {
@@ -50,7 +50,7 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6"
+					: "w-full h-6 md:w-6",
 			)}
 		>
 			<Content />
@@ -65,12 +65,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger]
+		[isTabletOrBigger],
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger]
+		[isTabletOrBigger],
 	);
 
 	useEffect(() => {
