@@ -11,7 +11,7 @@ import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
 import { activityTestData } from "./data/activityTestData";
 import { anySourceElementInTarget } from "./utils";
-import { type ComponentProps, useCallback, useMemo, MouseEvent } from "react";
+import { type ComponentProps, useCallback, useMemo, type MouseEvent } from "react";
 import type { Activity, FilterKeyType, FiltersType } from "./types";
 import useKeepStore from "@/states/useKeepStore";
 
