@@ -9,6 +9,36 @@ import {
 import { useMediaQuery } from "react-responsive";
 import { type JSX, useEffect, useMemo, useState } from "react";
 import { IconButton } from "@/components/common/iconButton";
+import useKeepStore from "@/states/useKeepStore";
+import { SidebarCard } from "./sidebarCard";
+import { activityTestData } from "../explore/data/activityTestData";
+
+function Content() {
+	const { keeps } = useKeepStore();
+	return (
+		<div
+			className={cn(
+				"flex p-4",
+				"space-x-4 overflow-x-auto overflow-y-hidden",
+				"md:space-x-0 md:overflow-x-hidden md:flex-col md:overflow-y-auto md:space-y-4"
+			)}
+		>
+			{keeps.map((keep) => {
+				const activity = activityTestData.find((a) => a.id === keep);
+				if (!activity) {
+					return null;
+				}
+				return (
+					<SidebarCard
+						key={activity.id}
+						title={activity.name}
+						description={activity.description}
+					/>
+				);
+			})}
+		</div>
+	);
+}
 
 export function PlanSidebar() {
 	const { sidebarOpen } = useSidebar();
@@ -20,9 +50,10 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6",
+					: "w-full h-6 md:w-6"
 			)}
 		>
+			<Content />
 			<ToggleButton />
 		</div>
 	);
@@ -34,12 +65,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	useEffect(() => {
