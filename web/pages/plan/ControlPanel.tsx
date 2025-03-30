@@ -10,10 +10,7 @@ export function ControlPanel() {
 			<EditableHeading3 text="My Trip Name" />
 			<DatePickerWithRange />
 			<div className="flex space-x-6">
-				<IconButton
-					icon={<Save />}
-					onClick={() => toast.success("Saved")}
-				/>
+				<IconButton icon={<Save />} onClick={() => toast.success("Saved")} />
 				<IconButton
 					icon={<ClipboardCopy />}
 					onClick={() => toast.success("Copied")}
