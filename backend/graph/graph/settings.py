@@ -15,9 +15,23 @@ from pathlib import Path
 from urllib.parse import quote_plus
 import django_mongodb_backend
 
+import environ
+import os
+
+env = environ.Env()
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+MONGO_USERNAME=env("MONGO_USERNAME")
+MONGO_PASSWORD=env("MONGO_PASSWORD")
+MONGO_CLUSTER=env("MONGO_CLUSTER")
+MONGO_OPTIONS=env("MONGO_OPTIONS")
+MONGO_DB_NAME=env("MONGO_DB_NAME")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -34,11 +48,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
+    # 'django.contrib.admin',
+    # 'django.contrib.auth',
+    # 'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    # 'django.contrib.messages',
     'django.contrib.staticfiles',
     "graphene_django",
     "activities",
@@ -81,16 +95,14 @@ WSGI_APPLICATION = 'graph.wsgi.application'
 username = quote_plus(MONGO_USERNAME)  # Replace with your actual username
 password = quote_plus(MONGO_PASSWORD)  # Replace with your actual password
 
-# Form the MongoDB URI with escaped username and password
-mongo_uri = f"mongodb+srv://{username}:{password}@cluster0.b3eemve.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-
+MONGO_URI=f"mongodb+srv://{username}:{password}@{MONGO_CLUSTER}/?{MONGO_OPTIONS}"
 
 DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
-   'default': django_mongodb_backend.parse_uri(mongo_uri, db_name=MONGO_DB_NAME),
+   'default': django_mongodb_backend.parse_uri(MONGO_URI, db_name=MONGO_DB_NAME),
 }
 
 
