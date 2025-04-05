@@ -10,10 +10,14 @@ type IconType = typeof Settings;
 
 export type ItemLabelKeyType = keyof typeof ItemLabel;
 
-export type ItemLabelType = typeof ItemLabel[ItemLabelKeyType];
+export type ItemLabelType = (typeof ItemLabel)[ItemLabelKeyType];
 
 // Menu items for the sidebar
-export const menuItems: Array<{ id: ItemLabelKeyType; label: ItemLabelType; icon: IconType }> = [
+export const menuItems: Array<{
+	id: ItemLabelKeyType;
+	label: ItemLabelType;
+	icon: IconType;
+}> = [
 	{
 		id: "profile",
 		label: ItemLabel.profile,
@@ -32,7 +36,10 @@ export const menuItems: Array<{ id: ItemLabelKeyType; label: ItemLabelType; icon
 ];
 
 // Content for each section
-export const contentSections: Record<ItemLabelKeyType, { title: ItemLabelType; content: string }> = {
+export const contentSections: Record<
+	ItemLabelKeyType,
+	{ title: ItemLabelType; content: string }
+> = {
 	profile: {
 		title: ItemLabel.profile,
 		content: "Manage your personal information and account settings.",

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { contentSections, ItemLabelKeyType, menuItems } from "./data";
+import { contentSections, type ItemLabelKeyType, menuItems } from "./data";
 
 export function Content() {
 	const isMobile = useIsMobile();
@@ -23,9 +23,7 @@ export function Content() {
 				<Sidebar className="h-full border-r">
 					<SidebarHeader>
 						<div className="flex h-14 items-center px-4">
-							<h2 className="text-lg font-semibold">
-								My Dashboard
-							</h2>
+							<h2 className="text-lg font-semibold">My Dashboard</h2>
 						</div>
 					</SidebarHeader>
 					<SidebarContent className="h-full">
