@@ -1,5 +1,3 @@
-import { Settings, TentTree, User } from "lucide-react";
-
 import {
 	Sidebar,
 	SidebarContent,
@@ -12,45 +10,11 @@ import {
 } from "@/components/ui/sidebar";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { contentSections, menuItems } from "./data";
 
 export function Content() {
 	const isMobile = useIsMobile();
 	const [activeItem, setActiveItem] = useState("profile");
-
-	// Menu items for the sidebar
-	const menuItems = [
-		{
-			id: "profile",
-			label: "Profile",
-			icon: User,
-		},
-		{
-			id: "settings",
-			label: "Settings",
-			icon: Settings,
-		},
-		{
-			id: "trips",
-			label: "Trips",
-			icon: TentTree,
-		},
-	];
-
-	// Content for each section
-	const contentSections = {
-		profile: {
-			title: "Profile",
-			content: "Manage your personal information and account settings.",
-		},
-		settings: {
-			title: "Settings",
-			content: "Configure your dashboard preferences and notifications.",
-		},
-		trips: {
-			title: "Trips",
-			content: "View and manage your upcoming and past trips.",
-		},
-	};
 
 	return (
 		<SidebarProvider>
