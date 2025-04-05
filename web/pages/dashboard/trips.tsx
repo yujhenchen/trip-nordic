@@ -7,6 +7,7 @@ import {
 import { Label } from "@/components/ui/label";
 import useTripState from "@/states/useTripState";
 import { NewTripCard } from "./newTripCard";
+import { ActionDropdown } from "./ActionDropdown";
 
 const getDateString = (date: string | Date | unknown) => {
 	if (typeof date === "string") {
@@ -26,6 +27,9 @@ export function Trips() {
 			{trips.map((trip) => (
 				<Card key={trip.id}>
 					<CardHeader>
+						<div className="w-full flex place-content-end">
+							<ActionDropdown />
+						</div>
 						<CardTitle>{trip.name}</CardTitle>
 						<CardDescription className="flex space-x-2">
 							<Label>{getDateString(trip.startDate)}</Label>
