@@ -29,7 +29,7 @@ export function NewTripCard() {
 	};
 
 	return (
-		<Card className="h-20 aspect-video flex place-content-center items-center overflow-hidden">
+		<Card className="w-full h-20 flex place-content-center items-center overflow-hidden">
 			<IconButton icon={<Plus />} onClick={handleAdd} />
 		</Card>
 	);
