@@ -10,9 +10,9 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { DatePickerWithRange } from "../common/datePickerWithRange";
 import { useRef, useState } from "react";
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
-import { NewTrip } from "@/types/trips";
+import type { NewTrip } from "@/types/trips";
 
 interface Props {
 	onClose: () => void;

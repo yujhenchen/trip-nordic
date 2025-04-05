@@ -2,7 +2,7 @@ import { IconButton } from "@/components/common/iconButton";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { Card } from "@/components/ui/card";
 import useTripState from "@/states/useTripState";
-import { NewTrip } from "@/types/trips";
+import type { NewTrip } from "@/types/trips";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";

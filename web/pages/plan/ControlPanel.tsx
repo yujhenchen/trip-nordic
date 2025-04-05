@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { EditableHeading3 } from "./EditableHeading3";
 import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
 import { useState } from "react";
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
 
 export function ControlPanel() {
@@ -18,10 +18,7 @@ export function ControlPanel() {
 			<EditableHeading3 text="My Trip Name" />
 			<DatePickerWithRange date={date} setDate={setDate} />
 			<div className="flex space-x-6">
-				<IconButton
-					icon={<Save />}
-					onClick={() => toast.success("Saved")}
-				/>
+				<IconButton icon={<Save />} onClick={() => toast.success("Saved")} />
 				<IconButton
 					icon={<ClipboardCopy />}
 					onClick={() => toast.success("Copied")}

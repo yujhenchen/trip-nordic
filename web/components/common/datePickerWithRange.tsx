@@ -22,7 +22,7 @@ export function DatePickerWithRange(
 	// {
 	// className,
 	// }: React.HTMLAttributes<HTMLDivElement>
-	{ id, className, date, setDate }: Props
+	{ id, className, date, setDate }: Props,
 ) {
 	// const [date, setDate] = React.useState<DateRange | undefined>({
 	// 	from: new Date(2022, 0, 20),
@@ -38,7 +38,7 @@ export function DatePickerWithRange(
 						variant={"outline"}
 						className={cn(
 							"w-[300px] justify-start text-left font-normal",
-							!date && "text-muted-foreground"
+							!date && "text-muted-foreground",
 						)}
 					>
 						<CalendarIcon />
