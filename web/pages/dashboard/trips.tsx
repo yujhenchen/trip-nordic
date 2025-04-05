@@ -1,49 +1,41 @@
-import { IconButton } from "@/components/common/iconButton";
-import { useDialog } from "@/components/providers/DialogProvider";
 import {
 	Card,
-	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import useTripState from "@/states/useTripState";
-import { Plus } from "lucide-react";
+import { NewTripCard } from "./newTripCard";
+
+const getDateString = (date: string | Date | unknown) => {
+	if (typeof date === "string") {
+		return new Date(date).toDateString();
+	}
+	if (date instanceof Date) {
+		return date.toDateString();
+	}
+	return JSON.stringify(date);
+};
 
 export function Trips() {
 	const { trips } = useTripState();
+
 	return (
-		<div>
+		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
 			{trips.map((trip) => (
 				<Card key={trip.id}>
 					<CardHeader>
 						<CardTitle>{trip.name}</CardTitle>
-						<CardDescription>Card Description</CardDescription>
+						<CardDescription className="flex space-x-2">
+							<Label>{getDateString(trip.startDate)}</Label>
+							<Label>-</Label>
+							<Label>{getDateString(trip.endDate)}</Label>
+						</CardDescription>
 					</CardHeader>
-					<CardContent>
-						<p>Card Content</p>
-					</CardContent>
-					<CardFooter>
-						<p>Card Footer</p>
-					</CardFooter>
 				</Card>
 			))}
-			<NewTrip />
+			<NewTripCard />
 		</div>
-	);
-}
-
-function NewTrip() {
-	const { open } = useDialog();
-
-	const handleAdd = () => {
-		open("NewTripDialog", {});
-	};
-
-	return (
-		<Card className="h-20 aspect-video flex place-content-center items-center overflow-hidden">
-			<IconButton icon={<Plus />} onClick={handleAdd} />
-		</Card>
 	);
 }
