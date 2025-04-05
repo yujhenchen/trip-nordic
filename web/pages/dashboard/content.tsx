@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/sidebar";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { contentSections, menuItems } from "./data";
+import { contentSections, ItemLabelKeyType, menuItems } from "./data";
 
 export function Content() {
 	const isMobile = useIsMobile();
-	const [activeItem, setActiveItem] = useState("profile");
+	const [activeItem, setActiveItem] = useState<ItemLabelKeyType>("profile");
 
 	return (
 		<SidebarProvider>
@@ -23,7 +23,9 @@ export function Content() {
 				<Sidebar className="h-full border-r">
 					<SidebarHeader>
 						<div className="flex h-14 items-center px-4">
-							<h2 className="text-lg font-semibold">My Dashboard</h2>
+							<h2 className="text-lg font-semibold">
+								My Dashboard
+							</h2>
 						</div>
 					</SidebarHeader>
 					<SidebarContent className="h-full">
@@ -47,26 +49,15 @@ export function Content() {
 					<header className="flex h-14 items-center border-b px-6">
 						{isMobile ? <SidebarTrigger className="mr-2" /> : null}
 						<h1 className="text-xl font-semibold">
-							{
-								contentSections[activeItem as keyof typeof contentSections]
-									.title
-							}
+							{contentSections[activeItem].title}
 						</h1>
 					</header>
 					<section className="p-6">
 						<div className="rounded-lg border p-6">
 							<h2 className="mb-4 text-2xl font-semibold">
-								{
-									contentSections[activeItem as keyof typeof contentSections]
-										.title
-								}
+								{contentSections[activeItem].title}
 							</h2>
-							<p>
-								{
-									contentSections[activeItem as keyof typeof contentSections]
-										.content
-								}
-							</p>
+							<p>{contentSections[activeItem].content}</p>
 						</div>
 					</section>
 				</div>
