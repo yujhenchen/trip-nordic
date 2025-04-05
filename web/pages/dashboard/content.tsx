@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { contentSections, type ItemLabelKeyType, menuItems } from "./data";
+import { Trips } from "./trips";
 
 export function Content() {
 	const isMobile = useIsMobile();
@@ -51,12 +52,16 @@ export function Content() {
 						</h1>
 					</header>
 					<section className="p-6">
-						<div className="rounded-lg border p-6">
-							<h2 className="mb-4 text-2xl font-semibold">
-								{contentSections[activeItem].title}
-							</h2>
-							<p>{contentSections[activeItem].content}</p>
-						</div>
+						{activeItem === "trips" ? (
+							<Trips />
+						) : (
+							<div className="rounded-lg border p-6">
+								<h2 className="mb-4 text-2xl font-semibold">
+									{contentSections[activeItem].title}
+								</h2>
+								<p>{contentSections[activeItem].content}</p>
+							</div>
+						)}
 					</section>
 				</div>
 			</div>
