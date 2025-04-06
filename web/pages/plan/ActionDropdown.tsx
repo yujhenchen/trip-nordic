@@ -7,7 +7,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useDialog } from "@/components/providers/DialogProvider";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export function ActionDropdown() {
@@ -26,6 +26,7 @@ export function ActionDropdown() {
 				<DropdownMenuLabel>Actions</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
+					className="text-red-600"
 					onClick={() =>
 						open("AppAlertDialog", {
 							title: "Are you sure you want to remove this list?",
@@ -33,7 +34,8 @@ export function ActionDropdown() {
 						})
 					}
 				>
-					Remove List
+					<Trash2 />
+					Remove Day
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
