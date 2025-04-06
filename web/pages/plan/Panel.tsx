@@ -51,7 +51,7 @@ Panel.Title = function PanelTitle({
 		<div
 			className={cn(
 				"flex flex-col place-content-center text-center w-full p-4 space-y-2",
-				className
+				className,
 			)}
 			{...rest}
 		>
