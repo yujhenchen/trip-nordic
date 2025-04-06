@@ -17,12 +17,7 @@ export function Content() {
 	return (
 		<div className="w-full flex-grow overflow-hidden flex flex-col">
 			<ControlPanel>
-				<TripInfoBlock
-					name={trip.name}
-					date={trip.date}
-					updateName={() => {}}
-					updateDate={() => {}}
-				/>
+				<TripInfoBlock trip={trip} />
 			</ControlPanel>
 			<PanelBlock />
 		</div>
