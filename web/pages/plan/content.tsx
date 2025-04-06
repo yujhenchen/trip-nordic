@@ -1,7 +1,7 @@
 import { usePageContext } from "vike-react/usePageContext";
 import { ControlPanel } from "./controlPanel";
 import { PanelBlock } from "./panelBlock";
-import useTripState, { Trip } from "@/states/useTripState";
+import useTripState, { type Trip } from "@/states/useTripState";
 import { TripInfoBlock } from "./tripInfoBlock";
 
 export function Content() {

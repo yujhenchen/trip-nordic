@@ -1,4 +1,4 @@
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import { EditableHeading3 } from "./editableHeading3";
 import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
 
