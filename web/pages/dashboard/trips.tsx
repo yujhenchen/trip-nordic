@@ -28,7 +28,7 @@ export function Trips() {
 				<Card key={trip.id}>
 					<CardHeader>
 						<div className="w-full flex place-content-end">
-							<ActionDropdown tripId={trip.id} />
+							<ActionDropdown trip={trip} />
 						</div>
 						<CardTitle>{trip.name}</CardTitle>
 						<CardDescription className="flex space-x-2">
