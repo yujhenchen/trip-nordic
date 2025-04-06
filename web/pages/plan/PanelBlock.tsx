@@ -17,7 +17,9 @@ export function PanelBlock({ trip }: Props) {
 					tripDayId={tripDay.id}
 					day={tripDay.day}
 					items={tripDay.activities.map((activity) => ({
-						id: activity.id,
+						activityId: activity.id,
+						tripId: trip.id,
+						tripDayId: tripDay.id,
 						title: activity.name,
 						content: activity.content,
 					}))}

@@ -11,37 +11,35 @@ import { useDialog } from "@/components/providers/DialogProvider";
 import { toast } from "sonner";
 import { PanelCardContainer } from "./panelCardContainer";
 import type { PanelCardProps } from "./types";
+import useTripState from "@/states/useTripState";
 
 export const TARGET_IDS = {
 	BUTTON_DELETE: "delete-card-btn",
 } as const;
 
-export function PanelCard({ id, title, content, ...rest }: PanelCardProps) {
+export function PanelCard({
+	tripId,
+	tripDayId,
+	activityId,
+	title,
+	content,
+	...rest
+}: PanelCardProps) {
 	const { open } = useDialog();
+	const { removeActivity } = useTripState();
 
 	const handleConfirm = () => {
+		removeActivity(tripId, tripDayId, activityId);
 		toast.success("Trip Card removed");
 	};
 
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
 		const id = (event.currentTarget as HTMLElement).id;
 
-		// if (id === TARGET_IDS.CARD_CONTAINER) {
-		// 	open("CardDialog", {
-		// 		title: "test title",
-		// 		description: "test description",
-		// 	});
-		// } else if (id === TARGET_IDS.BUTTON_DELETE) {
-		// 	event.stopPropagation();
-		// 	open("AppAlertDialog", {
-		// 		title: "Are you sure to remove this card?",
-		// 		handleConfirm,
-		// 	});
-		// }
 		if (id === TARGET_IDS.BUTTON_DELETE) {
 			event.stopPropagation();
 			open("AppAlertDialog", {
-				title: "Are you sure to remove this card?",
+				title: "Are you sure to remove this activity?",
 				handleConfirm,
 			});
 			return;
@@ -53,7 +51,7 @@ export function PanelCard({ id, title, content, ...rest }: PanelCardProps) {
 	};
 
 	return (
-		<PanelCardContainer id={id} {...rest} onClick={handleClick}>
+		<PanelCardContainer id={activityId} {...rest} onClick={handleClick}>
 			<CardHeader>
 				<CardTitle>{title}</CardTitle>
 				<CardDescription>{content}</CardDescription>
