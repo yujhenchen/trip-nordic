@@ -11,7 +11,6 @@ import { Input } from "../ui/input";
 import { DatePickerWithRange } from "../common/datePickerWithRange";
 import { useRef, useState } from "react";
 import type { DateRange } from "react-day-picker";
-import { addDays } from "date-fns";
 import type { NewTrip } from "@/types/trips";
 
 interface Props {
@@ -28,7 +27,7 @@ export default function NewTripDialog({ onClose, handleNewTrip }: Props) {
 	const now = new Date();
 	const [date, setDate] = useState<DateRange | undefined>({
 		from: now,
-		to: addDays(now, 3),
+		to: now,
 	});
 
 	const nameRef = useRef<HTMLInputElement | null>(null);
@@ -37,7 +36,7 @@ export default function NewTripDialog({ onClose, handleNewTrip }: Props) {
 		const tripName = nameRef.current?.value ?? "";
 		const tripDate = date ?? {
 			from: now,
-			to: addDays(now, 3),
+			to: now,
 		};
 		handleNewTrip({ name: tripName, date: tripDate });
 		onClose();
