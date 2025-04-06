@@ -38,6 +38,10 @@ function PanelCardContainer({
 export function PanelCard({ card, ...rest }: PanelCardProps) {
 	const { open } = useDialog();
 
+	const handleConfirm = () => {
+		toast.success("Trip Card removed");
+	};
+
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
 		const id = (event.currentTarget as HTMLElement).id;
 
@@ -50,6 +54,7 @@ export function PanelCard({ card, ...rest }: PanelCardProps) {
 			event.stopPropagation();
 			open("AppAlertDialog", {
 				title: "Are you sure to remove this card?",
+				handleConfirm,
 			});
 		}
 	};

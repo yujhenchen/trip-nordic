@@ -8,9 +8,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { Ellipsis } from "lucide-react";
+import { toast } from "sonner";
 
 export function ActionDropdown() {
 	const { open } = useDialog();
+
+	const handleConfirm = () => {
+		toast.success("Trip Plan removed");
+	};
 
 	return (
 		<DropdownMenu>
@@ -24,6 +29,7 @@ export function ActionDropdown() {
 					onClick={() =>
 						open("AppAlertDialog", {
 							title: "Are you sure you want to remove this list?",
+							handleConfirm,
 						})
 					}
 				>

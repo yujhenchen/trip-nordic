@@ -7,7 +7,6 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import type { ComponentProps } from "react";
 
@@ -17,6 +16,7 @@ interface Props extends ComponentProps<typeof AlertDialog> {
 	cancelText?: string;
 	confirmText?: string;
 	onClose: () => void;
+	handleConfirm: () => void;
 }
 
 export default function AppAlertDialog({
@@ -25,6 +25,7 @@ export default function AppAlertDialog({
 	cancelText,
 	confirmText,
 	onClose,
+	handleConfirm,
 	...rest
 }: Props) {
 	return (
@@ -33,11 +34,17 @@ export default function AppAlertDialog({
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>{title}</AlertDialogTitle>
-					<AlertDialogDescription>{description}</AlertDialogDescription>
+					<AlertDialogDescription>
+						{description}
+					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>{cancelText ?? "Cancel"}</AlertDialogCancel>
-					<AlertDialogAction>{confirmText ?? "Confirm"}</AlertDialogAction>
+					<AlertDialogCancel>
+						{cancelText ?? "Cancel"}
+					</AlertDialogCancel>
+					<AlertDialogAction onClick={handleConfirm}>
+						{confirmText ?? "Confirm"}
+					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
