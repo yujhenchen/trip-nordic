@@ -1,8 +1,7 @@
 import type { DateRange } from "react-day-picker";
 import { EditableHeading3 } from "./editableHeading3";
 import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
-import { useState } from "react";
-import useTripState, { Trip } from "@/states/useTripState";
+import useTripState, { type Trip } from "@/states/useTripState";
 
 interface Props {
 	trip: Trip;
@@ -11,32 +10,32 @@ interface Props {
 export function TripInfoBlock({ trip }: Props) {
 	return (
 		<>
-			<TripName id={trip.id} name={trip.name} />
-			<TripDate id={trip.id} date={trip.date} />
+			<TripName tripId={trip.id} />
+			<TripDate tripId={trip.id} />
 		</>
 	);
 }
 
-function TripName({ id, name }: { id: string; name: string }) {
+function TripName({ tripId }: { tripId: string }) {
 	const { trips, updateTripName } = useTripState();
-	const currentName = trips.find((trip) => trip.id === id)?.name ?? "";
+	const currentName = trips.find((trip) => trip.id === tripId)?.name ?? "";
 
 	const handleSave = (value: string) => {
-		updateTripName(id, value);
+		updateTripName(tripId, value);
 	};
 
 	return <EditableHeading3 text={currentName} handleSave={handleSave} />;
 }
 
-function TripDate({ id, date }: { id: string; date: DateRange | undefined }) {
+function TripDate({ tripId }: { tripId: string }) {
 	const { trips, updateTripDate } = useTripState();
-	const currentDateRange = trips.find((trip) => trip.id === id)?.date ?? {
+	const currentDateRange = trips.find((trip) => trip.id === tripId)?.date ?? {
 		from: new Date(),
 		to: new Date(),
 	};
 
 	const handleSetDate = (date: DateRange | undefined) => {
-		updateTripDate(id, date ?? { from: new Date(), to: new Date() });
+		updateTripDate(tripId, date ?? { from: new Date(), to: new Date() });
 	};
 
 	return (
