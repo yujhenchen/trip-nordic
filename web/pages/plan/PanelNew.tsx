@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 
 import { IconButton } from "@/components/common/iconButton";
-import { PanelContainer } from "./PanelContainer";
+import { PanelContainer } from "./panelContainer";
 import { toast } from "sonner";
 
 export function PanelNew() {

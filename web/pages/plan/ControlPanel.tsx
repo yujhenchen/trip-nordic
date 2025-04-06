@@ -1,7 +1,7 @@
 import { ClipboardCopy, Save } from "lucide-react";
 import { IconButton } from "@/components/common/iconButton";
 import { toast } from "sonner";
-import { EditableHeading3 } from "./EditableHeading3";
+import { EditableHeading3 } from "./editableHeading3";
 import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
 import { useState } from "react";
 import type { DateRange } from "react-day-picker";
@@ -17,7 +17,10 @@ export function ControlPanel() {
 			<EditableHeading3 text="My Trip Name" />
 			<DatePickerWithRange date={date} setDate={setDate} />
 			<div className="flex space-x-6">
-				<IconButton icon={<Save />} onClick={() => toast.success("Saved")} />
+				<IconButton
+					icon={<Save />}
+					onClick={() => toast.success("Saved")}
+				/>
 				<IconButton
 					icon={<ClipboardCopy />}
 					onClick={() => toast.success("Copied")}

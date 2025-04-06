@@ -2,9 +2,9 @@ import type { ComponentProps, HTMLAttributes } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Card } from "@/components/ui/card";
 
-import { ActionDropdown } from "./ActionDropdown";
-import { PanelCard, PanelCardNew, type PanelCardType } from "./PanelCard";
-import { PanelContainer } from "./PanelContainer";
+import { ActionDropdown } from "./actionDropdown";
+import { PanelCard, PanelCardNew, type PanelCardType } from "./panelCard";
+import { PanelContainer } from "./panelContainer";
 import { DatePicker } from "@/components/common/datePicker";
 import { cn } from "@/lib/utils";
 import { MODE, useEditableMode } from "@/hooks/useEditableMode";
@@ -51,7 +51,7 @@ Panel.Title = function PanelTitle({
 		<div
 			className={cn(
 				"flex flex-col place-content-center text-center w-full p-4 space-y-2",
-				className,
+				className
 			)}
 			{...rest}
 		>

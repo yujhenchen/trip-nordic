@@ -1,5 +1,5 @@
-import { ControlPanel } from "./ControlPanel";
-import { PanelBlock } from "./PanelBlock";
+import { ControlPanel } from "./controlPanel";
+import { PanelBlock } from "./panelBlock";
 
 export function Content() {
 	return (

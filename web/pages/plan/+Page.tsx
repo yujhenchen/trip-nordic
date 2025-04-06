@@ -1,6 +1,6 @@
 import { SidebarProvider } from "@/components/providers/SidebarProvider";
 import { Content } from "./content";
-import { PlanSidebar } from "./PlanSidebar";
+import { PlanSidebar } from "./planSidebar";
 
 export default function PlanPage() {
 	return (

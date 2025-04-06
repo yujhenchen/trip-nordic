@@ -1,6 +1,6 @@
 import { testPanels } from "./data/testPanelData";
 import { Panel } from "./Panel";
-import { PanelNew } from "./PanelNew";
+import { PanelNew } from "./panelNew";
 
 export function PanelBlock() {
 	return (
