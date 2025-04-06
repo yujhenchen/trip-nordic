@@ -6,9 +6,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { Ellipsis, Pencil, Trash2 } from "lucide-react";
-import useTripState, { Trip } from "@/states/useTripState";
+import useTripState, { type Trip } from "@/states/useTripState";
 import { toast } from "sonner";
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 
 interface Props {
 	trip: Trip;
@@ -68,10 +68,7 @@ export function ActionDropdown({ trip }: Props) {
 					Edit
 				</DropdownMenuItem>
 
-				<DropdownMenuItem
-					className="text-red-600"
-					onClick={handleDelete}
-				>
+				<DropdownMenuItem className="text-red-600" onClick={handleDelete}>
 					<Trash2 />
 					Delete
 				</DropdownMenuItem>
