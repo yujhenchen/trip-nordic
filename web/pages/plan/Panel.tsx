@@ -3,75 +3,37 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Card } from "@/components/ui/card";
 
 import { ActionDropdown } from "./actionDropdown";
-import { PanelCard, PanelCardNew, type PanelCardType } from "./panelCard";
+import { PanelCard } from "./panelCard";
 import { PanelContainer } from "./panelContainer";
 import { DatePicker } from "@/components/common/datePicker";
-import { cn } from "@/lib/utils";
-import { MODE, useEditableMode } from "@/hooks/useEditableMode";
-import { Input } from "@/components/ui/input";
-import { IconButton } from "@/components/common/iconButton";
-import { CheckIcon, X } from "lucide-react";
+import type { PanelCardProps } from "./types";
+import { PanelCardNew } from "./panelCardNew";
 
 export interface PanelProps extends ComponentProps<typeof Card> {
-	title: string;
-	cards: Array<PanelCardType>;
-}
-
-interface PanelTitleProps extends HTMLAttributes<HTMLDivElement> {
-	text: string;
+	tripId: string;
+	tripDayId: string;
+	day: Date;
+	items: Array<PanelCardProps>;
 }
 
 interface PanelContentProps extends ComponentProps<typeof ScrollArea> {}
 
 interface PanelActionBarType extends HTMLAttributes<HTMLDivElement> {}
 
-export function Panel({ title, cards, ...rest }: PanelProps) {
+export function Panel({ tripId, tripDayId, items, day, ...rest }: PanelProps) {
 	return (
-		<PanelContainer {...rest}>
-			<Panel.Title text={title} />
+		<PanelContainer {...rest} className="py-4">
 			<Panel.ActionBar />
+			<DatePicker />
 			<Panel.Content>
-				{cards.map((card) => (
-					<PanelCard key={card.id} card={card} />
+				{items.map((item) => (
+					<PanelCard key={item.id} {...item} />
 				))}
-				<PanelCardNew />
+				<PanelCardNew tripId={tripId} tripDayId={tripDayId} />
 			</Panel.Content>
 		</PanelContainer>
 	);
 }
-
-Panel.Title = function PanelTitle({
-	text,
-	className,
-	...rest
-}: PanelTitleProps) {
-	const { mode, edit, save, cancel } = useEditableMode();
-
-	return (
-		<div
-			className={cn(
-				"flex flex-col place-content-center text-center w-full p-4 space-y-2",
-				className,
-			)}
-			{...rest}
-		>
-			{mode === MODE.VIEW ? (
-				<p onDoubleClick={edit}>{text}</p>
-			) : (
-				<div className="flex items-center">
-					<Input
-						// id="panel-title-id"
-						defaultValue={text}
-						onKeyDown={(e) => e.key === "Enter" && save()}
-					/>
-					<IconButton icon={<CheckIcon />} onClick={save} />
-					<IconButton icon={<X />} onClick={cancel} />
-				</div>
-			)}
-			<DatePicker />
-		</div>
-	);
-};
 
 Panel.ActionBar = function PanelActionBar({ ...rest }: PanelActionBarType) {
 	return (

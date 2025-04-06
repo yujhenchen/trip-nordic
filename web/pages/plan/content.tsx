@@ -19,7 +19,7 @@ export function Content() {
 			<ControlPanel>
 				<TripInfoBlock tripId={trip.id} />
 			</ControlPanel>
-			<PanelBlock />
+			<PanelBlock trip={trip} />
 		</div>
 	);
 }

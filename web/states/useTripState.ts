@@ -11,14 +11,14 @@ export interface Trip {
 
 interface TripDay {
 	id: string;
-	date: Date;
+	day: Date;
 	activities: Array<TripActivity>;
 }
 
-interface TripActivity {
+export interface TripActivity {
 	id: string;
 	name: string;
-	description: string;
+	content: string;
 }
 
 interface TripState {
