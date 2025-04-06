@@ -14,10 +14,10 @@ import { useForm } from "react-hook-form";
 import { loginFormSchema, type LoginFormType } from "@/lib/authSchemas";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { RedirectOverlay } from "@/components/common/redirectOverlay";
 import useAuthStore from "@/states/useAuthStore";
 import { AuthFormWrapper } from "@/components/common/authFormWrapper";
 import { login } from "@/apis";
+import { navigate } from "vike/client/router";
 
 interface Props {
 	onMutateCallback: () => void;
@@ -32,6 +32,9 @@ export function LogInForm({ onMutateCallback, onSettledCallback }: Props) {
 		onSuccess: (data) => {
 			toast.success("Login successful!");
 			setUser(data.user);
+			setTimeout(() => {
+				navigate("/");
+			}, 500);
 		},
 		onError: (error) => {
 			toast.error(`${error}`);
@@ -50,15 +53,6 @@ export function LogInForm({ onMutateCallback, onSettledCallback }: Props) {
 
 	function onSubmit(values: LoginFormType) {
 		mutation.mutate(values);
-	}
-
-	if (mutation.isSuccess) {
-		return (
-			<RedirectOverlay
-				callback={() => location.assign("/")}
-				callbackDelay={1000}
-			/>
-		);
 	}
 
 	return (

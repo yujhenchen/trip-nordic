@@ -18,16 +18,19 @@ import {
 } from "@/lib/authSchemas";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { RedirectOverlay } from "@/components/common/redirectOverlay";
 import { LoadingOverlay } from "@/components/common/loadingOverlay";
 import { AuthFormWrapper } from "@/components/common/authFormWrapper";
 import { signUp } from "@/apis";
+import { navigate } from "vike/client/router";
 
 export function SignUpForm() {
 	const mutation = useMutation({
 		mutationFn: signUp<SignUpDataType>,
 		onSuccess: () => {
 			toast.success("Sign-up successful!");
+			setTimeout(() => {
+				navigate("/login");
+			}, 500);
 		},
 		onError: () => {
 			toast.error(`${mutation.error}`);
@@ -56,15 +59,6 @@ export function SignUpForm() {
 	}
 
 	if (mutation.isPending) return <LoadingOverlay />;
-
-	if (mutation.isSuccess) {
-		return (
-			<RedirectOverlay
-				callback={() => location.assign("/login")}
-				callbackDelay={1000}
-			/>
-		);
-	}
 
 	return (
 		<Form {...form}>

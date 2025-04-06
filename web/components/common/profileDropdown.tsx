@@ -8,6 +8,7 @@ import { useLogout } from "@/hooks/useLogout";
 import { LayoutDashboardIcon, LogOutIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { LoadingOverlay } from "./loadingOverlay";
+import { navigate } from "vike/client/router";
 
 interface Pros {
 	trigger: ReactNode;
@@ -24,7 +25,7 @@ export function ProfileDropdown({ trigger }: Pros) {
 		<DropdownMenu>
 			<DropdownMenuTrigger>{trigger}</DropdownMenuTrigger>
 			<DropdownMenuContent>
-				<DropdownMenuItem onClick={() => location.assign("/dashboard")}>
+				<DropdownMenuItem onClick={() => navigate("/dashboard")}>
 					<LayoutDashboardIcon />
 					Dashboard
 				</DropdownMenuItem>

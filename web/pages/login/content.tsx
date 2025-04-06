@@ -3,6 +3,7 @@ import { ContentContainer } from "@/components/common/contentContainer";
 import { LogInForm } from "./loginForm";
 import { useState } from "react";
 import { LoadingOverlay } from "@/components/common/loadingOverlay";
+import { navigate } from "vike/client/router";
 
 export function Content() {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -22,7 +23,7 @@ export function Content() {
 			<Button
 				type="button"
 				variant="link"
-				onClick={() => location.assign("/signup")}
+				onClick={() => navigate("/signup")}
 				className="mx-auto"
 			>
 				<span>
