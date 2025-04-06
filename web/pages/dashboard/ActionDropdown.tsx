@@ -33,8 +33,7 @@ export function ActionDropdown({ trip }: Props) {
 		updateTrip({
 			...trip,
 			name,
-			startDate: date.from ?? trip.startDate,
-			endDate: date.to ?? trip.endDate,
+			date,
 		});
 		toast.success("Trip updated");
 	};
@@ -42,10 +41,7 @@ export function ActionDropdown({ trip }: Props) {
 	const handleEdit = () => {
 		open("EditTripDialog", {
 			name: trip.name,
-			date: {
-				from: trip.startDate,
-				to: trip.endDate,
-			},
+			date: trip.date,
 			handleUpdateTrip,
 		});
 	};

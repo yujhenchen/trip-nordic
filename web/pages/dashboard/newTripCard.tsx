@@ -15,8 +15,7 @@ export function NewTripCard() {
 		addTrip({
 			id: uuidv4(),
 			name: newTripProps.name,
-			startDate: newTripProps.date.from ?? new Date(),
-			endDate: newTripProps.date.to ?? new Date(),
+			date: newTripProps.date,
 			tripDays: [],
 		});
 		toast.success("Trip created");

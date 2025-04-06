@@ -1,10 +1,29 @@
+import { usePageContext } from "vike-react/usePageContext";
 import { ControlPanel } from "./controlPanel";
 import { PanelBlock } from "./panelBlock";
+import useTripState, { Trip } from "@/states/useTripState";
+import { TripInfoBlock } from "./tripInfoBlock";
 
 export function Content() {
+	const { routeParams } = usePageContext();
+	const { trips } = useTripState();
+	const trip: Trip = trips.find((trip) => trip.id === routeParams?.id) ?? {
+		id: "",
+		name: "My Trip",
+		date: { from: new Date(), to: new Date() },
+		tripDays: [],
+	};
+
 	return (
 		<div className="w-full flex-grow overflow-hidden flex flex-col">
-			<ControlPanel />
+			<ControlPanel>
+				<TripInfoBlock
+					name={trip.name}
+					date={trip.date}
+					updateName={() => {}}
+					updateDate={() => {}}
+				/>
+			</ControlPanel>
 			<PanelBlock />
 		</div>
 	);
