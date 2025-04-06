@@ -57,18 +57,28 @@ export function ActionDropdown({ trip }: Props) {
 		});
 	};
 
+	const handleClick =
+		(e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+		(callBack: () => void) => {
+			e.stopPropagation();
+			callBack();
+		};
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger>
 				<Ellipsis />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
-				<DropdownMenuItem onClick={handleEdit}>
+				<DropdownMenuItem onClick={(e) => handleClick(e)(handleEdit)}>
 					<Pencil />
 					Edit
 				</DropdownMenuItem>
 
-				<DropdownMenuItem className="text-red-600" onClick={handleDelete}>
+				<DropdownMenuItem
+					className="text-red-600"
+					onClick={(e) => handleClick(e)(handleDelete)}
+				>
 					<Trash2 />
 					Delete
 				</DropdownMenuItem>
