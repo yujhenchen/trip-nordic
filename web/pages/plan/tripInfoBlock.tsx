@@ -4,14 +4,14 @@ import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
 import useTripState, { type Trip } from "@/states/useTripState";
 
 interface Props {
-	trip: Trip;
+	tripId: string;
 }
 
-export function TripInfoBlock({ trip }: Props) {
+export function TripInfoBlock({ tripId }: Props) {
 	return (
 		<>
-			<TripName tripId={trip.id} />
-			<TripDate tripId={trip.id} />
+			<TripName tripId={tripId} />
+			<TripDate tripId={tripId} />
 		</>
 	);
 }

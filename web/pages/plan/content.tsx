@@ -17,7 +17,7 @@ export function Content() {
 	return (
 		<div className="w-full flex-grow overflow-hidden flex flex-col">
 			<ControlPanel>
-				<TripInfoBlock trip={trip} />
+				<TripInfoBlock tripId={trip.id} />
 			</ControlPanel>
 			<PanelBlock />
 		</div>
