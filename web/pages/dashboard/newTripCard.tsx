@@ -5,7 +5,6 @@ import useTripState from "@/states/useTripState";
 import type { NewTrip } from "@/types/trips";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { v4 as uuidv4 } from "uuid";
 
 export function NewTripCard() {
 	const { open } = useDialog();
@@ -13,7 +12,7 @@ export function NewTripCard() {
 
 	const handleNewTrip = (newTripProps: NewTrip) => {
 		addTrip({
-			id: uuidv4(),
+			id: crypto.randomUUID(),
 			name: newTripProps.name,
 			date: newTripProps.date,
 			tripDays: [],
