@@ -28,9 +28,7 @@ export function ActionDropdown({ tripId }: Props) {
 				<Ellipsis />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
-				<DropdownMenuItem
-					onClick={() => console.log("Open edit trip dialog")}
-				>
+				<DropdownMenuItem onClick={() => console.log("Open edit trip dialog")}>
 					<Pencil />
 					Edit
 				</DropdownMenuItem>

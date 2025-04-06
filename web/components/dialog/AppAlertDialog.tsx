@@ -34,14 +34,10 @@ export default function AppAlertDialog({
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>{title}</AlertDialogTitle>
-					<AlertDialogDescription>
-						{description}
-					</AlertDialogDescription>
+					<AlertDialogDescription>{description}</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>
-						{cancelText ?? "Cancel"}
-					</AlertDialogCancel>
+					<AlertDialogCancel>{cancelText ?? "Cancel"}</AlertDialogCancel>
 					<AlertDialogAction onClick={handleConfirm}>
 						{confirmText ?? "Confirm"}
 					</AlertDialogAction>
