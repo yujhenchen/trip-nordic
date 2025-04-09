@@ -26,9 +26,7 @@ function Content() {
 			<ScrollArea className="w-96 whitespace-nowrap rounded-md border">
 				<div className="flex w-max space-x-4 p-4">
 					{keeps.map((keep) => {
-						const activity = activityTestData.find(
-							(a) => a.id === keep
-						);
+						const activity = activityTestData.find((a) => a.id === keep);
 						if (!activity) {
 							return null;
 						}
@@ -78,7 +76,7 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6"
+					: "w-full h-6 md:w-6",
 			)}
 		>
 			<Content />
@@ -93,12 +91,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger]
+		[isTabletOrBigger],
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger]
+		[isTabletOrBigger],
 	);
 
 	useEffect(() => {
