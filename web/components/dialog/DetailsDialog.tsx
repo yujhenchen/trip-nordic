@@ -57,11 +57,7 @@ export default function DetailsDialog({
 					<ScrollArea>
 						<div className="flex w-max space-x-4 p-4">
 							{tags.map((tag) => (
-								<Badge
-									key={tag}
-									variant="default"
-									className="text-center"
-								>
+								<Badge key={tag} variant="default" className="text-center">
 									{tag}
 								</Badge>
 							))}
