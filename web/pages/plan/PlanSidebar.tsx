@@ -20,8 +20,8 @@ function Content() {
 	const showSearch = keeps.length > 0;
 
 	return (
-		<ScrollArea className="p-4">
-			{showSearch && <SearchInput />}
+		<ScrollArea className="px-4 pb-4 pt-8">
+			{showSearch && <SearchInput className="sticky top-0 mb-4" />}
 			{keeps.map((keep) => {
 				const activity = activityTestData.find((a) => a.id === keep);
 				if (!activity) {
