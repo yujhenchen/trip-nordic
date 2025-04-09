@@ -13,8 +13,9 @@ import useKeepStore from "@/states/useKeepStore";
 import { SidebarCard } from "./sidebarCard";
 import { activityTestData } from "../explore/data/activityTestData";
 import { SearchInput } from "@/components/common/searchInput";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
 
 function Content() {
 	const { keeps } = useKeepStore();
@@ -23,12 +24,9 @@ function Content() {
 
 	if (isMobile) {
 		return (
-			<ScrollArea>
-				<div className="flex w-max space-x-4 p-4">
-					<Keeps isMobile={isMobile} keeps={keeps} />
-				</div>
-				<ScrollBar orientation="horizontal" />
-			</ScrollArea>
+			<HorizontalScrollArea>
+				<Keeps isMobile={isMobile} keeps={keeps} />
+			</HorizontalScrollArea>
 		);
 	}
 
@@ -78,7 +76,7 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6",
+					: "w-full h-6 md:w-6"
 			)}
 		>
 			<Content />
@@ -93,12 +91,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	useEffect(() => {

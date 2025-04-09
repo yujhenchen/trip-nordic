@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
 	FilterContent,
-	FilterOptionsContainer,
 	FilterRowTitle,
 	FilterTitle,
 	FilterChip,
@@ -9,6 +8,7 @@ import {
 import { type FilterKeyType, FilterKeyTitle } from "./types";
 import { useFilters } from "./FilterProvider";
 import { SearchInput } from "@/components/common/searchInput";
+import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
 
 export interface Props {
 	chipIcon: React.ReactNode;
@@ -44,19 +44,23 @@ export function FilterPanel({
 							<FilterRowTitle className="flex-shrink-0 w-24">
 								{FilterKeyTitle[filterKey]}
 							</FilterRowTitle>
-							<FilterOptionsContainer>
+							<HorizontalScrollArea>
 								{options.map((option) => (
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											currentFilters[filterKey]?.includes(option),
+											currentFilters[filterKey]?.includes(
+												option
+											)
 										)}
 										value={option}
 										selectedIcon={chipIcon}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
-							</FilterOptionsContainer>
+							</HorizontalScrollArea>
 							<Button
 								variant="default"
 								onClick={() => onReset(filterKey)}

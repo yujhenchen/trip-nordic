@@ -1,6 +1,4 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import type { ScrollAreaProps } from "@radix-ui/react-scroll-area";
 import React from "react";
 
 const FilterTitle = React.forwardRef<
@@ -31,14 +29,6 @@ const FilterRowTitle = React.forwardRef<
 ));
 FilterRowTitle.displayName = "FilterRowTitle";
 
-const FilterOptionsContainer = ({ children, ...props }: ScrollAreaProps) => (
-	<ScrollArea {...props}>
-		<div className="flex w-max space-x-4 p-4">{children}</div>
-		<ScrollBar orientation="horizontal" />
-	</ScrollArea>
-);
-FilterOptionsContainer.displayName = "FilterOptionsContainer";
-
 interface FilterChipProps
 	extends React.HTMLAttributes<HTMLDivElement>,
 		React.RefAttributes<HTMLDivElement> {
@@ -62,7 +52,7 @@ const FilterChip = ({
 					"flex items-center px-4 py-2 rounded-full shadow-sm border space-x-2",
 					selected
 						? "bg-blue-100 text-blue-800 border-blue-400"
-						: "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200",
+						: "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
 				)}
 			>
 				<span>{value}</span>
@@ -72,10 +62,4 @@ const FilterChip = ({
 	);
 };
 
-export {
-	FilterTitle,
-	FilterContent,
-	FilterRowTitle,
-	FilterOptionsContainer,
-	FilterChip,
-};
+export { FilterTitle, FilterContent, FilterRowTitle, FilterChip };

@@ -9,7 +9,7 @@ import {
 import { Badge } from "../ui/badge";
 import { Bookmark } from "lucide-react";
 import useKeepStore from "@/states/useKeepStore";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { HorizontalScrollArea } from "../common/horizontalScrollArea";
 
 interface Props {
 	onClose: () => void;
@@ -54,16 +54,17 @@ export default function DetailsDialog({
 				/>
 
 				{tags.length > 0 ? (
-					<ScrollArea>
-						<div className="flex w-max space-x-4 p-4">
-							{tags.map((tag) => (
-								<Badge key={tag} variant="default" className="text-center">
-									{tag}
-								</Badge>
-							))}
-						</div>
-						<ScrollBar orientation="horizontal" />
-					</ScrollArea>
+					<HorizontalScrollArea>
+						{tags.map((tag) => (
+							<Badge
+								key={tag}
+								variant="default"
+								className="text-center"
+							>
+								{tag}
+							</Badge>
+						))}
+					</HorizontalScrollArea>
 				) : null}
 
 				<DialogHeader className="py-4">
