@@ -37,9 +37,9 @@ export function Trips() {
 						</div>
 						<CardTitle>{trip.name}</CardTitle>
 						<CardDescription className="flex space-x-2">
-							<Label>{getDateString(trip.date.from)}</Label>
+							<Label>{getDateString(trip.date?.from)}</Label>
 							<Label>-</Label>
-							<Label>{getDateString(trip.date.to)}</Label>
+							<Label>{getDateString(trip.date?.to)}</Label>
 						</CardDescription>
 					</CardHeader>
 				</Card>

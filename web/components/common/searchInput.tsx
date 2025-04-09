@@ -1,8 +1,13 @@
+import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
 
-export function SearchInput() {
+interface Props {
+	className?: string;
+}
+
+export function SearchInput({ className }: Props) {
 	return (
-		<div className="relative w-full md:w-1/3 lg:w-1/4">
+		<div className={cn("relative w-full", className)}>
 			<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

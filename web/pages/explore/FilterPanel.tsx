@@ -9,6 +9,7 @@ import {
 } from "./Filter";
 import { type FilterKeyType, FilterKeyTitle } from "./types";
 import { useFilters } from "./FilterProvider";
+import { SearchInput } from "@/components/common/searchInput";
 
 export interface Props {
 	chipIcon: React.ReactNode;
@@ -49,11 +50,15 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											currentFilters[filterKey]?.includes(option),
+											currentFilters[filterKey]?.includes(
+												option
+											)
 										)}
 										value={option}
 										selectedIcon={chipIcon}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
 							</FilterOptionsContainer>
@@ -67,13 +72,17 @@ export function FilterPanel({
 						</FilterRow>
 					);
 				})}
-				<Button
-					variant="default"
-					onClick={onResetAll}
-					className="rounded-full w-fit"
-				>
-					Reset All
-				</Button>
+				<div className="flex place-content-between items-center space-x-2">
+					<SearchInput className="md:w-1/3 lg:w-1/4" />
+
+					<Button
+						variant="default"
+						onClick={onResetAll}
+						className="rounded-full w-fit"
+					>
+						Reset All
+					</Button>
+				</div>
 			</FilterContent>
 		</div>
 	);
