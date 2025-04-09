@@ -9,13 +9,20 @@ import {
 interface Props {
 	title: string;
 	description: string;
+	className?: string;
+	titleClassName?: string;
 }
 
-export function SidebarCard({ title, description }: Props) {
+export function SidebarCard({
+	title,
+	description,
+	className,
+	titleClassName,
+}: Props) {
 	return (
-		<Card>
+		<Card className={className}>
 			<CardHeader>
-				<CardTitle>{title}</CardTitle>
+				<CardTitle className={titleClassName}>{title}</CardTitle>
 				<CardDescription className="line-clamp-3">
 					{description}
 				</CardDescription>
