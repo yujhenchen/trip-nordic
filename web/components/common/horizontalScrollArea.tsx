@@ -1,4 +1,4 @@
-import { ScrollAreaProps } from "@radix-ui/react-scroll-area";
+import type { ScrollAreaProps } from "@radix-ui/react-scroll-area";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface Props extends ScrollAreaProps {}
