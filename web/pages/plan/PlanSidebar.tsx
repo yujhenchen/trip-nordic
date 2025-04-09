@@ -25,21 +25,7 @@ function Content() {
 		return (
 			<ScrollArea className="w-96 whitespace-nowrap rounded-md border">
 				<div className="flex w-max space-x-4 p-4">
-					{keeps.map((keep) => {
-						const activity = activityTestData.find((a) => a.id === keep);
-						if (!activity) {
-							return null;
-						}
-						return (
-							<SidebarCard
-								key={activity.id}
-								title={activity.name}
-								description={activity.description}
-								className="w-48"
-								titleClassName="truncate"
-							/>
-						);
-					})}
+					<Keeps isMobile={isMobile} keeps={keeps} />
 				</div>
 				<ScrollBar orientation="horizontal" />
 			</ScrollArea>
@@ -49,21 +35,37 @@ function Content() {
 	return (
 		<ScrollArea className="px-4 pb-4 pt-8">
 			{showSearch && <SearchInput className="sticky top-0 mb-4" />}
-			{keeps.map((keep) => {
-				const activity = activityTestData.find((a) => a.id === keep);
-				if (!activity) {
-					return null;
-				}
-				return (
-					<SidebarCard
-						key={activity.id}
-						title={activity.name}
-						description={activity.description}
-					/>
-				);
-			})}
+			<Keeps isMobile={isMobile} keeps={keeps} />
 		</ScrollArea>
 	);
+}
+
+function Keeps({
+	isMobile,
+	keeps,
+}: {
+	isMobile: boolean;
+	keeps: Array<string>;
+}) {
+	const mobileProps = {
+		className: "w-48",
+		titleClassName: "truncate",
+	};
+
+	return keeps.map((keep) => {
+		const activity = activityTestData.find((a) => a.id === keep);
+		if (!activity) {
+			return null;
+		}
+		return (
+			<SidebarCard
+				key={activity.id}
+				title={activity.name}
+				description={activity.description}
+				{...(isMobile ? mobileProps : {})}
+			/>
+		);
+	});
 }
 
 export function PlanSidebar() {
@@ -76,7 +78,7 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6",
+					: "w-full h-6 md:w-6"
 			)}
 		>
 			<Content />
@@ -91,12 +93,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	useEffect(() => {
