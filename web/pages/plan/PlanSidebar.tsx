@@ -13,19 +13,14 @@ import useKeepStore from "@/states/useKeepStore";
 import { SidebarCard } from "./sidebarCard";
 import { activityTestData } from "../explore/data/activityTestData";
 import { SearchInput } from "@/components/common/searchInput";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 function Content() {
 	const { keeps } = useKeepStore();
 	const showSearch = keeps.length > 0;
 
 	return (
-		<div
-			className={cn(
-				"flex p-4",
-				"space-x-4 overflow-x-auto overflow-y-hidden",
-				"md:space-x-0 md:overflow-x-hidden md:flex-col md:overflow-y-auto md:space-y-4",
-			)}
-		>
+		<ScrollArea className="p-4">
 			{showSearch && <SearchInput />}
 			{keeps.map((keep) => {
 				const activity = activityTestData.find((a) => a.id === keep);
@@ -40,7 +35,7 @@ function Content() {
 					/>
 				);
 			})}
-		</div>
+		</ScrollArea>
 	);
 }
 
@@ -54,7 +49,7 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6",
+					: "w-full h-6 md:w-6"
 			)}
 		>
 			<Content />
@@ -69,12 +64,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	useEffect(() => {
