@@ -6,10 +6,10 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { FilterRow } from "@/pages/explore/Filter";
 import { Badge } from "../ui/badge";
 import { Bookmark } from "lucide-react";
 import useKeepStore from "@/states/useKeepStore";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface Props {
 	onClose: () => void;
@@ -54,13 +54,20 @@ export default function DetailsDialog({
 				/>
 
 				{tags.length > 0 ? (
-					<FilterRow className="w-full overflow-x-auto">
-						{tags.map((tag) => (
-							<Badge key={tag} variant="default" className="text-center">
-								{tag}
-							</Badge>
-						))}
-					</FilterRow>
+					<ScrollArea>
+						<div className="flex w-max space-x-4 p-4">
+							{tags.map((tag) => (
+								<Badge
+									key={tag}
+									variant="default"
+									className="text-center"
+								>
+									{tag}
+								</Badge>
+							))}
+						</div>
+						<ScrollBar orientation="horizontal" />
+					</ScrollArea>
 				) : null}
 
 				<DialogHeader className="py-4">

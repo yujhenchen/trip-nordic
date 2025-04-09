@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
 	FilterContent,
 	FilterOptionsContainer,
-	FilterRow,
 	FilterRowTitle,
 	FilterTitle,
 	FilterChip,
@@ -41,7 +40,7 @@ export function FilterPanel({
 				{Object.entries(filters).map(([key, options]) => {
 					const filterKey = key as FilterKeyType;
 					return (
-						<FilterRow key={key}>
+						<div key={key} className="flex items-center space-x-3">
 							<FilterRowTitle className="flex-shrink-0 w-24">
 								{FilterKeyTitle[filterKey]}
 							</FilterRowTitle>
@@ -50,11 +49,15 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											currentFilters[filterKey]?.includes(option),
+											currentFilters[filterKey]?.includes(
+												option
+											)
 										)}
 										value={option}
 										selectedIcon={chipIcon}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
 							</FilterOptionsContainer>
@@ -65,7 +68,7 @@ export function FilterPanel({
 							>
 								Reset
 							</Button>
-						</FilterRow>
+						</div>
 					);
 				})}
 				<div className="flex place-content-between items-center space-x-2">
