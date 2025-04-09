@@ -50,15 +50,11 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											currentFilters[filterKey]?.includes(
-												option
-											)
+											currentFilters[filterKey]?.includes(option),
 										)}
 										value={option}
 										selectedIcon={chipIcon}
-										onClick={() =>
-											toggleOption(filterKey, option)
-										}
+										onClick={() => toggleOption(filterKey, option)}
 									/>
 								))}
 							</FilterOptionsContainer>
