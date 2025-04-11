@@ -1,6 +1,6 @@
-import { AppDateRange } from "@/types/shared";
-import { Trip, TripDay } from "@/types/trips";
-import { createContext, ReactNode, useContext, useReducer } from "react";
+import type { AppDateRange } from "@/types/shared";
+import type { Trip, TripDay } from "@/types/trips";
+import { createContext, type ReactNode, useContext, useReducer } from "react";
 
 interface Props {
 	defaultTrip?: Trip;
@@ -47,7 +47,7 @@ function reducer(state: Trip, action: Action) {
 export function TripProvider({ defaultTrip, children }: Props) {
 	const [state, dispatch] = useReducer(
 		reducer,
-		defaultTrip ?? initialTripState
+		defaultTrip ?? initialTripState,
 	);
 
 	const value: TripProviderState = {
@@ -55,9 +55,7 @@ export function TripProvider({ defaultTrip, children }: Props) {
 		dispatch,
 	};
 
-	return (
-		<TripContext.Provider value={value}>{children}</TripContext.Provider>
-	);
+	return <TripContext.Provider value={value}>{children}</TripContext.Provider>;
 }
 
 export const useTrip = () => {
