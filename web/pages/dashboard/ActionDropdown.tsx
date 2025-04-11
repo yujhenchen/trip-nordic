@@ -6,9 +6,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { Ellipsis, Pencil, Trash2 } from "lucide-react";
-import { useTripsState, type Trip } from "@/states/useTripsState";
+import { useTripsState } from "@/states/useTripsState";
 import { toast } from "sonner";
-import type { DateRange } from "react-day-picker";
+import type { Trip } from "@/types/trips";
+import type { AppDateRange } from "@/types/shared";
 
 interface Props {
 	trip: Trip;
@@ -28,7 +29,7 @@ export function ActionDropdown({ trip }: Props) {
 		date,
 	}: {
 		name: string;
-		date: DateRange;
+		date: AppDateRange;
 	}) => {
 		updateTrip({
 			...trip,

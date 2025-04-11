@@ -10,8 +10,8 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { DatePickerWithRange } from "../common/datePickerWithRange";
 import { useRef, useState } from "react";
-import type { DateRange } from "react-day-picker";
 import type { NewTrip } from "@/types/trips";
+import type { AppDateRange } from "@/types/shared";
 
 interface Props {
 	onClose: () => void;
@@ -25,7 +25,7 @@ const IDS = {
 
 export default function NewTripDialog({ onClose, handleNewTrip }: Props) {
 	const now = new Date();
-	const [date, setDate] = useState<DateRange | undefined>({
+	const [date, setDate] = useState<AppDateRange>({
 		from: now,
 		to: now,
 	});
@@ -64,7 +64,19 @@ export default function NewTripDialog({ onClose, handleNewTrip }: Props) {
 							<DatePickerWithRange
 								id={IDS.DATES_RANGE}
 								date={date}
-								setDate={setDate}
+								onSelectDate={(
+									range,
+									_selectedDay,
+									_activeModifiers,
+									_e
+								) => {
+									if (range?.from && range.to) {
+										setDate({
+											from: range.from,
+											to: range.to,
+										});
+									}
+								}}
 							/>
 						</div>
 					</DialogDescription>

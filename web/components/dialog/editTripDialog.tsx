@@ -10,12 +10,12 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { DatePickerWithRange } from "../common/datePickerWithRange";
 import { useRef, useState } from "react";
-import type { DateRange } from "react-day-picker";
 import type { NewTrip } from "@/types/trips";
+import type { AppDateRange } from "@/types/shared";
 
 interface Props {
 	name: string;
-	date: DateRange;
+	date: AppDateRange;
 	onClose: () => void;
 	handleUpdateTrip: (newTripProps: NewTrip) => void;
 }
@@ -31,7 +31,7 @@ export default function EditTripDialog({
 	onClose,
 	handleUpdateTrip,
 }: Props) {
-	const [currentDate, setCurrentDate] = useState<DateRange | undefined>(date);
+	const [currentDate, setCurrentDate] = useState<AppDateRange>(date);
 
 	const nameRef = useRef<HTMLInputElement | null>(null);
 
@@ -67,7 +67,19 @@ export default function EditTripDialog({
 							<DatePickerWithRange
 								id={IDS.DATES_RANGE}
 								date={currentDate}
-								setDate={setCurrentDate}
+								onSelectDate={(
+									range,
+									_selectedDay,
+									_activeModifiers,
+									_e
+								) => {
+									if (range?.from && range.to) {
+										setCurrentDate({
+											from: range.from,
+											to: range.to,
+										});
+									}
+								}}
 							/>
 						</div>
 					</DialogDescription>

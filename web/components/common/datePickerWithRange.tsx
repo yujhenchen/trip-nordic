@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import type { DateRange, SelectRangeEventHandler } from "react-day-picker";
+import type { SelectRangeEventHandler } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -10,11 +10,12 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import type { AppDateRange } from "@/types/shared";
 
 interface Props {
 	id?: string;
 	className?: string;
-	date: DateRange;
+	date: AppDateRange;
 	onSelectDate: SelectRangeEventHandler;
 }
 
@@ -33,11 +34,11 @@ export function DatePickerWithRange({
 						variant={"outline"}
 						className={cn(
 							"w-[300px] justify-start text-left font-normal",
-							!date && "text-muted-foreground",
+							!date && "text-muted-foreground"
 						)}
 					>
 						<CalendarIcon />
-						{date?.from ? (
+						{/* {date?.from ? (
 							date.to ? (
 								<>
 									{format(date.from, "LLL dd, y")} -{" "}
@@ -48,7 +49,11 @@ export function DatePickerWithRange({
 							)
 						) : (
 							<span>Pick a date</span>
-						)}
+						)} */}
+						<>
+							{format(date.from, "LLL dd, y")} -{" "}
+							{format(date.to, "LLL dd, y")}
+						</>
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent className="w-auto p-0" align="start">

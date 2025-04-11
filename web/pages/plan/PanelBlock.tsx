@@ -1,8 +1,8 @@
-import type { Trip, TripDay } from "@/states/useTripsState";
 import { PanelNew } from "./panelNew";
 import { Panel } from "./panel";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
 import { useTripsState } from "@/states/useTripsState";
+import type { Trip, TripDay } from "@/types/trips";
 
 interface Props {
 	trip: Trip;
