@@ -25,7 +25,7 @@ export function DatePicker({ date, onSelectDate }: Props) {
 					className={cn(
 						"w-[280px] justify-start text-left font-normal",
 						!date && "text-muted-foreground",
-						"w-full"
+						"w-full",
 					)}
 				>
 					<CalendarIcon className="mr-2 h-4 w-4" />
