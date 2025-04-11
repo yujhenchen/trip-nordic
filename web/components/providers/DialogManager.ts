@@ -1,9 +1,13 @@
+import { Edit } from "lucide-react";
 import { type ComponentProps, lazy } from "react";
 
 export const DialogManager = {
 	DetailsDialog: lazy(() => import("@/components/dialog/DetailsDialog")),
 	AppAlertDialog: lazy(() => import("@/components/dialog/AppAlertDialog")),
 	CardDialog: lazy(() => import("@/components/dialog/CardDialog")),
+	EditActivityCardDialog: lazy(
+		() => import("@/components/dialog/editActivityCardDialog")
+	),
 	NewTripDialog: lazy(() => import("@/components/dialog/newTripDialog")),
 	EditTripDialog: lazy(() => import("@/components/dialog/editTripDialog")),
 } as const;

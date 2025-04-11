@@ -5,7 +5,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import type { ComponentProps, MouseEvent } from "react";
 import { IconButton } from "@/components/common/iconButton";
 import { useDialog } from "@/components/providers/DialogProvider";
@@ -21,6 +21,7 @@ interface PanelCardProps extends ComponentProps<typeof Card> {
 }
 
 export const TARGET_IDS = {
+	BUTTON_EDIT: "edit-card-btn",
 	BUTTON_DELETE: "delete-card-btn",
 } as const;
 
@@ -37,19 +38,29 @@ export function PanelCard({
 
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
 		const id = (event.currentTarget as HTMLElement).id;
+		event.stopPropagation();
 
-		if (id === TARGET_IDS.BUTTON_DELETE) {
-			event.stopPropagation();
-			open("AppAlertDialog", {
-				title: "Are you sure to remove this activity?",
-				handleConfirm: handleRemove,
-			});
-			return;
+		switch (id) {
+			case TARGET_IDS.BUTTON_DELETE:
+				open("AppAlertDialog", {
+					title: "Are you sure to remove this activity?",
+					handleConfirm: handleRemove,
+				});
+				break;
+			case TARGET_IDS.BUTTON_EDIT:
+				open("EditActivityCardDialog", {
+					title: "test",
+					description: content,
+					handleSave: () => {},
+				});
+				break;
+			default:
+				open("CardDialog", {
+					title: "test title",
+					description: "test description",
+				});
+				break;
 		}
-		open("CardDialog", {
-			title: "test title",
-			description: "test description",
-		});
 	};
 
 	return (
@@ -58,7 +69,12 @@ export function PanelCard({
 				<CardTitle>{title}</CardTitle>
 				<CardDescription>{content}</CardDescription>
 			</CardHeader>
-			<CardFooter className="place-content-end">
+			<CardFooter className="flex space-x-4 place-content-end">
+				<IconButton
+					id={TARGET_IDS.BUTTON_EDIT}
+					icon={<Pencil size={18} />}
+					onClick={handleClick}
+				/>
 				<IconButton
 					id={TARGET_IDS.BUTTON_DELETE}
 					icon={<Trash2 size={18} />}
