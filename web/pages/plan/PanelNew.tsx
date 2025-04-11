@@ -15,7 +15,7 @@ export function PanelNew({ tripId }: Props) {
 	const handleCreate = () => {
 		addDay(tripId, {
 			id: crypto.randomUUID(),
-			day: new Date(),
+			date: new Date(),
 			activities: [],
 		});
 		toast.success("New trip day added");
