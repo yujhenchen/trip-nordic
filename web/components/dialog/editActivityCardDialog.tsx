@@ -9,12 +9,13 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { useRef } from "react";
 
 interface Props {
 	onClose: () => void;
 	title: string;
 	description: string;
-	handleSave: () => void;
+	handleSave: (title: string, description: string) => void;
 }
 
 export default function EditActivityCardDialog({
@@ -23,6 +24,9 @@ export default function EditActivityCardDialog({
 	description,
 	handleSave,
 }: Props) {
+	const titleRef = useRef<HTMLInputElement>(null);
+	const descriptionRef = useRef<HTMLTextAreaElement>(null);
+
 	return (
 		<Dialog open onOpenChange={onClose}>
 			{/* <DialogTrigger>Open</DialogTrigger> */}
@@ -30,14 +34,18 @@ export default function EditActivityCardDialog({
 				<DialogHeader>
 					<DialogTitle>
 						<Input
+							ref={(node) => {
+								titleRef.current = node;
+							}}
 							defaultValue={title}
-							onKeyDown={(e) => e.key === "Enter" && handleSave()}
 						/>
 					</DialogTitle>
 					<DialogDescription>
 						<Textarea
+							ref={(node) => {
+								descriptionRef.current = node;
+							}}
 							defaultValue={description}
-							onKeyDown={(e) => e.key === "Enter" && handleSave()}
 						/>
 					</DialogDescription>
 				</DialogHeader>
@@ -45,7 +53,17 @@ export default function EditActivityCardDialog({
 					<Button variant="secondary" onClick={onClose}>
 						Cancel
 					</Button>
-					<Button onClick={handleSave}>Save</Button>
+					<Button
+						onClick={() => {
+							handleSave(
+								titleRef.current?.value ?? title,
+								descriptionRef.current?.value ?? description
+							);
+							onClose();
+						}}
+					>
+						Save
+					</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

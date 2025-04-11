@@ -1,7 +1,7 @@
 import { PanelNew } from "./panelNew";
 import { Panel } from "./panel";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
-import type { TripDay } from "@/types/trips";
+import type { TripActivity, TripDay } from "@/types/trips";
 import { useTrip } from "./TripContext";
 import { PanelCard } from "./panelCard";
 import { PanelCardNew } from "./panelCardNew";
@@ -36,6 +36,11 @@ export function PanelSection() {
 		toast.success("Activity added");
 	};
 
+	const handleUpdateCard = (tripDayId: string, activity: TripActivity) => {
+		dispatch({ type: "updateActivity", tripDayId, activity });
+		toast.success("Activity updated");
+	};
+
 	const handleCreatePanel = () => {
 		dispatch({
 			type: "addDay",
@@ -57,12 +62,17 @@ export function PanelSection() {
 		<HorizontalScrollArea>
 			{state.tripDays.map((tripDay) => (
 				<Panel key={tripDay.id}>
-					<Panel.ActionBar handleConfirm={() => handleConfirm(tripDay.id)} />
+					<Panel.ActionBar
+						handleConfirm={() => handleConfirm(tripDay.id)}
+					/>
 					<DatePicker
 						date={tripDay.date}
-						onSelectDate={(_day, selectedDay, _activeModifiers, _e) =>
-							handleSelectDate(selectedDay, tripDay)
-						}
+						onSelectDate={(
+							_day,
+							selectedDay,
+							_activeModifiers,
+							_e
+						) => handleSelectDate(selectedDay, tripDay)}
 					/>
 					{tripDay.activities.map((activity) => (
 						<PanelCard
@@ -72,10 +82,24 @@ export function PanelSection() {
 							activityId={activity.id}
 							title={activity.name}
 							content={activity.content}
-							handleRemove={() => handleRemoveCard(tripDay.id, activity.id)}
+							handleRemove={() =>
+								handleRemoveCard(tripDay.id, activity.id)
+							}
+							handleUpdate={(
+								title: string,
+								description: string
+							) =>
+								handleUpdateCard(tripDay.id, {
+									...activity,
+									name: title,
+									content: description,
+								})
+							}
 						/>
 					))}
-					<PanelCardNew handleCreate={() => handleCreateCard(tripDay.id)} />
+					<PanelCardNew
+						handleCreate={() => handleCreateCard(tripDay.id)}
+					/>
 				</Panel>
 			))}
 			<PanelNew handleCreate={handleCreatePanel} />

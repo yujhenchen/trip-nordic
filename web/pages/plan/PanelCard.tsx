@@ -17,6 +17,7 @@ interface PanelCardProps extends ComponentProps<typeof Card> {
 	activityId: string;
 	title: string;
 	content: string;
+	handleUpdate: (title: string, description: string) => void;
 	handleRemove: () => void;
 }
 
@@ -31,6 +32,7 @@ export function PanelCard({
 	activityId,
 	title,
 	content,
+	handleUpdate,
 	handleRemove,
 	...rest
 }: PanelCardProps) {
@@ -49,15 +51,15 @@ export function PanelCard({
 				break;
 			case TARGET_IDS.BUTTON_EDIT:
 				open("EditActivityCardDialog", {
-					title: "test",
+					title,
 					description: content,
-					handleSave: () => {},
+					handleSave: handleUpdate,
 				});
 				break;
 			default:
 				open("CardDialog", {
-					title: "test title",
-					description: "test description",
+					title,
+					description: content,
 				});
 				break;
 		}
