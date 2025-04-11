@@ -6,7 +6,7 @@ export const DialogManager = {
 	AppAlertDialog: lazy(() => import("@/components/dialog/AppAlertDialog")),
 	CardDialog: lazy(() => import("@/components/dialog/CardDialog")),
 	EditActivityCardDialog: lazy(
-		() => import("@/components/dialog/editActivityCardDialog")
+		() => import("@/components/dialog/editActivityCardDialog"),
 	),
 	NewTripDialog: lazy(() => import("@/components/dialog/newTripDialog")),
 	EditTripDialog: lazy(() => import("@/components/dialog/editTripDialog")),
