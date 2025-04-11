@@ -17,6 +17,7 @@ export function ControlPanel({ trip }: Props) {
 	const {
 		name: tripName,
 		date: tripDate,
+		tripDays,
 		setName: setTripName,
 		setDate: setTripDate,
 	} = useTripState();
@@ -45,7 +46,7 @@ export function ControlPanel({ trip }: Props) {
 				id: crypto.randomUUID(),
 				name: tripName,
 				date: tripDate,
-				tripDays: [],
+				tripDays,
 			};
 			addTrip(newTrip);
 			navigate(`/plan/${newTrip.id}`);
@@ -67,7 +68,10 @@ export function ControlPanel({ trip }: Props) {
 
 	return (
 		<div className="w-full h-16 place-content-between flex border px-8 py-1 items-center">
-			<EditableHeading3 text={displayTripName} handleSave={handleSaveName} />
+			<EditableHeading3
+				text={displayTripName}
+				handleSave={handleSaveName}
+			/>
 			<DatePickerWithRange
 				date={displayTripDate}
 				onSelectDate={(range, _selectedDay, _activeModifiers, _e) => {
