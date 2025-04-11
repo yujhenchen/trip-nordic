@@ -5,48 +5,42 @@ import { useTripsState } from "@/states/useTripsState";
 import { navigate } from "vike/client/router";
 import { EditableHeading3 } from "@/components/common/editableHeading3";
 import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
-import { useTripState } from "@/states/useTripState";
 import type { Trip } from "@/types/trips";
 import type { AppDateRange } from "@/types/shared";
+import { useTrip } from "./TripContext";
 
 interface Props {
 	trip: Trip | null;
 }
 
 export function ControlPanel({ trip }: Props) {
-	const {
-		name: tripName,
-		date: tripDate,
-		tripDays,
-		setName: setTripName,
-		setDate: setTripDate,
-	} = useTripState();
+	const { state, dispatch } = useTrip();
 
 	const { addTrip } = useTripsState();
 
 	const { updateTrip } = useTripsState();
 
 	const handleSaveName = (value: string) => {
-		setTripName(value);
+		dispatch({ type: "setName", name: value });
 	};
 
 	const handleSelectDate = (dateRange: AppDateRange) => {
-		setTripDate(dateRange);
+		dispatch({ type: "setDate", date: dateRange });
 	};
 
 	const handleSave = () => {
 		if (trip) {
 			updateTrip({
 				...trip,
-				name: tripName,
-				date: tripDate,
+				name: state.name,
+				date: state.date,
 			});
 		} else {
 			const newTrip = {
 				id: crypto.randomUUID(),
-				name: tripName,
-				date: tripDate,
-				tripDays,
+				name: state.name,
+				date: state.date,
+				tripDays: state.tripDays,
 			};
 			addTrip(newTrip);
 			navigate(`/plan/${newTrip.id}`);
@@ -54,23 +48,11 @@ export function ControlPanel({ trip }: Props) {
 		toast.success("Saved");
 	};
 
-	const displayTripName = trip
-		? trip.name !== tripName
-			? tripName
-			: trip.name
-		: tripName;
-
-	const displayTripDate = trip
-		? JSON.stringify(trip.date) !== JSON.stringify(tripDate)
-			? tripDate
-			: trip.date
-		: tripDate;
-
 	return (
 		<div className="w-full h-16 place-content-between flex border px-8 py-1 items-center">
-			<EditableHeading3 text={displayTripName} handleSave={handleSaveName} />
+			<EditableHeading3 text={state.name} handleSave={handleSaveName} />
 			<DatePickerWithRange
-				date={displayTripDate}
+				date={state.date}
 				onSelectDate={(range, _selectedDay, _activeModifiers, _e) => {
 					if (range?.from && range.to) {
 						handleSelectDate({

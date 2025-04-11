@@ -1,20 +1,23 @@
 import { usePageContext } from "vike-react/usePageContext";
 import { ControlPanel } from "./controlPanel";
-// import { PanelBlock } from "./panelBlock";
+import { PanelBlock } from "./panelBlock";
 import { useTripsState } from "@/states/useTripsState";
+import { TripProvider } from "./TripContext";
 
 export function Content() {
 	const { routeParams } = usePageContext();
 	const { trips } = useTripsState();
 	const tripId = routeParams?.id ?? "";
 	const trip = tripId
-		? (trips.find((trip) => trip.id === tripId) ?? null)
+		? trips.find((trip) => trip.id === tripId) ?? null
 		: null;
 
 	return (
 		<div className="w-full flex-grow overflow-hidden flex flex-col">
-			<ControlPanel trip={trip} />
-			{/* <PanelBlock trip={trip} /> */}
+			<TripProvider {...(trip ? { defaultTrip: trip } : {})}>
+				<ControlPanel trip={trip} />
+				{/* <PanelBlock trip={trip} /> */}
+			</TripProvider>
 		</div>
 	);
 }
