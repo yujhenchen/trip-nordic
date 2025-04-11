@@ -1,8 +1,8 @@
-import type { Trip, TripDay } from "@/states/useTripState";
+import type { Trip, TripDay } from "@/states/useTripsState";
 import { PanelNew } from "./panelNew";
 import { Panel } from "./panel";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
-import useTripState from "@/states/useTripState";
+import useTripsState from "@/states/useTripsState";
 
 interface Props {
 	trip: Trip;
@@ -10,12 +10,12 @@ interface Props {
 
 export function PanelBlock({ trip }: Props) {
 	const { tripDays } = trip;
-	const { updateDay } = useTripState();
+	const { updateDay } = useTripsState();
 
 	const handleSelectDate = (
 		tripId: string,
 		selectedDay: Date,
-		tripDay: TripDay,
+		tripDay: TripDay
 	) => {
 		updateDay(tripId, {
 			...tripDay,

@@ -2,7 +2,7 @@ import { IconButton } from "@/components/common/iconButton";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { PanelCardContainer } from "./panelCardContainer";
-import useTripState from "@/states/useTripState";
+import useTripsState from "@/states/useTripsState";
 
 interface Props {
 	tripId: string;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function PanelCardNew({ tripId, tripDayId }: Props) {
-	const { addActivity } = useTripState();
+	const { addActivity } = useTripsState();
 
 	const handleCreate = () => {
 		addActivity(tripId, tripDayId, {

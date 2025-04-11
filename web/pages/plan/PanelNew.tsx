@@ -3,14 +3,14 @@ import { Plus } from "lucide-react";
 import { IconButton } from "@/components/common/iconButton";
 import { PanelContainer } from "./panelContainer";
 import { toast } from "sonner";
-import useTripState from "@/states/useTripState";
+import useTripsState from "@/states/useTripsState";
 
 interface Props {
 	tripId: string;
 }
 
 export function PanelNew({ tripId }: Props) {
-	const { addDay } = useTripState();
+	const { addDay } = useTripsState();
 
 	const handleCreate = () => {
 		addDay(tripId, {

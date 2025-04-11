@@ -5,7 +5,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import useTripState from "@/states/useTripState";
+import useTripsState from "@/states/useTripsState";
 import { NewTripCard } from "./newTripCard";
 import { ActionDropdown } from "./ActionDropdown";
 import { navigate } from "vike/client/router";
@@ -21,7 +21,7 @@ const getDateString = (date: string | Date | unknown) => {
 };
 
 export function Trips() {
-	const { trips } = useTripState();
+	const { trips } = useTripsState();
 
 	const handleClickCard = (tripId: string) => {
 		navigate(`/plan/${tripId}`);

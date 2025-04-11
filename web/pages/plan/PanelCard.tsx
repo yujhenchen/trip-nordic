@@ -11,7 +11,7 @@ import { useDialog } from "@/components/providers/DialogProvider";
 import { toast } from "sonner";
 import { PanelCardContainer } from "./panelCardContainer";
 import type { PanelCardProps } from "./types";
-import useTripState from "@/states/useTripState";
+import useTripsState from "@/states/useTripsState";
 
 export const TARGET_IDS = {
 	BUTTON_DELETE: "delete-card-btn",
@@ -26,7 +26,7 @@ export function PanelCard({
 	...rest
 }: PanelCardProps) {
 	const { open } = useDialog();
-	const { removeActivity } = useTripState();
+	const { removeActivity } = useTripsState();
 
 	const handleConfirm = () => {
 		removeActivity(tripId, tripDayId, activityId);

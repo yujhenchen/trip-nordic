@@ -1,14 +1,14 @@
 import { IconButton } from "@/components/common/iconButton";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { Card } from "@/components/ui/card";
-import useTripState from "@/states/useTripState";
+import useTripsState from "@/states/useTripsState";
 import type { NewTrip } from "@/types/trips";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
 export function NewTripCard() {
 	const { open } = useDialog();
-	const { addTrip } = useTripState();
+	const { addTrip } = useTripsState();
 
 	const handleNewTrip = (newTripProps: NewTrip) => {
 		addTrip({
