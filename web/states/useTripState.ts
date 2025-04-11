@@ -27,8 +27,8 @@ interface TripState {
 	addTrip: (trip: Trip) => void;
 	// getTrip: (tripId: string) => Trip | null;
 	updateTrip: (trip: Trip) => void;
-	updateTripName: (tripId: string, name: string) => void;
-	updateTripDate: (tripId: string, date: DateRange) => void;
+	// updateTripName: (tripId: string, name: string) => void;
+	// updateTripDate: (tripId: string, date: DateRange) => void;
 	removeTrip: (tripId: string) => void;
 	// trip date
 	addDay: (tripId: string, tripDay: TripDay) => void;
@@ -65,14 +65,14 @@ const useTripState = create<TripState>()(
 				set((state) => ({
 					trips: state.trips.map((t) => (t.id === trip.id ? trip : t)),
 				})),
-			updateTripName: (tripId, name) =>
-				set((state) => ({
-					trips: state.trips.map((t) => (t.id === tripId ? { ...t, name } : t)),
-				})),
-			updateTripDate: (tripId, date) =>
-				set((state) => ({
-					trips: state.trips.map((t) => (t.id === tripId ? { ...t, date } : t)),
-				})),
+			// updateTripName: (tripId, name) =>
+			// 	set((state) => ({
+			// 		trips: state.trips.map((t) => (t.id === tripId ? { ...t, name } : t)),
+			// 	})),
+			// updateTripDate: (tripId, date) =>
+			// 	set((state) => ({
+			// 		trips: state.trips.map((t) => (t.id === tripId ? { ...t, date } : t)),
+			// 	})),
 			removeTrip: (tripId) =>
 				set((state) => ({
 					trips: state.trips.filter((t) => t.id !== tripId),
@@ -94,11 +94,11 @@ const useTripState = create<TripState>()(
 						...state.trips.map((t) =>
 							t.id === tripId
 								? {
-										...t,
-										tripDays: t.tripDays.map((day) =>
-											day.id === tripDay.id ? tripDay : day,
-										),
-									}
+									...t,
+									tripDays: t.tripDays.map((day) =>
+										day.id === tripDay.id ? tripDay : day,
+									),
+								}
 								: t,
 						),
 					],
@@ -109,9 +109,9 @@ const useTripState = create<TripState>()(
 						...state.trips.map((t) =>
 							t.id === tripId
 								? {
-										...t,
-										tripDays: t.tripDays.filter((day) => day.id !== tripDayId),
-									}
+									...t,
+									tripDays: t.tripDays.filter((day) => day.id !== tripDayId),
+								}
 								: t,
 						),
 					],
@@ -123,13 +123,13 @@ const useTripState = create<TripState>()(
 						...state.trips.map((t) =>
 							t.id === tripId
 								? {
-										...t,
-										tripDays: t.tripDays.map((day) =>
-											day.id === tripDayId
-												? { ...day, activities: [...day.activities, activity] }
-												: day,
-										),
-									}
+									...t,
+									tripDays: t.tripDays.map((day) =>
+										day.id === tripDayId
+											? { ...day, activities: [...day.activities, activity] }
+											: day,
+									),
+								}
 								: t,
 						),
 					],
@@ -140,18 +140,18 @@ const useTripState = create<TripState>()(
 						...state.trips.map((t) =>
 							t.id === tripId
 								? {
-										...t,
-										tripDays: t.tripDays.map((day) =>
-											day.id === tripDayId
-												? {
-														...day,
-														activities: day.activities.map((a) =>
-															a.id === activity.id ? activity : a,
-														),
-													}
-												: day,
-										),
-									}
+									...t,
+									tripDays: t.tripDays.map((day) =>
+										day.id === tripDayId
+											? {
+												...day,
+												activities: day.activities.map((a) =>
+													a.id === activity.id ? activity : a,
+												),
+											}
+											: day,
+									),
+								}
 								: t,
 						),
 					],
@@ -162,18 +162,18 @@ const useTripState = create<TripState>()(
 						...state.trips.map((t) =>
 							t.id === tripId
 								? {
-										...t,
-										tripDays: t.tripDays.map((day) =>
-											day.id === tripDayId
-												? {
-														...day,
-														activities: day.activities.filter(
-															(a) => a.id !== activityId,
-														),
-													}
-												: day,
-										),
-									}
+									...t,
+									tripDays: t.tripDays.map((day) =>
+										day.id === tripDayId
+											? {
+												...day,
+												activities: day.activities.filter(
+													(a) => a.id !== activityId,
+												),
+											}
+											: day,
+									),
+								}
 								: t,
 						),
 					],

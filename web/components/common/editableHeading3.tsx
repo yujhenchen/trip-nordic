@@ -23,7 +23,6 @@ export function EditableHeading3({ text, handleSave }: Props) {
 						ref={(node) => {
 							inputRef.current = node;
 						}}
-						id="trip-name-id"
 						defaultValue={text}
 						onKeyDown={(e) => {
 							if (e.key === "Enter") {
