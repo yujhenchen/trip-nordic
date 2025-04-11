@@ -1,9 +1,9 @@
 import { ClipboardCopy, Save } from "lucide-react";
 import { IconButton } from "@/components/common/iconButton";
 import { toast } from "sonner";
-import useTripState, { Trip } from "@/states/useTripState";
+import useTripState, { type Trip } from "@/states/useTripState";
 import { navigate } from "vike/client/router";
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import { EditableHeading3 } from "@/components/common/editableHeading3";
 import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
 import { useState } from "react";
@@ -18,7 +18,7 @@ const initialDate = { from: new Date(), to: new Date() };
 export function ControlPanel({ trip }: Props) {
 	const [tripName, setTripName] = useState<string>(trip?.name ?? initialName);
 	const [tripDate, setTripDate] = useState<DateRange>(
-		trip?.date ?? initialDate
+		trip?.date ?? initialDate,
 	);
 
 	const { addTrip } = useTripState();
