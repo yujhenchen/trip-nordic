@@ -34,6 +34,7 @@ export function ControlPanel({ trip }: Props) {
 				...trip,
 				name: state.name,
 				date: state.date,
+				tripDays: state.tripDays,
 			});
 		} else {
 			const newTrip = {

@@ -38,7 +38,7 @@ export function Panel({
 				{items.map((item) => (
 					<PanelCard key={item.id} {...item} />
 				))}
-				<PanelCardNew tripId={tripId} tripDayId={tripDayId} />
+				<PanelCardNew tripDayId={tripDayId} />
 			</Panel.Content>
 		</PanelContainer>
 	);

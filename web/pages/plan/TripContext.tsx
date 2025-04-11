@@ -1,5 +1,5 @@
 import type { AppDateRange } from "@/types/shared";
-import type { Trip, TripDay } from "@/types/trips";
+import type { Trip, TripActivity, TripDay } from "@/types/trips";
 import { createContext, type ReactNode, useContext, useReducer } from "react";
 
 interface Props {
@@ -10,7 +10,12 @@ interface Props {
 type Action =
 	| { type: "setName"; name: string }
 	| { type: "setDate"; date: AppDateRange }
-	| { type: "setDays"; tripDays: Array<TripDay> };
+	| { type: "addDay"; tripDay: TripDay }
+	| { type: "updateDay"; tripDay: TripDay }
+	| { type: "removeDay"; tripDayId: string }
+	| { type: "addActivity"; tripDayId: string; activity: TripActivity }
+	| { type: "updateActivity"; tripDayId: string; activity: TripActivity }
+	| { type: "removeActivity"; tripDayId: string; activityId: string };
 
 interface TripProviderState {
 	state: Trip;
@@ -37,8 +42,66 @@ function reducer(state: Trip, action: Action) {
 			return { ...state, name: action.name };
 		case "setDate":
 			return { ...state, date: action.date };
-		case "setDays":
-			return { ...state, tripDays: action.tripDays };
+		case "addDay":
+			return { ...state, tripDays: [...state.tripDays, action.tripDay] };
+		case "updateDay":
+			return {
+				...state,
+				tripDays: state.tripDays.map((tripDay) =>
+					tripDay.id === action.tripDay.id
+						? { ...action.tripDay, date: action.tripDay.date }
+						: tripDay,
+				),
+			};
+		case "removeDay":
+			return {
+				...state,
+				tripDays: state.tripDays.filter(
+					(tripDay) => tripDay.id !== action.tripDayId,
+				),
+			};
+		case "addActivity":
+			return {
+				...state,
+				tripDays: state.tripDays.map((tripDay) =>
+					tripDay.id === action.tripDayId
+						? {
+								...tripDay,
+								activities: [...tripDay.activities, action.activity],
+							}
+						: tripDay,
+				),
+			};
+		case "updateActivity":
+			return {
+				...state,
+				tripDays: state.tripDays.map((tripDay) =>
+					tripDay.id === action.tripDayId
+						? {
+								...tripDay,
+								activities: tripDay.activities.map((activity) =>
+									activity.id === action.activity.id
+										? action.activity
+										: activity,
+								),
+							}
+						: tripDay,
+				),
+			};
+		case "removeActivity":
+			return {
+				...state,
+				tripDays: state.tripDays.map((tripDay) =>
+					tripDay.id === action.tripDayId
+						? {
+								...tripDay,
+								activities: tripDay.activities.filter(
+									(activity) => activity.id !== action.activityId,
+								),
+							}
+						: tripDay,
+				),
+			};
 		default:
 			return state;
 	}

@@ -3,20 +3,19 @@ import { Plus } from "lucide-react";
 import { IconButton } from "@/components/common/iconButton";
 import { PanelContainer } from "./panelContainer";
 import { toast } from "sonner";
-import { useTripsState } from "@/states/useTripsState";
+import { useTrip } from "./TripContext";
 
-interface Props {
-	tripId: string;
-}
-
-export function PanelNew({ tripId }: Props) {
-	const { addDay } = useTripsState();
+export function PanelNew() {
+	const { dispatch } = useTrip();
 
 	const handleCreate = () => {
-		addDay(tripId, {
-			id: crypto.randomUUID(),
-			date: new Date(),
-			activities: [],
+		dispatch({
+			type: "addDay",
+			tripDay: {
+				id: crypto.randomUUID(),
+				date: new Date(),
+				activities: [],
+			},
 		});
 		toast.success("New trip day added");
 	};

@@ -2,21 +2,24 @@ import { IconButton } from "@/components/common/iconButton";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { PanelCardContainer } from "./panelCardContainer";
-import { useTripsState } from "@/states/useTripsState";
+import { useTrip } from "./TripContext";
 
 interface Props {
-	tripId: string;
 	tripDayId: string;
 }
 
-export function PanelCardNew({ tripId, tripDayId }: Props) {
-	const { addActivity } = useTripsState();
+export function PanelCardNew({ tripDayId }: Props) {
+	const { dispatch } = useTrip();
 
 	const handleCreate = () => {
-		addActivity(tripId, tripDayId, {
-			id: crypto.randomUUID(),
-			name: "",
-			content: "",
+		dispatch({
+			type: "addActivity",
+			tripDayId,
+			activity: {
+				id: crypto.randomUUID(),
+				name: "",
+				content: "",
+			},
 		});
 		toast.success("New card added");
 	};
