@@ -1,17 +1,24 @@
 import {
+	Card,
 	CardDescription,
 	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
-import type { MouseEvent } from "react";
+import type { ComponentProps, MouseEvent } from "react";
 import { IconButton } from "@/components/common/iconButton";
 import { useDialog } from "@/components/providers/DialogProvider";
-import { toast } from "sonner";
 import { PanelCardContainer } from "./panelCardContainer";
-import type { PanelCardProps } from "./types";
-import { useTrip } from "./TripContext";
+
+interface PanelCardProps extends ComponentProps<typeof Card> {
+	tripId: string;
+	tripDayId: string;
+	activityId: string;
+	title: string;
+	content: string;
+	handleRemove: () => void;
+}
 
 export const TARGET_IDS = {
 	BUTTON_DELETE: "delete-card-btn",
@@ -23,15 +30,10 @@ export function PanelCard({
 	activityId,
 	title,
 	content,
+	handleRemove,
 	...rest
 }: PanelCardProps) {
 	const { open } = useDialog();
-	const { dispatch } = useTrip();
-
-	const handleConfirm = () => {
-		dispatch({ type: "removeActivity", tripDayId, activityId });
-		toast.success("Trip Card removed");
-	};
 
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
 		const id = (event.currentTarget as HTMLElement).id;
@@ -40,7 +42,7 @@ export function PanelCard({
 			event.stopPropagation();
 			open("AppAlertDialog", {
 				title: "Are you sure to remove this activity?",
-				handleConfirm,
+				handleConfirm: handleRemove,
 			});
 			return;
 		}

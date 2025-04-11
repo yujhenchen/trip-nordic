@@ -5,6 +5,7 @@ import type { TripDay } from "@/types/trips";
 import { useTrip } from "./TripContext";
 import { PanelCard } from "./panelCard";
 import { PanelCardNew } from "./panelCardNew";
+import { toast } from "sonner";
 
 export function PanelSection() {
 	const { state, dispatch } = useTrip();
@@ -14,6 +15,36 @@ export function PanelSection() {
 			type: "updateDay",
 			tripDay: { ...tripDay, date: selectedDay },
 		});
+	};
+
+	const handleRemoveCard = (tripDayId: string, activityId: string) => {
+		dispatch({ type: "removeActivity", tripDayId, activityId });
+		toast.success("Activity removed");
+	};
+
+	const handleCreateCard = (tripDayId: string) => {
+		dispatch({
+			type: "addActivity",
+			tripDayId,
+			activity: {
+				id: crypto.randomUUID(),
+				name: "",
+				content: "",
+			},
+		});
+		toast.success("Activity added");
+	};
+
+	const handleCreatePanel = () => {
+		dispatch({
+			type: "addDay",
+			tripDay: {
+				id: crypto.randomUUID(),
+				date: new Date(),
+				activities: [],
+			},
+		});
+		toast.success("New trip day added");
 	};
 
 	return (
@@ -34,12 +65,17 @@ export function PanelSection() {
 							activityId={activity.id}
 							title={activity.name}
 							content={activity.content}
+							handleRemove={() =>
+								handleRemoveCard(tripDay.id, activity.id)
+							}
 						/>
 					))}
-					<PanelCardNew tripDayId={tripDay.id} />
+					<PanelCardNew
+						handleCreate={() => handleCreateCard(tripDay.id)}
+					/>
 				</Panel>
 			))}
-			<PanelNew />
+			<PanelNew handleCreate={handleCreatePanel} />
 		</HorizontalScrollArea>
 	);
 }
