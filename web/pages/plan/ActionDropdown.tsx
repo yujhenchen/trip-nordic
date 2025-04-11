@@ -8,14 +8,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { Ellipsis, Trash2 } from "lucide-react";
-import { toast } from "sonner";
 
-export function ActionDropdown() {
+interface Props {
+	handleConfirm: () => void;
+}
+
+export function ActionDropdown({ handleConfirm }: Props) {
 	const { open } = useDialog();
-
-	const handleConfirm = () => {
-		toast.success("Trip Plan removed");
-	};
 
 	return (
 		<DropdownMenu>

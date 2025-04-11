@@ -4,32 +4,30 @@ import type { Card } from "@/components/ui/card";
 
 import { ActionDropdown } from "./actionDropdown";
 import { PanelContainer } from "./panelContainer";
-import { DatePicker } from "@/components/common/datePicker";
-import type { SelectSingleEventHandler } from "react-day-picker";
 
-export interface PanelProps extends ComponentProps<typeof Card> {
-	date: Date;
-	onSelectDate: SelectSingleEventHandler;
-}
+export interface PanelProps extends ComponentProps<typeof Card> {}
 
 interface PanelContentProps extends ComponentProps<typeof ScrollArea> {}
 
-interface PanelActionBarType extends HTMLAttributes<HTMLDivElement> {}
+interface PanelActionBarType extends HTMLAttributes<HTMLDivElement> {
+	handleConfirm: () => void;
+}
 
-export function Panel({ date, onSelectDate, children, ...rest }: PanelProps) {
+export function Panel({ children, ...rest }: PanelProps) {
 	return (
 		<PanelContainer {...rest} className="py-4">
-			<Panel.ActionBar />
-			<DatePicker date={date} onSelectDate={onSelectDate} />
 			<Panel.Content>{children}</Panel.Content>
 		</PanelContainer>
 	);
 }
 
-Panel.ActionBar = function PanelActionBar({ ...rest }: PanelActionBarType) {
+Panel.ActionBar = function PanelActionBar({
+	handleConfirm,
+	...rest
+}: PanelActionBarType) {
 	return (
 		<div className="w-full flex place-content-end px-4" {...rest}>
-			<ActionDropdown />
+			<ActionDropdown handleConfirm={handleConfirm} />
 		</div>
 	);
 };
