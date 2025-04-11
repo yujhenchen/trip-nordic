@@ -65,14 +65,10 @@ export function PanelSection() {
 							activityId={activity.id}
 							title={activity.name}
 							content={activity.content}
-							handleRemove={() =>
-								handleRemoveCard(tripDay.id, activity.id)
-							}
+							handleRemove={() => handleRemoveCard(tripDay.id, activity.id)}
 						/>
 					))}
-					<PanelCardNew
-						handleCreate={() => handleCreateCard(tripDay.id)}
-					/>
+					<PanelCardNew handleCreate={() => handleCreateCard(tripDay.id)} />
 				</Panel>
 			))}
 			<PanelNew handleCreate={handleCreatePanel} />
