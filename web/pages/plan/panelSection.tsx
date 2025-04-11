@@ -8,14 +8,14 @@ interface Props {
 	trip: Trip;
 }
 
-export function PanelBlock({ trip }: Props) {
+export function PanelSection({ trip }: Props) {
 	const { tripDays } = trip;
 	const { updateDay } = useTripsState();
 
 	const handleSelectDate = (
 		tripId: string,
 		selectedDay: Date,
-		tripDay: TripDay,
+		tripDay: TripDay
 	) => {
 		updateDay(tripId, {
 			...tripDay,
