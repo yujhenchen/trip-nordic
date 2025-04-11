@@ -1,8 +1,10 @@
 import { PanelNew } from "./panelNew";
 import { Panel } from "./panel";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
-import type { Trip, TripDay } from "@/types/trips";
+import type { TripDay } from "@/types/trips";
 import { useTrip } from "./TripContext";
+import { PanelCard } from "./panelCard";
+import { PanelCardNew } from "./panelCardNew";
 
 export function PanelSection() {
 	const { state, dispatch } = useTrip();
@@ -25,14 +27,19 @@ export function PanelSection() {
 					onSelectDate={(_day, selectedDay, _activeModifiers, _e) =>
 						handleSelectDate(selectedDay, tripDay)
 					}
-					items={tripDay.activities.map((activity) => ({
-						activityId: activity.id,
-						tripId: state.id,
-						tripDayId: tripDay.id,
-						title: activity.name,
-						content: activity.content,
-					}))}
-				/>
+				>
+					{tripDay.activities.map((activity) => (
+						<PanelCard
+							key={activity.id}
+							tripId={state.id}
+							tripDayId={tripDay.id}
+							activityId={activity.id}
+							title={activity.name}
+							content={activity.content}
+						/>
+					))}
+					<PanelCardNew tripDayId={tripDay.id} />
+				</Panel>
 			))}
 			<PanelNew />
 		</HorizontalScrollArea>
