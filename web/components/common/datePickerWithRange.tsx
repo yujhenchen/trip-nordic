@@ -34,7 +34,7 @@ export function DatePickerWithRange({
 						variant={"outline"}
 						className={cn(
 							"w-[300px] justify-start text-left font-normal",
-							!date && "text-muted-foreground"
+							!date && "text-muted-foreground",
 						)}
 					>
 						<CalendarIcon />
@@ -51,8 +51,7 @@ export function DatePickerWithRange({
 							<span>Pick a date</span>
 						)} */}
 						<>
-							{format(date.from, "LLL dd, y")} -{" "}
-							{format(date.to, "LLL dd, y")}
+							{format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
 						</>
 					</Button>
 				</PopoverTrigger>

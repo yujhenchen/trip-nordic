@@ -64,12 +64,7 @@ export default function NewTripDialog({ onClose, handleNewTrip }: Props) {
 							<DatePickerWithRange
 								id={IDS.DATES_RANGE}
 								date={date}
-								onSelectDate={(
-									range,
-									_selectedDay,
-									_activeModifiers,
-									_e
-								) => {
+								onSelectDate={(range, _selectedDay, _activeModifiers, _e) => {
 									if (range?.from && range.to) {
 										setDate({
 											from: range.from,

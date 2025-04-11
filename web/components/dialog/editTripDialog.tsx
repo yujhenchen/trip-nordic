@@ -67,12 +67,7 @@ export default function EditTripDialog({
 							<DatePickerWithRange
 								id={IDS.DATES_RANGE}
 								date={currentDate}
-								onSelectDate={(
-									range,
-									_selectedDay,
-									_activeModifiers,
-									_e
-								) => {
+								onSelectDate={(range, _selectedDay, _activeModifiers, _e) => {
 									if (range?.from && range.to) {
 										setCurrentDate({
 											from: range.from,
