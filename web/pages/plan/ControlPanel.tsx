@@ -1,25 +1,25 @@
 import { ClipboardCopy, Save } from "lucide-react";
 import { IconButton } from "@/components/common/iconButton";
 import { toast } from "sonner";
-import { useTripsState, type Trip } from "@/states/useTripsState";
+import { useTripsState } from "@/states/useTripsState";
 import { navigate } from "vike/client/router";
-import type { DateRange } from "react-day-picker";
 import { EditableHeading3 } from "@/components/common/editableHeading3";
 import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
-import { useState } from "react";
+import { useTripState } from "@/states/useTripState";
+import type { Trip } from "@/types/trips";
+import type { AppDateRange } from "@/types/shared";
 
 interface Props {
 	trip: Trip | null;
 }
 
-const initialName = "New Trip";
-const initialDate = { from: new Date(), to: new Date() };
-
 export function ControlPanel({ trip }: Props) {
-	const [tripName, setTripName] = useState<string>(trip?.name ?? initialName);
-	const [tripDate, setTripDate] = useState<DateRange>(
-		trip?.date ?? initialDate,
-	);
+	const {
+		name: tripName,
+		date: tripDate,
+		setName: setTripName,
+		setDate: setTripDate,
+	} = useTripState();
 
 	const { addTrip } = useTripsState();
 
@@ -29,10 +29,8 @@ export function ControlPanel({ trip }: Props) {
 		setTripName(value);
 	};
 
-	const handleSelectDate = (dateRange: DateRange) => {
-		if (dateRange) {
-			setTripDate(dateRange);
-		}
+	const handleSelectDate = (dateRange: AppDateRange) => {
+		setTripDate(dateRange);
 	};
 
 	const handleSave = () => {
@@ -55,16 +53,30 @@ export function ControlPanel({ trip }: Props) {
 		toast.success("Saved");
 	};
 
+	const displayTripName = trip
+		? trip.name !== tripName
+			? tripName
+			: trip.name
+		: tripName;
+
+	const displayTripDate = trip
+		? JSON.stringify(trip.date) !== JSON.stringify(tripDate)
+			? tripDate
+			: trip.date
+		: tripDate;
+
 	return (
 		<div className="w-full h-16 place-content-between flex border px-8 py-1 items-center">
-			<EditableHeading3 text={tripName} handleSave={handleSaveName} />
+			<EditableHeading3 text={displayTripName} handleSave={handleSaveName} />
 			<DatePickerWithRange
-				date={tripDate}
+				date={displayTripDate}
 				onSelectDate={(range, _selectedDay, _activeModifiers, _e) => {
-					if (!range) {
-						return;
+					if (range?.from && range.to) {
+						handleSelectDate({
+							from: range.from,
+							to: range.to,
+						});
 					}
-					handleSelectDate(range);
 				}}
 			/>
 			<div className="flex space-x-6">
