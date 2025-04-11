@@ -8,8 +8,6 @@ import { DatePicker } from "@/components/common/datePicker";
 import type { SelectSingleEventHandler } from "react-day-picker";
 
 export interface PanelProps extends ComponentProps<typeof Card> {
-	tripId: string;
-	tripDayId: string;
 	date: Date;
 	onSelectDate: SelectSingleEventHandler;
 }
@@ -18,14 +16,7 @@ interface PanelContentProps extends ComponentProps<typeof ScrollArea> {}
 
 interface PanelActionBarType extends HTMLAttributes<HTMLDivElement> {}
 
-export function Panel({
-	tripId,
-	tripDayId,
-	date,
-	onSelectDate,
-	children,
-	...rest
-}: PanelProps) {
+export function Panel({ date, onSelectDate, children, ...rest }: PanelProps) {
 	return (
 		<PanelContainer {...rest} className="py-4">
 			<Panel.ActionBar />

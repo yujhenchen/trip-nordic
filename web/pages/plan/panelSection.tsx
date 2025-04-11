@@ -21,8 +21,6 @@ export function PanelSection() {
 			{state.tripDays.map((tripDay) => (
 				<Panel
 					key={tripDay.id}
-					tripId={state.id}
-					tripDayId={tripDay.id}
 					date={tripDay.date}
 					onSelectDate={(_day, selectedDay, _activeModifiers, _e) =>
 						handleSelectDate(selectedDay, tripDay)
