@@ -15,7 +15,7 @@ export function PanelSection({ trip }: Props) {
 	const handleSelectDate = (
 		tripId: string,
 		selectedDay: Date,
-		tripDay: TripDay
+		tripDay: TripDay,
 	) => {
 		updateDay(tripId, {
 			...tripDay,
