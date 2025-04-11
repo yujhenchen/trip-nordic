@@ -8,23 +8,32 @@ import { PanelContainer } from "./panelContainer";
 import { DatePicker } from "@/components/common/datePicker";
 import type { PanelCardProps } from "./types";
 import { PanelCardNew } from "./panelCardNew";
+import type { SelectSingleEventHandler } from "react-day-picker";
 
 export interface PanelProps extends ComponentProps<typeof Card> {
 	tripId: string;
 	tripDayId: string;
-	day: Date;
+	date: Date;
 	items: Array<PanelCardProps>;
+	onSelectDate: SelectSingleEventHandler;
 }
 
 interface PanelContentProps extends ComponentProps<typeof ScrollArea> {}
 
 interface PanelActionBarType extends HTMLAttributes<HTMLDivElement> {}
 
-export function Panel({ tripId, tripDayId, items, day, ...rest }: PanelProps) {
+export function Panel({
+	tripId,
+	tripDayId,
+	items,
+	date,
+	onSelectDate,
+	...rest
+}: PanelProps) {
 	return (
 		<PanelContainer {...rest} className="py-4">
 			<Panel.ActionBar />
-			<DatePicker />
+			<DatePicker date={date} onSelectDate={onSelectDate} />
 			<Panel.Content>
 				{items.map((item) => (
 					<PanelCard key={item.id} {...item} />

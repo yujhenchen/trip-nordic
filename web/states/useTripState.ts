@@ -9,9 +9,9 @@ export interface Trip {
 	tripDays: Array<TripDay>;
 }
 
-interface TripDay {
+export interface TripDay {
 	id: string;
-	day: Date;
+	date: Date;
 	activities: Array<TripActivity>;
 }
 

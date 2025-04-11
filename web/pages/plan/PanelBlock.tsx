@@ -1,7 +1,8 @@
-import type { Trip } from "@/states/useTripState";
+import type { Trip, TripDay } from "@/states/useTripState";
 import { PanelNew } from "./panelNew";
 import { Panel } from "./panel";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
+import useTripState from "@/states/useTripState";
 
 interface Props {
 	trip: Trip;
@@ -9,6 +10,19 @@ interface Props {
 
 export function PanelBlock({ trip }: Props) {
 	const { tripDays } = trip;
+	const { updateDay } = useTripState();
+
+	const handleSelectDate = (
+		tripId: string,
+		selectedDay: Date,
+		tripDay: TripDay
+	) => {
+		updateDay(tripId, {
+			...tripDay,
+			date: selectedDay,
+		});
+	};
+
 	return (
 		<HorizontalScrollArea>
 			{tripDays.map((tripDay) => (
@@ -16,7 +30,10 @@ export function PanelBlock({ trip }: Props) {
 					key={tripDay.id}
 					tripId={trip.id}
 					tripDayId={tripDay.id}
-					day={tripDay.day}
+					date={tripDay.date}
+					onSelectDate={(_day, selectedDay, _activeModifiers, _e) =>
+						handleSelectDate(trip.id, selectedDay, tripDay)
+					}
 					items={tripDay.activities.map((activity) => ({
 						activityId: activity.id,
 						tripId: trip.id,
