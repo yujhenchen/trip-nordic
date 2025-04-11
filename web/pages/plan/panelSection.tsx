@@ -62,17 +62,12 @@ export function PanelSection() {
 		<HorizontalScrollArea>
 			{state.tripDays.map((tripDay) => (
 				<Panel key={tripDay.id}>
-					<Panel.ActionBar
-						handleConfirm={() => handleConfirm(tripDay.id)}
-					/>
+					<Panel.ActionBar handleConfirm={() => handleConfirm(tripDay.id)} />
 					<DatePicker
 						date={tripDay.date}
-						onSelectDate={(
-							_day,
-							selectedDay,
-							_activeModifiers,
-							_e
-						) => handleSelectDate(selectedDay, tripDay)}
+						onSelectDate={(_day, selectedDay, _activeModifiers, _e) =>
+							handleSelectDate(selectedDay, tripDay)
+						}
 					/>
 					{tripDay.activities.map((activity) => (
 						<PanelCard
@@ -82,13 +77,8 @@ export function PanelSection() {
 							activityId={activity.id}
 							title={activity.name}
 							content={activity.content}
-							handleRemove={() =>
-								handleRemoveCard(tripDay.id, activity.id)
-							}
-							handleUpdate={(
-								title: string,
-								description: string
-							) =>
+							handleRemove={() => handleRemoveCard(tripDay.id, activity.id)}
+							handleUpdate={(title: string, description: string) =>
 								handleUpdateCard(tripDay.id, {
 									...activity,
 									name: title,
@@ -97,9 +87,7 @@ export function PanelSection() {
 							}
 						/>
 					))}
-					<PanelCardNew
-						handleCreate={() => handleCreateCard(tripDay.id)}
-					/>
+					<PanelCardNew handleCreate={() => handleCreateCard(tripDay.id)} />
 				</Panel>
 			))}
 			<PanelNew handleCreate={handleCreatePanel} />

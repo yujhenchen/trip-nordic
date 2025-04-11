@@ -57,7 +57,7 @@ export default function EditActivityCardDialog({
 						onClick={() => {
 							handleSave(
 								titleRef.current?.value ?? title,
-								descriptionRef.current?.value ?? description
+								descriptionRef.current?.value ?? description,
 							);
 							onClose();
 						}}
