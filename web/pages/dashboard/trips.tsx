@@ -5,7 +5,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import useTripsState from "@/states/useTripsState";
+import { useTripsState } from "@/states/useTripsState";
 import { NewTripCard } from "./newTripCard";
 import { ActionDropdown } from "./ActionDropdown";
 import { navigate } from "vike/client/router";

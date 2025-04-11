@@ -1,7 +1,7 @@
 import { IconButton } from "@/components/common/iconButton";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { Card } from "@/components/ui/card";
-import useTripsState from "@/states/useTripsState";
+import { useTripsState } from "@/states/useTripsState";
 import type { NewTrip } from "@/types/trips";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";

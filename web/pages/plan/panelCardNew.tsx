@@ -2,7 +2,7 @@ import { IconButton } from "@/components/common/iconButton";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { PanelCardContainer } from "./panelCardContainer";
-import useTripsState from "@/states/useTripsState";
+import { useTripsState } from "@/states/useTripsState";
 
 interface Props {
 	tripId: string;

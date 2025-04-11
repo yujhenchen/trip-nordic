@@ -11,7 +11,7 @@ import { useDialog } from "@/components/providers/DialogProvider";
 import { toast } from "sonner";
 import { PanelCardContainer } from "./panelCardContainer";
 import type { PanelCardProps } from "./types";
-import useTripsState from "@/states/useTripsState";
+import { useTripsState } from "@/states/useTripsState";
 
 export const TARGET_IDS = {
 	BUTTON_DELETE: "delete-card-btn",
