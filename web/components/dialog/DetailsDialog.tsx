@@ -56,11 +56,7 @@ export default function DetailsDialog({
 				{tags.length > 0 ? (
 					<HorizontalScrollArea>
 						{tags.map((tag) => (
-							<Badge
-								key={tag}
-								variant="default"
-								className="text-center"
-							>
+							<Badge key={tag} variant="default" className="text-center">
 								{tag}
 							</Badge>
 						))}
