@@ -8,7 +8,7 @@ interface KeepState {
 	removeKeep: (keep: string) => void;
 }
 
-const useKeepStore = create<KeepState>()(
+export const useKeepStore = create<KeepState>()(
 	persist(
 		(set) => ({
 			keeps: [],
@@ -24,5 +24,3 @@ const useKeepStore = create<KeepState>()(
 		},
 	),
 );
-
-export default useKeepStore;

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "../ui/badge";
 import { Bookmark } from "lucide-react";
-import useKeepStore from "@/states/useKeepStore";
+import { useKeepStore } from "@/states/useKeepStore";
 import { HorizontalScrollArea } from "../common/horizontalScrollArea";
 
 interface Props {
@@ -56,7 +56,11 @@ export default function DetailsDialog({
 				{tags.length > 0 ? (
 					<HorizontalScrollArea>
 						{tags.map((tag) => (
-							<Badge key={tag} variant="default" className="text-center">
+							<Badge
+								key={tag}
+								variant="default"
+								className="text-center"
+							>
 								{tag}
 							</Badge>
 						))}
