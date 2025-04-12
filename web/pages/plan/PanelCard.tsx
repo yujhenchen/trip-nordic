@@ -10,6 +10,7 @@ import type { ComponentProps, MouseEvent } from "react";
 import { IconButton } from "@/components/common/iconButton";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { PanelCardContainer } from "./panelCardContainer";
+import { Mode } from "@/components/dialog/activityCardDialog";
 
 interface PanelCardProps extends ComponentProps<typeof Card> {
 	tripId: string;
@@ -50,16 +51,19 @@ export function PanelCard({
 				});
 				break;
 			case TARGET_IDS.BUTTON_EDIT:
-				open("EditActivityCardDialog", {
+				open("ActivityCardDialog", {
+					mode: Mode.EDIT,
 					title,
 					description: content,
 					handleSave: handleUpdate,
 				});
 				break;
 			default:
-				open("CardDialog", {
+				open("ActivityCardDialog", {
+					mode: Mode.VIEW,
 					title,
 					description: content,
+					handleSave: handleUpdate,
 				});
 				break;
 		}
