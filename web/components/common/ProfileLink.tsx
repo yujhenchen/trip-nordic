@@ -1,13 +1,14 @@
-import useAuthStore from "@/states/useAuthStore";
 import { Link } from "@radix-ui/react-navigation-menu";
 import { ProfileDropdown } from "./profileDropdown";
+import { usePageContext } from "vike-react/usePageContext";
 
 export function ProfileLink() {
-	const { user } = useAuthStore();
+	const pageContext = usePageContext();
+
 	return (
 		<>
-			{user ? (
-				<ProfileDropdown trigger={<span>Hello {user.email}</span>} />
+			{pageContext.user ? (
+				<ProfileDropdown trigger={<span>Welcome</span>} />
 			) : (
 				<Link href="/login">Login</Link>
 			)}

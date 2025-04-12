@@ -1,16 +1,14 @@
 import { logout } from "@/apis";
-import useAuthStore from "@/states/useAuthStore";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { navigate } from "vike/client/router";
 
 export const useLogout = () => {
-	const { setUser } = useAuthStore();
-
 	const mutation = useMutation({
 		mutationFn: logout,
 		onSuccess: () => {
 			toast.success("Logout successful!");
-			setUser(null);
+			navigate("/login");
 		},
 		onError: (error) => {
 			toast.error(`${error}`);

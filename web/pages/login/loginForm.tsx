@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { loginFormSchema, type LoginFormType } from "@/lib/authSchemas";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import useAuthStore from "@/states/useAuthStore";
 import { AuthFormWrapper } from "@/components/common/authFormWrapper";
 import { login } from "@/apis";
 import { navigate } from "vike/client/router";
@@ -25,13 +24,10 @@ interface Props {
 }
 
 export function LogInForm({ onMutateCallback, onSettledCallback }: Props) {
-	const { setUser } = useAuthStore();
-
 	const mutation = useMutation({
 		mutationFn: login<LoginFormType>,
-		onSuccess: (data) => {
+		onSuccess: (_data) => {
 			toast.success("Login successful!");
-			setUser(data.user);
 			setTimeout(() => {
 				navigate("/");
 			}, 500);
