@@ -108,36 +108,49 @@ CORS with HTTPOnly Cookie
         - [x] click to open card detail dialog
     - [x] display cards based on filters 
 - [ ] card detail dialog
-	- [ ] style should be correct
+	- [x] style should be correct
 	- [ ] map of the place
-	- [ ] press Keep to save the activity in personal Keep
+	- [x] press Keep to save the activity in personal Keep
 
 
 ### Plan
 - [ ] left side bar
+	- [ ] search activities by keyword
 	- [ ] drag/ drop activity from Keep into day card
 
 - [ ] right scroll panel
-	
-	- [ ] day card
-		- [ ] title
-			- [ ] edit: date picker
-			- [ ] display: text
-		- [ ] click + to create
-		- [ ] click ?? to remove
-			- [ ] confirm remove dialog
+	- [x] trip name
+		- [x] edit: double click
+			- [x] save
+				- [x] keydown Enter
+				- [x] click V
+			- [x] cancel: click V
+ 
+	- [x] trip date range
+		- [x] select date update date
+
+	- [x] day card
+		- [x] date picker
+			- [x] select date update date
+		- [x] click + to create
+			- [ ] new date is last day +1
+		- [x] remove action
+			- [x] confirm remove dialog
 		
-		- [ ] activity card
-			- [ ] click + to create
-			- [ ] click ?? to remove
-				- [ ] confirm remove dialog
-			- [ ] click to open activity dialog
+		- [x] activity card
+			- [x] click + to create
+			- [x] edit action
+				- [x] click to open edit activity dialog
+				- [x] save
+				- [x] cancel
+			- [x] remove action
+				- [x] confirm remove dialog
+			- [x] view action
+				- [x] click to open view activity dialog
+				- [x] click to switch to edit mode
 
-			- [ ] activity dialog
-				- [ ] click ?? to remove
-				- [ ] confirm remove dialog
+- [ ] copy link to clipboard
 
-- [ ] right top save, copy link to clipboard
 
 ### Dashboard
 
@@ -182,10 +195,22 @@ CORS with HTTPOnly Cookie
 
 
 ### Security
-- [ ] prevent exposing backend URLs (use tRPC to implement server actions)
+- [ ] prevent exposing backend URLs (use reverse proxy)
 - [ ] form data
 
 
 ## Bugs
 - [ ] after login success, need to redirect to last page before landing on login page
 - [ ] after login success, need to redirect to login page
+
+
+## Improvements
+- [ ] home page
+	- [ ] remove buttons add big image, animation or video (image or simple animation, think of processing power)
+- [ ] dashboard page
+	- [x] click on trip card -> nav to the trip plan
+	- [ ] 10 built-in pictures to choose from, to add to the trip card (beach, museum, christmas, skiing, etc)
+		- [ ] backend picture storage
+		- [ ] frontend use data
+- [x] No need to press Save on control to actual save it, 
+	if it is a new trip, when click on any Sve for the first time, it auto create a new Trip ID and data into trip list
