@@ -1,84 +1,126 @@
 import { PanelNew } from "./panelNew";
 import { Panel } from "./panel";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
-import type { TripActivity, TripDay } from "@/types/trips";
-import { useTrip } from "./TripContext";
+import type { Trip, TripActivity, TripDay } from "@/types/trips";
 import { PanelCard } from "./panelCard";
 import { PanelCardNew } from "./panelCardNew";
 import { toast } from "sonner";
 import { DatePicker } from "@/components/common/datePicker";
+import { useTripsState } from "@/states/useTripsState";
+import { navigate } from "vike/client/router";
 
-export function PanelSection() {
-	const { state, dispatch } = useTrip();
+interface Props {
+	trip: Trip | null;
+}
+
+export function PanelSection({ trip }: Props) {
+	const {
+		addTrip,
+		addDay,
+		updateDay,
+		removeDay,
+		addActivity,
+		updateActivity,
+		removeActivity,
+	} = useTripsState();
 
 	const handleSelectDate = (selectedDay: Date, tripDay: TripDay) => {
-		dispatch({
-			type: "updateDay",
-			tripDay: { ...tripDay, date: selectedDay },
-		});
+		if (trip) {
+			updateDay(trip.id, { ...tripDay, date: selectedDay });
+			toast.success("Date updated");
+		}
 	};
 
 	const handleRemoveCard = (tripDayId: string, activityId: string) => {
-		dispatch({ type: "removeActivity", tripDayId, activityId });
-		toast.success("Activity removed");
+		if (trip) {
+			removeActivity(trip.id, tripDayId, activityId);
+			toast.success("Activity removed");
+		}
 	};
 
 	const handleCreateCard = (tripDayId: string) => {
-		dispatch({
-			type: "addActivity",
-			tripDayId,
-			activity: {
+		if (trip) {
+			addActivity(trip.id, tripDayId, {
 				id: crypto.randomUUID(),
 				name: "",
 				content: "",
-			},
-		});
-		toast.success("Activity added");
+			});
+			toast.success("Activity added");
+		}
 	};
 
 	const handleUpdateCard = (tripDayId: string, activity: TripActivity) => {
-		dispatch({ type: "updateActivity", tripDayId, activity });
-		toast.success("Activity updated");
+		if (trip) {
+			updateActivity(trip.id, tripDayId, activity);
+			toast.success("Activity updated");
+		}
 	};
 
 	const handleCreatePanel = () => {
-		dispatch({
-			type: "addDay",
-			tripDay: {
+		if (trip) {
+			addDay(trip.id, {
 				id: crypto.randomUUID(),
 				date: new Date(),
 				activities: [],
-			},
-		});
+			});
+		} else {
+			const id = crypto.randomUUID();
+			const newTrip = {
+				id,
+				name: "New Trip",
+				date: { from: new Date(), to: new Date() },
+				tripDays: [
+					{
+						id: crypto.randomUUID(),
+						date: new Date(),
+						activities: [],
+					},
+				],
+			};
+			addTrip(newTrip);
+			navigate(`/plan/${id}`);
+		}
 		toast.success("New trip day added");
 	};
 
 	const handleConfirm = (tripDayId: string) => {
-		dispatch({ type: "removeDay", tripDayId });
-		toast.success("Trip Plan removed");
+		if (trip) {
+			removeDay(trip.id, tripDayId);
+			toast.success("Trip Plan removed");
+		}
 	};
 
 	return (
 		<HorizontalScrollArea>
-			{state.tripDays.map((tripDay) => (
+			{trip?.tripDays.map((tripDay) => (
 				<Panel key={tripDay.id}>
-					<Panel.ActionBar handleConfirm={() => handleConfirm(tripDay.id)} />
+					<Panel.ActionBar
+						handleConfirm={() => handleConfirm(tripDay.id)}
+					/>
 					<DatePicker
 						date={tripDay.date}
-						onSelectDate={(_day, selectedDay, _activeModifiers, _e) =>
-							handleSelectDate(selectedDay, tripDay)
-						}
+						onSelectDate={(
+							_day,
+							selectedDay,
+							_activeModifiers,
+							_e
+						) => handleSelectDate(selectedDay, tripDay)}
 					/>
 					{tripDay.activities.map((activity) => (
 						<PanelCard
 							key={activity.id}
-							tripId={state.id}
+							tripId={trip.id}
 							tripDayId={tripDay.id}
 							activityId={activity.id}
 							title={activity.name}
 							content={activity.content}
-							handleRemove={() => handleRemoveCard(tripDay.id, activity.id)}
-							handleUpdate={(title: string, description: string) =>
+							handleRemove={() =>
+								handleRemoveCard(tripDay.id, activity.id)
+							}
+							handleUpdate={(
+								title: string,
+								description: string
+							) =>
 								handleUpdateCard(tripDay.id, {
 									...activity,
 									name: title,
@@ -87,7 +129,9 @@ export function PanelSection() {
 							}
 						/>
 					))}
-					<PanelCardNew handleCreate={() => handleCreateCard(tripDay.id)} />
+					<PanelCardNew
+						handleCreate={() => handleCreateCard(tripDay.id)}
+					/>
 				</Panel>
 			))}
 			<PanelNew handleCreate={handleCreatePanel} />

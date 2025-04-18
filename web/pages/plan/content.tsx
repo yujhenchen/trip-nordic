@@ -9,14 +9,14 @@ export function Content() {
 	const { trips } = useTripsState();
 	const tripId = routeParams?.id ?? "";
 	const trip = tripId
-		? (trips.find((trip) => trip.id === tripId) ?? null)
+		? trips.find((trip) => trip.id === tripId) ?? null
 		: null;
 
 	return (
 		<div className="w-full flex-grow overflow-hidden flex flex-col">
 			<TripProvider {...(trip ? { defaultTrip: trip } : {})}>
 				<ControlPanel trip={trip} />
-				<PanelSection />
+				<PanelSection trip={trip} />
 			</TripProvider>
 		</div>
 	);
