@@ -1,15 +1,15 @@
 import { usePageContext } from "vike-react/usePageContext";
 import { ControlPanel } from "./controlPanel";
 import { PanelSection } from "./panelSection";
-import { useTripsState } from "@/states/useTripsState";
 import { TripProvider } from "./TripContext";
+import { useTrips } from "@/states/useTripsState";
 
 export function Content() {
 	const { routeParams } = usePageContext();
-	const { trips } = useTripsState();
+	const trips = useTrips();
 	const tripId = routeParams?.id ?? "";
 	const trip = tripId
-		? (trips.find((trip) => trip.id === tripId) ?? null)
+		? trips.find((trip) => trip.id === tripId) ?? null
 		: null;
 
 	return (

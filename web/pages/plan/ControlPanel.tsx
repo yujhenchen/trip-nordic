@@ -5,7 +5,7 @@ import { EditableHeading3 } from "@/components/common/editableHeading3";
 import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
 import type { Trip } from "@/types/trips";
 import type { AppDateRange } from "@/types/shared";
-import { defaultTrip, useTripsState } from "@/states/useTripsState";
+import { defaultTrip, useTripsActions } from "@/states/useTripsState";
 import { navigate } from "vike/client/router";
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export function ControlPanel({ trip }: Props) {
-	const { updateTrip, addTrip } = useTripsState();
+	const { updateTrip, addTrip } = useTripsActions();
 
 	const handleSaveName = (value: string) => {
 		if (trip) {

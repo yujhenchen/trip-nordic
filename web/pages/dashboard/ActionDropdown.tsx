@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { Ellipsis, Pencil, Trash2 } from "lucide-react";
-import { useTripsState } from "@/states/useTripsState";
+import { useTripsActions } from "@/states/useTripsState";
 import { toast } from "sonner";
 import type { Trip } from "@/types/trips";
 import type { AppDateRange } from "@/types/shared";
@@ -17,7 +17,7 @@ interface Props {
 
 export function ActionDropdown({ trip }: Props) {
 	const { open } = useDialog();
-	const { updateTrip, removeTrip } = useTripsState();
+	const { updateTrip, removeTrip } = useTripsActions();
 
 	const handleConfirm = () => {
 		removeTrip(trip.id);
