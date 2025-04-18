@@ -5,7 +5,7 @@ import { EditableHeading3 } from "@/components/common/editableHeading3";
 import { DatePickerWithRange } from "@/components/common/datePickerWithRange";
 import type { Trip } from "@/types/trips";
 import type { AppDateRange } from "@/types/shared";
-import { useTripsState } from "@/states/useTripsState";
+import { defaultTrip, useTripsState } from "@/states/useTripsState";
 import { navigate } from "vike/client/router";
 
 interface Props {
@@ -23,14 +23,7 @@ export function ControlPanel({ trip }: Props) {
 			});
 		} else {
 			const id = crypto.randomUUID();
-			const now = new Date();
-			const newTrip = {
-				id,
-				name: value,
-				date: { from: now, to: now },
-				tripDays: [],
-			};
-			addTrip(newTrip);
+			addTrip({ ...defaultTrip, id, name: value });
 			navigate(`/plan/${id}`);
 		}
 		toast.success("Trip name updated");
@@ -44,13 +37,7 @@ export function ControlPanel({ trip }: Props) {
 			});
 		} else {
 			const id = crypto.randomUUID();
-			const newTrip = {
-				id,
-				name: "New Trip",
-				date: dateRange,
-				tripDays: [],
-			};
-			addTrip(newTrip);
+			addTrip({ ...defaultTrip, id, date: dateRange });
 			navigate(`/plan/${id}`);
 		}
 		toast.success("Trip duration updated");
@@ -59,16 +46,11 @@ export function ControlPanel({ trip }: Props) {
 	return (
 		<div className="w-full h-16 place-content-between flex border px-8 py-1 items-center">
 			<EditableHeading3
-				text={trip?.name ?? "New Trip"}
+				text={trip?.name ?? defaultTrip.name}
 				handleSave={handleSaveName}
 			/>
 			<DatePickerWithRange
-				date={
-					trip?.date ?? {
-						from: new Date(),
-						to: new Date(),
-					}
-				}
+				date={trip?.date ?? defaultTrip.date}
 				onSelectDate={(range, _selectedDay, _activeModifiers, _e) => {
 					if (range?.from && range.to) {
 						handleSelectDate({
