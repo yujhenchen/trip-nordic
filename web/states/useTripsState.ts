@@ -43,7 +43,7 @@ interface TripsState {
 			tripDayId: string,
 			activityId: string,
 		) => void;
-	}
+	};
 }
 
 const useTripsState = create<TripsState>()(
@@ -85,11 +85,11 @@ const useTripsState = create<TripsState>()(
 							...state.trips.map((t) =>
 								t.id === tripId
 									? {
-										...t,
-										tripDays: t.tripDays.map((day) =>
-											day.id === tripDay.id ? tripDay : day,
-										),
-									}
+											...t,
+											tripDays: t.tripDays.map((day) =>
+												day.id === tripDay.id ? tripDay : day,
+											),
+										}
 									: t,
 							),
 						],
@@ -100,9 +100,11 @@ const useTripsState = create<TripsState>()(
 							...state.trips.map((t) =>
 								t.id === tripId
 									? {
-										...t,
-										tripDays: t.tripDays.filter((day) => day.id !== tripDayId),
-									}
+											...t,
+											tripDays: t.tripDays.filter(
+												(day) => day.id !== tripDayId,
+											),
+										}
 									: t,
 							),
 						],
@@ -114,13 +116,16 @@ const useTripsState = create<TripsState>()(
 							...state.trips.map((t) =>
 								t.id === tripId
 									? {
-										...t,
-										tripDays: t.tripDays.map((day) =>
-											day.id === tripDayId
-												? { ...day, activities: [...day.activities, activity] }
-												: day,
-										),
-									}
+											...t,
+											tripDays: t.tripDays.map((day) =>
+												day.id === tripDayId
+													? {
+															...day,
+															activities: [...day.activities, activity],
+														}
+													: day,
+											),
+										}
 									: t,
 							),
 						],
@@ -131,18 +136,18 @@ const useTripsState = create<TripsState>()(
 							...state.trips.map((t) =>
 								t.id === tripId
 									? {
-										...t,
-										tripDays: t.tripDays.map((day) =>
-											day.id === tripDayId
-												? {
-													...day,
-													activities: day.activities.map((a) =>
-														a.id === activity.id ? activity : a,
-													),
-												}
-												: day,
-										),
-									}
+											...t,
+											tripDays: t.tripDays.map((day) =>
+												day.id === tripDayId
+													? {
+															...day,
+															activities: day.activities.map((a) =>
+																a.id === activity.id ? activity : a,
+															),
+														}
+													: day,
+											),
+										}
 									: t,
 							),
 						],
@@ -153,18 +158,18 @@ const useTripsState = create<TripsState>()(
 							...state.trips.map((t) =>
 								t.id === tripId
 									? {
-										...t,
-										tripDays: t.tripDays.map((day) =>
-											day.id === tripDayId
-												? {
-													...day,
-													activities: day.activities.filter(
-														(a) => a.id !== activityId,
-													),
-												}
-												: day,
-										),
-									}
+											...t,
+											tripDays: t.tripDays.map((day) =>
+												day.id === tripDayId
+													? {
+															...day,
+															activities: day.activities.filter(
+																(a) => a.id !== activityId,
+															),
+														}
+													: day,
+											),
+										}
 									: t,
 							),
 						],
@@ -179,5 +184,5 @@ const useTripsState = create<TripsState>()(
 	),
 );
 
-export const useTrips = () => useTripsState(state => state.trips);
-export const useTripsActions = () => useTripsState(state => state.actions);
+export const useTrips = () => useTripsState((state) => state.trips);
+export const useTripsActions = () => useTripsState((state) => state.actions);
