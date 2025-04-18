@@ -56,9 +56,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "graphene_django",
     "activities",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -150,3 +152,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 GRAPHENE = {
     "SCHEMA": "activities.schema.schema"
 }
+
+CORS_ALLOWED_ORIGINS = env.list(
+    "CORS_ALLOWED_ORIGINS", default=["http://localhost:3000"]
+)
+
+CORS_ALLOW_METHODS = (
+    "OPTIONS",
+    "POST",
+)
+
+CORS_ALLOW_HEADERS = (
+    "authorization",
+    "content-type",
+    "x-csrftoken",
+)
+
+CORS_ALLOW_CREDENTIALS = True
