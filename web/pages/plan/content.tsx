@@ -9,7 +9,7 @@ export function Content() {
 	const { trips } = useTripsState();
 	const tripId = routeParams?.id ?? "";
 	const trip = tripId
-		? trips.find((trip) => trip.id === tripId) ?? null
+		? (trips.find((trip) => trip.id === tripId) ?? null)
 		: null;
 
 	return (
