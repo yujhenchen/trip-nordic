@@ -1,4 +1,4 @@
-import { FilterKeyType, FiltersType } from "@/types/explore";
+import type { FilterKeyType, FiltersType } from "@/types/explore";
 import { createContext, useCallback, useContext, useState } from "react";
 
 type FilterProviderProps = {
@@ -46,19 +46,16 @@ export function FilterProvider({
 				return newFilters;
 			});
 		},
-		[]
+		[],
 	);
 
-	const resetFilterSelectedOptions = useCallback(
-		(filterKey: FilterKeyType) => {
-			setCurrentFilters((preFilters) => {
-				const newFilters = { ...preFilters };
-				newFilters[filterKey] = [];
-				return newFilters;
-			});
-		},
-		[]
-	);
+	const resetFilterSelectedOptions = useCallback((filterKey: FilterKeyType) => {
+		setCurrentFilters((preFilters) => {
+			const newFilters = { ...preFilters };
+			newFilters[filterKey] = [];
+			return newFilters;
+		});
+	}, []);
 
 	const resetAllFilterSelected = useCallback(() => {
 		setCurrentFilters({});
