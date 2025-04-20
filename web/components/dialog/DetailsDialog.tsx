@@ -8,8 +8,10 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "../ui/badge";
 import { Bookmark } from "lucide-react";
-import { useKeepStore } from "@/states/useKeepStore";
 import { HorizontalScrollArea } from "../common/horizontalScrollArea";
+import { ScrollArea } from "../ui/scroll-area";
+import type { Activity } from "@/types/explore";
+import { useActivityKeeps } from "@/hooks/use-activity-keeps";
 
 interface Props {
 	onClose: () => void;
@@ -17,31 +19,19 @@ interface Props {
 		src: string;
 		alt: string;
 	};
-	title: string;
-	description: string;
+	activity: Activity;
 	tags: Array<string>;
-	activityId: string;
 }
 
 export default function DetailsDialog({
 	onClose,
 	headerImage,
-	title,
-	description,
+	activity,
 	tags,
-	activityId,
 }: Props) {
-	const { keeps, addKeep, removeKeep } = useKeepStore();
-
-	const handleKeep = () => {
-		if (keeps.includes(activityId)) {
-			removeKeep(activityId);
-		} else {
-			addKeep(activityId);
-		}
-	};
-
-	const isKept = keeps.includes(activityId);
+	const { keeps, handleOnKeep } = useActivityKeeps();
+	const isKept = keeps.find((keep) => keep.id === activity.id);
+	console.log(keeps);
 
 	return (
 		<Dialog open onOpenChange={onClose}>
@@ -64,8 +54,10 @@ export default function DetailsDialog({
 				) : null}
 
 				<DialogHeader className="py-4">
-					<DialogTitle>{title}</DialogTitle>
-					<DialogDescription>{description}</DialogDescription>
+					<DialogTitle>{activity.name}</DialogTitle>
+					<DialogDescription className="max-h-48">
+						<ScrollArea className="h-full">{activity.description}</ScrollArea>
+					</DialogDescription>
 				</DialogHeader>
 
 				<iframe
@@ -77,7 +69,7 @@ export default function DetailsDialog({
 					variant="default"
 					size="lg"
 					className="rounded-xl w-fit mx-auto"
-					onClick={handleKeep}
+					onClick={() => handleOnKeep(activity)}
 				>
 					<Bookmark fill={isKept ? "currentColor" : "none"} />
 					Keep

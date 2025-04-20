@@ -5,10 +5,10 @@ import {
 	FilterTitle,
 	FilterChip,
 } from "./Filter";
-import { type FilterKeyType, FilterKeyTitle } from "./types";
 import { useFilters } from "./FilterProvider";
 import { SearchInput } from "@/components/common/searchInput";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
+import { FilterKeyTitle, FilterKeyType } from "@/types/explore";
 
 export interface Props {
 	chipIcon: React.ReactNode;
@@ -49,11 +49,15 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											currentFilters[filterKey]?.includes(option),
+											currentFilters[filterKey]?.includes(
+												option
+											)
 										)}
 										value={option}
 										selectedIcon={chipIcon}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
 							</HorizontalScrollArea>
