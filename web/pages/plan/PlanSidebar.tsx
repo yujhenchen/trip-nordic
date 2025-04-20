@@ -9,23 +9,25 @@ import {
 import { useMediaQuery } from "react-responsive";
 import { type JSX, useEffect, useMemo, useState } from "react";
 import { IconButton } from "@/components/common/iconButton";
-import { useKeepStore } from "@/states/useKeepStore";
 import { SidebarCard } from "./sidebarCard";
-import { activityTestData } from "../explore/data/activityTestData";
 import { SearchInput } from "@/components/common/searchInput";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
+import { useActivityKeeps } from "@/hooks/use-activity-keeps";
+import { IDS } from "@/utils/ids";
+import type { Activity } from "@/types/explore";
+import { useDialog } from "@/components/providers/DialogProvider";
 
 function Content() {
-	const { keeps } = useKeepStore();
+	const { keeps } = useActivityKeeps();
 	const isMobile = useIsMobile();
 	const showSearch = keeps.length > 0;
 
 	if (isMobile) {
 		return (
 			<HorizontalScrollArea>
-				<Keeps isMobile={isMobile} keeps={keeps} />
+				<Keeps isMobile={isMobile} />
 			</HorizontalScrollArea>
 		);
 	}
@@ -33,33 +35,65 @@ function Content() {
 	return (
 		<ScrollArea className="px-4 pb-4 pt-8">
 			{showSearch && <SearchInput className="sticky top-0 mb-4" />}
-			<Keeps isMobile={isMobile} keeps={keeps} />
+			<Keeps isMobile={isMobile} />
 		</ScrollArea>
 	);
 }
 
-function Keeps({
-	isMobile,
-	keeps,
-}: {
-	isMobile: boolean;
-	keeps: Array<string>;
-}) {
+function Keeps({ isMobile }: { isMobile: boolean }) {
 	const mobileProps = {
 		className: "w-48",
 		titleClassName: "truncate",
 	};
+	const { open } = useDialog();
+	const { keeps, handleOnKeep } = useActivityKeeps();
 
-	return keeps.map((keep) => {
-		const activity = activityTestData.find((a) => a.id === keep);
-		if (!activity) {
-			return null;
+	const handleClickCard = (elementId: string, activity: Activity) => {
+		if (elementId === IDS.KEEP_ICON) {
+			handleOnKeep(activity);
+			return;
 		}
+		const { city, category, region, seasons } = activity;
+		open("DetailsDialog", {
+			// keeps,
+			// handleKeep: handleOnKeep,
+			// (activity: Activity) => {
+			// 	const foundKeep = keeps.find(
+			// 		(keep) => keep.id === activity.id
+			// 	);
+
+			// 	if (foundKeep) {
+			// 		unKeep(foundKeep.id);
+			// 	} else {
+			// 		addKeep(activity);
+			// 	}
+			// },
+			headerImage: {
+				src: "https://placehold.co/300x200",
+				alt: "",
+			},
+			activity,
+			tags: [
+				city,
+				// TODO: perform default split with comma for API response
+				...category.split(","),
+				region,
+				...seasons.split(","),
+			],
+		});
+	};
+
+	return keeps.map((keepActivity) => {
+		const { id, name, description } = keepActivity;
 		return (
 			<SidebarCard
-				key={activity.id}
-				title={activity.name}
-				description={activity.description}
+				key={id}
+				title={name}
+				description={description}
+				handleClick={(e) => {
+					e.stopPropagation();
+					handleClickCard(e.currentTarget.id, keepActivity);
+				}}
 				{...(isMobile ? mobileProps : {})}
 			/>
 		);
