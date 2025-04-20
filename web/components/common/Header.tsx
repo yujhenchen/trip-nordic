@@ -8,6 +8,7 @@ import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import { ModeToggle } from "./modeToggle";
 import { ProfileLink } from "./profileLink";
 import Logo from "./logo";
+import { defaultTrip } from "@/states/useTripsState";
 
 export function Header() {
 	return (
@@ -19,7 +20,7 @@ export function Header() {
 						<NavigationMenuItem>
 							<NavigationMenuLink
 								className={navigationMenuTriggerStyle()}
-								href="/plan"
+								href={`/plan/${defaultTrip.id}`}
 							>
 								Plan
 							</NavigationMenuLink>
