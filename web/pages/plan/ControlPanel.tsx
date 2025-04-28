@@ -7,13 +7,15 @@ import type { Trip } from "@/types/trips";
 import type { AppDateRange } from "@/types/shared";
 import { defaultTrip, useTripsActions } from "@/states/useTripsState";
 import { navigate } from "vike/client/router";
+import { useProtectedAddTrip } from "@/hooks/use-protected-add-trip";
 
 interface Props {
 	trip: Trip | null;
 }
 
 export function ControlPanel({ trip }: Props) {
-	const { updateTrip, addTrip } = useTripsActions();
+	const { updateTrip } = useTripsActions();
+	const protectedAddTrip = useProtectedAddTrip();
 
 	const handleSaveName = (value: string) => {
 		if (trip) {
@@ -21,12 +23,14 @@ export function ControlPanel({ trip }: Props) {
 				...trip,
 				name: value,
 			});
-		} else {
-			const id = crypto.randomUUID();
-			addTrip({ ...defaultTrip, id, name: value });
-			navigate(`/plan/${id}`);
+			toast.success("Trip name updated");
+			return;
 		}
-		toast.success("Trip name updated");
+		const id = crypto.randomUUID();
+		protectedAddTrip({ ...defaultTrip, id, name: value }, () => {
+			navigate(`/plan/${id}`);
+			toast.success("Trip name updated");
+		});
 	};
 
 	const handleSelectDate = (dateRange: AppDateRange) => {
@@ -35,12 +39,14 @@ export function ControlPanel({ trip }: Props) {
 				...trip,
 				date: dateRange,
 			});
-		} else {
-			const id = crypto.randomUUID();
-			addTrip({ ...defaultTrip, id, date: dateRange });
-			navigate(`/plan/${id}`);
+			toast.success("Trip duration updated");
+			return;
 		}
-		toast.success("Trip duration updated");
+		const id = crypto.randomUUID();
+		protectedAddTrip({ ...defaultTrip, id, date: dateRange }, () => {
+			navigate(`/plan/${id}`);
+			toast.success("Trip duration updated");
+		});
 	};
 
 	return (

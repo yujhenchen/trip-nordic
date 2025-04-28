@@ -1,23 +1,25 @@
 import { IconButton } from "@/components/common/iconButton";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { Card } from "@/components/ui/card";
-import { useTripsActions } from "@/states/useTripsState";
-import type { NewTrip } from "@/types/trips";
+import { useProtectedAddTrip } from "@/hooks/use-protected-add-trip";
+import type { NewTrip, Trip } from "@/types/trips";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
 export function NewTripCard() {
 	const { open } = useDialog();
-	const { addTrip } = useTripsActions();
+	const protectedAddTrip = useProtectedAddTrip();
 
 	const handleNewTrip = (newTripProps: NewTrip) => {
-		addTrip({
+		const newTrip: Trip = {
 			id: crypto.randomUUID(),
 			name: newTripProps.name,
 			date: newTripProps.date,
 			tripDays: [],
+		};
+		protectedAddTrip(newTrip, () => {
+			toast.success("Trip created");
 		});
-		toast.success("Trip created");
 	};
 
 	const handleAdd = () => {

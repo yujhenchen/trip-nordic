@@ -6,8 +6,9 @@ import { PanelCard } from "./panelCard";
 import { PanelCardNew } from "./panelCardNew";
 import { toast } from "sonner";
 import { DatePicker } from "@/components/common/datePicker";
-import { defaultTrip, useTripsActions } from "@/states/useTripsState";
+import { defaultTrip, useTrips, useTripsActions } from "@/states/useTripsState";
 import { navigate } from "vike/client/router";
+import { useProtectedAddTrip } from "@/hooks/use-protected-add-trip";
 
 interface Props {
 	trip: Trip | null;
@@ -15,7 +16,6 @@ interface Props {
 
 export function PanelSection({ trip }: Props) {
 	const {
-		addTrip,
 		addDay,
 		updateDay,
 		removeDay,
@@ -23,6 +23,7 @@ export function PanelSection({ trip }: Props) {
 		updateActivity,
 		removeActivity,
 	} = useTripsActions();
+	const protectedAddTrip = useProtectedAddTrip();
 
 	const handleSelectDate = (selectedDay: Date, tripDay: TripDay) => {
 		if (trip) {
@@ -63,22 +64,25 @@ export function PanelSection({ trip }: Props) {
 				date: new Date(),
 				activities: [],
 			});
-		} else {
-			const id = crypto.randomUUID();
-			addTrip({
-				...defaultTrip,
-				id,
-				tripDays: [
-					{
-						id: crypto.randomUUID(),
-						date: new Date(),
-						activities: [],
-					},
-				],
-			});
-			navigate(`/plan/${id}`);
+			toast.success("New trip day added");
+			return;
 		}
-		toast.success("New trip day added");
+		const id = crypto.randomUUID();
+		const newTrip: Trip = {
+			...defaultTrip,
+			id,
+			tripDays: [
+				{
+					id: crypto.randomUUID(),
+					date: new Date(),
+					activities: [],
+				},
+			],
+		};
+		protectedAddTrip(newTrip, () => {
+			navigate(`/plan/${id}`);
+			toast.success("New trip day added");
+		});
 	};
 
 	const handleConfirm = (tripDayId: string) => {
