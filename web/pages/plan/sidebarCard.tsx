@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { IDS } from "@/utils/ids";
 import { Bookmark } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface Props {
 	title: string;
@@ -33,7 +34,9 @@ export function SidebarCard({
 					fill={"currentColor"}
 					onClick={handleClick}
 				/>
-				<CardTitle className={titleClassName}>{title}</CardTitle>
+				<CardTitle className={cn("line-clamp-2", titleClassName)}>
+					{title}
+				</CardTitle>
 				<CardDescription className="line-clamp-3">
 					{description}
 				</CardDescription>
