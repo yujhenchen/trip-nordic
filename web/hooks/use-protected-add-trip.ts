@@ -4,6 +4,8 @@ import type { Trip } from "@/types/trips";
 import { usePageContext } from "vike-react/usePageContext";
 import { navigate } from "vike/client/router";
 
+const VITE_MAX_TRIPS_GUEST = import.meta.env.VITE_MAX_TRIPS_GUEST;
+
 export const useProtectedAddTrip = () => {
 	const { open } = useDialog();
 	const pageContext = usePageContext();
@@ -16,7 +18,7 @@ export const useProtectedAddTrip = () => {
 		failedCallback?: () => void,
 	) => {
 		if (!pageContext.user) {
-			if (trips.length > 0) {
+			if (trips.length >= VITE_MAX_TRIPS_GUEST) {
 				open("AppAlertDialog", {
 					title: "You’ve reached your saved trips limit! Log in to save more.",
 					handleConfirm: () => {
