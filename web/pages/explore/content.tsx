@@ -56,9 +56,6 @@ export function Content() {
 	} = useFilters();
 	const { open } = useDialog();
 
-	// const { keeps, addKeep, removeKeep } = useKeepStore();
-	// const keeps = useKeepActivities();
-	// const { addKeep, unKeep } = useKeepActivitiesActions();
 	const { handleOnKeep } = useActivityKeeps();
 
 	const { data, isLoading, isError } = useQuery<ActivityData>({
@@ -117,7 +114,7 @@ export function Content() {
 				],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -148,7 +145,7 @@ export function Content() {
 				region: activity.region,
 				seasons: activity.seasons,
 			})) ?? [],
-		[data?.activities],
+		[data?.activities]
 	);
 
 	return (

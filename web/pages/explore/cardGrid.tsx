@@ -75,11 +75,6 @@ export function CardGrid({ activities, handleClickCard }: Props) {
 								}
 							/>
 							<img
-								// src={
-								// 	activity.img?.src ??
-								// 	"https://placehold.co/150x100"
-								// }
-								// alt={activity.img?.alt ?? "Card Image"}
 								src="https://placehold.co/150x100"
 								alt="Card"
 							/>
