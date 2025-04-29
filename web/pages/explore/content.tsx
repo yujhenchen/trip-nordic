@@ -2,9 +2,15 @@ import { X } from "lucide-react";
 import { useFilters } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
-import { useCallback, useMemo, type MouseEvent } from "react";
+import {
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+	type MouseEvent,
+} from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
 import { graphqlClient } from "@/graphql/client";
 import { toast } from "sonner";
@@ -12,6 +18,7 @@ import type {
 	Activity,
 	ActivityData,
 	FilterKeyType,
+	GQLActivity,
 	// FiltersType,
 } from "@/types/explore";
 import { useActivityKeeps } from "@/hooks/use-activity-keeps";
@@ -31,8 +38,8 @@ import { CardGrid } from "./cardGrid";
 // };
 
 const query = gql`
-	query GetActivities($first: Int!) {
-		activities(first: $first) {
+	query GetActivities($offset: Int, $first: Int!) {
+		activities(offset: $offset, first: $first) {
 			activities {
 				id
 				category
@@ -58,21 +65,37 @@ export function Content() {
 
 	const { handleOnKeep } = useActivityKeeps();
 
-	const { data, isLoading, isError } = useQuery<ActivityData>({
-		queryKey: ["activities"],
-		queryFn: async (): Promise<ActivityData> => {
-			try {
-				const result = await graphqlClient.request<{
-					activities: ActivityData;
-				}>(query, {
-					first: 100,
-				});
-				return result.activities;
-			} catch (err) {
-				return Promise.reject(err);
-			}
-		},
-	});
+	const [queryObject, setQueryObject] = useState<{
+		offset: number;
+		first: number;
+	}>({ offset: 0, first: 10 });
+
+	const [allActivities, setAllActivities] = useState<Array<GQLActivity>>([]);
+
+	const { data, isFetching, isLoading, isError, isSuccess } =
+		useQuery<ActivityData>({
+			queryKey: ["activities", queryObject],
+			queryFn: async (): Promise<ActivityData> => {
+				try {
+					const result = await graphqlClient.request<{
+						activities: ActivityData;
+					}>(query, {
+						offset: queryObject.offset,
+						first: queryObject.first,
+					});
+					return result.activities;
+				} catch (err) {
+					return Promise.reject(err);
+				}
+			},
+			placeholderData: keepPreviousData,
+		});
+
+	useEffect(() => {
+		if (isSuccess && data) {
+			setAllActivities((prevData) => [...prevData, ...data.activities]);
+		}
+	}, [isSuccess, data]);
 
 	const handleClickCard = useCallback(
 		(event: MouseEvent) => (activity: Activity) => {
@@ -136,7 +159,7 @@ export function Content() {
 	// TODO: filter by selected filters
 	const cardActivities = useMemo(
 		() =>
-			data?.activities.map((activity) => ({
+			allActivities.map((activity) => ({
 				id: activity.id,
 				category: activity.category,
 				city: activity.city,
@@ -145,7 +168,7 @@ export function Content() {
 				region: activity.region,
 				seasons: activity.seasons,
 			})) ?? [],
-		[data?.activities],
+		[allActivities],
 	);
 
 	return (
@@ -160,8 +183,11 @@ export function Content() {
 				<LoadingSpinner />
 			) : isError ? null : (
 				<CardGrid
+					isLoading={isLoading}
+					isFetching={isFetching}
 					activities={cardActivities}
 					handleClickCard={handleClickCard}
+					setQueryObject={setQueryObject}
 				/>
 			)}
 		</>
