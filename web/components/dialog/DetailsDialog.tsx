@@ -31,7 +31,6 @@ export default function DetailsDialog({
 }: Props) {
 	const { keeps, handleOnKeep } = useActivityKeeps();
 	const isKept = keeps.find((keep) => keep.id === activity.id);
-	console.log(keeps);
 
 	return (
 		<Dialog open onOpenChange={onClose}>

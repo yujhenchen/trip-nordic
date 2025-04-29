@@ -47,7 +47,6 @@ export async function handleTokenRefresh(
 	try {
 		const response = await getTokens(apiUrl, refresh);
 		const data = await response.json();
-		// console.log("data", data);
 
 		const accessToken = data.access;
 		const refreshToken = data.refresh;
