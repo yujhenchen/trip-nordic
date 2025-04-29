@@ -24,6 +24,7 @@ Frontend development
 - [Learn to become a modern Frontend Developer in 2022](https://medium.com/@kamranahmedse/modern-frontend-developer-in-2018-4c2072fa2b9c)
 - [frontend-checklist](https://developerruhul.github.io/frontend-checklist/)
 - [Mastering Modal Dialogs in React Like a Pro](https://hackernoon.com/mastering-modal-dialogs-in-react-like-a-pro)
+- [How to Create Infinite Scrolling in React Using the Intersection Observer API](https://www.freecodecamp.org/news/infinite-scrolling-in-react/)
 
 Django
 - [Creating a Custom User Model in Django](https://testdriven.io/blog/django-custom-user-model/)
@@ -214,3 +215,20 @@ CORS with HTTPOnly Cookie
 		- [ ] frontend use data
 - [x] No need to press Save on control to actual save it, 
 	if it is a new trip, when click on any Sve for the first time, it auto create a new Trip ID and data into trip list
+- [ ] allow to export the trip plan to PDF
+
+
+## Examples
+
+### query
+```
+{
+  activities (offset: 0, first: 50){
+    activities {
+      id
+      nameen
+    }
+    totalCount
+  }
+}
+```
