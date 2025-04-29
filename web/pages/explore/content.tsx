@@ -1,21 +1,8 @@
-import { Bookmark, X } from "lucide-react";
-import { CardGrid } from "./CardGrid";
-import {
-	type Card,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { X } from "lucide-react";
 import { useFilters } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
-// import { anySourceElementInTarget } from "./utils";
-import {
-	type ComponentProps,
-	useCallback,
-	useMemo,
-	type MouseEvent,
-} from "react";
+import { useCallback, useMemo, type MouseEvent } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
@@ -30,6 +17,7 @@ import type {
 import { useActivityKeeps } from "@/hooks/use-activity-keeps";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { IDS } from "@/utils/ids";
+import { CardGrid } from "./cardGrid";
 
 // const isFilterMatch = (
 // 	filters: FiltersType,
@@ -71,7 +59,7 @@ export function Content() {
 	// const { keeps, addKeep, removeKeep } = useKeepStore();
 	// const keeps = useKeepActivities();
 	// const { addKeep, unKeep } = useKeepActivitiesActions();
-	const { keeps, handleOnKeep } = useActivityKeeps();
+	const { handleOnKeep } = useActivityKeeps();
 
 	const { data, isLoading, isError } = useQuery<ActivityData>({
 		queryKey: ["activities"],
@@ -132,86 +120,6 @@ export function Content() {
 		[handleOnKeep, open],
 	);
 
-	const cards: Array<ComponentProps<typeof Card>> = useMemo(
-		() =>
-			(data?.activities ?? [])
-				// .filter((activity) => {
-				// 	const isCategoryMatch = isFilterMatch(
-				// 		currentFilters,
-				// 		"category",
-				// 		activity.category.split(",")
-				// 	);
-
-				// 	const isCityMatch = isFilterMatch(
-				// 		currentFilters,
-				// 		"city",
-				// 		activity.city.split(",")
-				// 	);
-
-				// 	const isRegionMatch = isFilterMatch(
-				// 		currentFilters,
-				// 		"region",
-				// 		activity.region.split(",")
-				// 	);
-
-				// 	const isSeasonMatch = isFilterMatch(
-				// 		currentFilters,
-				// 		"seasons",
-				// 		activity.seasons.split(",")
-				// 	);
-
-				// 	return (
-				// 		isCategoryMatch &&
-				// 		isCityMatch &&
-				// 		isRegionMatch &&
-				// 		isSeasonMatch
-				// 	);
-				// })
-				.map((a) => {
-					const activity = {
-						id: a.id,
-						category: a.category,
-						city: a.city,
-						description: a.descriptionen,
-						name: a.nameen,
-						region: a.region,
-						seasons: a.seasons,
-					} satisfies Activity;
-					return {
-						id: activity.id,
-						onClick: (event) => handleClickCard(event)(activity),
-						children: (
-							<CardHeader>
-								<Bookmark
-									id={IDS.KEEP_ICON}
-									className="self-end"
-									onClick={(event) => handleClickCard(event)(activity)}
-									fill={
-										keeps.find((keep) => keep.id === activity.id)
-											? "currentColor"
-											: "none"
-									}
-								/>
-								<img
-									// src={
-									// 	activity.img?.src ??
-									// 	"https://placehold.co/150x100"
-									// }
-									// alt={activity.img?.alt ?? "Card Image"}
-									src="https://placehold.co/150x100"
-									alt="Card"
-								/>
-								<CardTitle className="line-clamp-2">{activity.name}</CardTitle>
-								<CardDescription className="line-clamp-3">
-									{activity.description}
-								</CardDescription>
-							</CardHeader>
-						),
-					};
-				}),
-		[data, handleClickCard, keeps],
-	);
-
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
 		toggleFilterOption(filterKey, option);
 	};
@@ -228,6 +136,21 @@ export function Content() {
 		toast.error("Something went wrong! Please try again later.");
 	}
 
+	// TODO: filter by selected filters
+	const cardActivities = useMemo(
+		() =>
+			data?.activities.map((activity) => ({
+				id: activity.id,
+				category: activity.category,
+				city: activity.city,
+				description: activity.descriptionen,
+				name: activity.nameen,
+				region: activity.region,
+				seasons: activity.seasons,
+			})) ?? [],
+		[data?.activities],
+	);
+
 	return (
 		<>
 			<FilterPanel
@@ -239,7 +162,10 @@ export function Content() {
 			{isLoading ? (
 				<LoadingSpinner />
 			) : isError ? null : (
-				<CardGrid cards={cards} />
+				<CardGrid
+					activities={cardActivities}
+					handleClickCard={handleClickCard}
+				/>
 			)}
 		</>
 	);
