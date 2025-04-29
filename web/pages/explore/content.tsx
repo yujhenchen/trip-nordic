@@ -114,7 +114,7 @@ export function Content() {
 				],
 			});
 		},
-		[handleOnKeep, open]
+		[handleOnKeep, open],
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -145,7 +145,7 @@ export function Content() {
 				region: activity.region,
 				seasons: activity.seasons,
 			})) ?? [],
-		[data?.activities]
+		[data?.activities],
 	);
 
 	return (

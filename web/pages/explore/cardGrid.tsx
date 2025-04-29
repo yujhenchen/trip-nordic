@@ -63,24 +63,15 @@ export function CardGrid({ activities, handleClickCard }: Props) {
 							<Bookmark
 								id={IDS.KEEP_ICON}
 								className="self-end"
-								onClick={(event) =>
-									handleClickCard(event)(activity)
-								}
+								onClick={(event) => handleClickCard(event)(activity)}
 								fill={
-									keeps.find(
-										(keep) => keep.id === activity.id
-									)
+									keeps.find((keep) => keep.id === activity.id)
 										? "currentColor"
 										: "none"
 								}
 							/>
-							<img
-								src="https://placehold.co/150x100"
-								alt="Card"
-							/>
-							<CardTitle className="line-clamp-2">
-								{activity.name}
-							</CardTitle>
+							<img src="https://placehold.co/150x100" alt="Card" />
+							<CardTitle className="line-clamp-2">{activity.name}</CardTitle>
 							<CardDescription className="line-clamp-3">
 								{activity.description}
 							</CardDescription>
