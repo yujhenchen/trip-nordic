@@ -8,7 +8,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 export function SearchInput({ wrapperClassName, ...rest }: Props) {
 	return (
-		<div className={cn("relative w-full", wrapperClassName)}>
+		<div className={cn("relative w-full h-full", wrapperClassName)}>
 			<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

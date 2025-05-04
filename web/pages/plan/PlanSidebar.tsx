@@ -7,7 +7,13 @@ import {
 	PanelTopOpen,
 } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
-import { type ChangeEvent, type JSX, useEffect, useMemo, useState } from "react";
+import {
+	type ChangeEvent,
+	type JSX,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import { IconButton } from "@/components/common/iconButton";
 import { SidebarCard } from "./sidebarCard";
 import { SearchInput } from "@/components/common/searchInput";
@@ -22,7 +28,6 @@ import { useDialog } from "@/components/providers/DialogProvider";
 function Content() {
 	const { keeps } = useActivityKeeps();
 	const isMobile = useIsMobile();
-	const showSearch = keeps.length > 0;
 	const [keyword, setKeyword] = useState<string>("");
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,17 +38,24 @@ function Content() {
 		return keeps.filter(
 			(keep) =>
 				keep.name.toLowerCase().includes(keyword.toLowerCase()) ||
-				keep.description.toLowerCase().includes(keyword.toLowerCase()) ||
+				keep.description
+					.toLowerCase()
+					.includes(keyword.toLowerCase()) ||
 				keep.city.toLowerCase().includes(keyword.toLowerCase()) ||
 				keep.region.toLowerCase().includes(keyword.toLowerCase()) ||
 				keep.seasons.toLowerCase().includes(keyword.toLowerCase()) ||
-				keep.category.toLowerCase().includes(keyword.toLowerCase()),
+				keep.category.toLowerCase().includes(keyword.toLowerCase())
 		);
 	}, [keeps, keyword]);
 
 	if (isMobile) {
 		return (
 			<HorizontalScrollArea>
+				<SearchInput
+					wrapperClassName="sticky -top-8 left-2"
+					value={keyword}
+					onChange={handleChange}
+				/>
 				<Keeps isMobile={isMobile} filteredKeeps={filteredKeeps} />
 			</HorizontalScrollArea>
 		);
@@ -51,13 +63,11 @@ function Content() {
 
 	return (
 		<ScrollArea className="px-4 pb-4 pt-8">
-			{showSearch && (
-				<SearchInput
-					wrapperClassName="sticky top-0 mb-4"
-					value={keyword}
-					onChange={handleChange}
-				/>
-			)}
+			<SearchInput
+				wrapperClassName="sticky top-0 mb-4"
+				value={keyword}
+				onChange={handleChange}
+			/>
 			<Keeps isMobile={isMobile} filteredKeeps={filteredKeeps} />
 		</ScrollArea>
 	);
@@ -135,11 +145,12 @@ export function PlanSidebar() {
 		<div
 			className={cn(
 				"flex place-content-center md:place-content-end",
+				"overflow-hidden",
 				"border md:h-full",
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6",
+					: "w-full h-6 md:w-6"
 			)}
 		>
 			<Content />
@@ -154,12 +165,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	useEffect(() => {
