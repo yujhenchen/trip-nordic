@@ -21,6 +21,7 @@ interface Props {
 	};
 	activity: Activity;
 	tags: Array<string>;
+	handleClickKeepCallback?: (activityId: string) => void;
 }
 
 export default function DetailsDialog({
@@ -28,6 +29,7 @@ export default function DetailsDialog({
 	headerImage,
 	activity,
 	tags,
+	handleClickKeepCallback,
 }: Props) {
 	const { keeps, handleOnKeep } = useActivityKeeps();
 	const isKept = keeps.find((keep) => keep.id === activity.id);
@@ -45,7 +47,11 @@ export default function DetailsDialog({
 				{tags.length > 0 ? (
 					<HorizontalScrollArea>
 						{tags.map((tag) => (
-							<Badge key={tag} variant="default" className="text-center">
+							<Badge
+								key={tag}
+								variant="default"
+								className="text-center"
+							>
 								{tag}
 							</Badge>
 						))}
@@ -55,7 +61,9 @@ export default function DetailsDialog({
 				<DialogHeader className="py-4">
 					<DialogTitle>{activity.name}</DialogTitle>
 					<DialogDescription className="max-h-48">
-						<ScrollArea className="h-full">{activity.description}</ScrollArea>
+						<ScrollArea className="h-full">
+							{activity.description}
+						</ScrollArea>
 					</DialogDescription>
 				</DialogHeader>
 
@@ -68,7 +76,10 @@ export default function DetailsDialog({
 					variant="default"
 					size="lg"
 					className="rounded-xl w-fit mx-auto"
-					onClick={() => handleOnKeep(activity)}
+					onClick={() => {
+						handleOnKeep(activity);
+						handleClickKeepCallback?.(activity.id);
+					}}
 				>
 					<Bookmark fill={isKept ? "currentColor" : "none"} />
 					Keep

@@ -1,4 +1,4 @@
-import type { MouseEvent } from "react";
+import type { ComponentProps, MouseEvent, RefObject } from "react";
 import {
 	Card,
 	CardDescription,
@@ -11,6 +11,7 @@ import { Bookmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Props {
+	cardRef?: ComponentProps<typeof Card>["ref"];
 	title: string;
 	description: string;
 	handleClick: (event: MouseEvent<Element>) => void;
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export function SidebarCard({
+	cardRef,
 	title,
 	description,
 	handleClick,
@@ -26,7 +28,7 @@ export function SidebarCard({
 	titleClassName,
 }: Props) {
 	return (
-		<Card className={className} onClick={handleClick}>
+		<Card ref={cardRef} className={className} onClick={handleClick}>
 			<CardHeader>
 				<Bookmark
 					id={IDS.KEEP_ICON}

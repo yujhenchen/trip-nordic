@@ -12,6 +12,7 @@ import {
 	type JSX,
 	useEffect,
 	useMemo,
+	useRef,
 	useState,
 } from "react";
 import { IconButton } from "@/components/common/iconButton";
@@ -96,13 +97,25 @@ function Keeps({
 	};
 	const { open } = useDialog();
 	const { handleOnKeep } = useActivityKeeps();
+	const focusCardIdRef = useRef<string>("");
+	const focusCardRef = useRef<HTMLDivElement>(null);
+
+	const handleClickKeepCallback = () => {
+		focusCardRef.current?.scrollIntoView({
+			behavior: "smooth",
+			block: "center",
+			inline: "center",
+		});
+	};
 
 	const handleClickCard = (elementId: string, activity: Activity) => {
 		if (elementId === IDS.KEEP_ICON) {
 			handleOnKeep(activity);
 			return;
 		}
-		const { city, category, region, seasons } = activity;
+		const { id, city, category, region, seasons } = activity;
+
+		focusCardIdRef.current = id;
 		open("DetailsDialog", {
 			headerImage: {
 				src: "https://placehold.co/300x200",
@@ -116,6 +129,7 @@ function Keeps({
 				region,
 				...seasons.split(","),
 			],
+			handleClickKeepCallback,
 		});
 	};
 
@@ -124,6 +138,11 @@ function Keeps({
 		return (
 			<SidebarCard
 				key={id}
+				cardRef={(node) => {
+					if (focusCardIdRef.current === id && node) {
+						focusCardRef.current = node;
+					}
+				}}
 				title={name}
 				description={description}
 				handleClick={(e) => {
