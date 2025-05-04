@@ -49,11 +49,15 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											currentFilters[filterKey]?.includes(option),
+											currentFilters[filterKey]?.includes(
+												option
+											)
 										)}
 										value={option}
 										selectedIcon={chipIcon}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
 							</HorizontalScrollArea>
@@ -68,7 +72,7 @@ export function FilterPanel({
 					);
 				})}
 				<div className="flex place-content-between items-center space-x-2">
-					<SearchInput className="md:w-1/3 lg:w-1/4" />
+					<SearchInput wrapperClassName="md:w-1/3 lg:w-1/4" />
 
 					<Button
 						variant="default"

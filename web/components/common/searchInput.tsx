@@ -1,13 +1,14 @@
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
+import { InputHTMLAttributes } from "react";
 
-interface Props {
-	className?: string;
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+	wrapperClassName?: string;
 }
 
-export function SearchInput({ className }: Props) {
+export function SearchInput({ wrapperClassName, ...rest }: Props) {
 	return (
-		<div className={cn("relative w-full", className)}>
+		<div className={cn("relative w-full", wrapperClassName)}>
 			<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -33,6 +34,7 @@ export function SearchInput({ className }: Props) {
 				type="text"
 				className="w-full pl-10"
 				placeholder="Search"
+				{...rest}
 			/>
 		</div>
 	);
