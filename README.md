@@ -67,11 +67,12 @@ CORS with HTTPOnly Cookie
 
 #### Backend
 [![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev/)
-[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-[![Poetry](https://img.shields.io/badge/Poetry-000000?style=for-the-badge&logo=python&logoColor=white)](https://python-poetry.org/)
-[![Django REST framework](https://img.shields.io/badge/Django_REST_Framework-092D2D?style=for-the-badge&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Django REST framework](https://img.shields.io/badge/Django_REST_Framework-092D2D?style=for-the-badge&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
+[![Poetry](https://img.shields.io/badge/Poetry-000000?style=for-the-badge&logo=python&logoColor=white)](https://python-poetry.org/)
 [![Simple JWT](https://img.shields.io/badge/Simple_JWT-1F5D4E?style=for-the-badge&logo=python&logoColor=white)](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html#)
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Railway](https://img.shields.io/badge/Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)](https://railway.app/)
 
 
 
@@ -229,6 +230,16 @@ CORS with HTTPOnly Cookie
       nameen
     }
     totalCount
+  }
+}
+```
+
+filters
+```
+{
+  filters{
+    name
+    items
   }
 }
 ```
