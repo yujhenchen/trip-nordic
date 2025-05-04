@@ -55,3 +55,12 @@ export interface ActivityData {
 	activities: Array<GQLActivity>;
 	pageInfo: PageInfo;
 }
+
+export interface GQLFilterData {
+	name: string;
+	items: string;
+}
+
+export interface GQLFilterResponse {
+	filters: Array<GQLFilterData>;
+}
