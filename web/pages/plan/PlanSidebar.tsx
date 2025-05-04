@@ -104,19 +104,6 @@ function Keeps({
 		}
 		const { city, category, region, seasons } = activity;
 		open("DetailsDialog", {
-			// keeps,
-			// handleKeep: handleOnKeep,
-			// (activity: Activity) => {
-			// 	const foundKeep = keeps.find(
-			// 		(keep) => keep.id === activity.id
-			// 	);
-
-			// 	if (foundKeep) {
-			// 		unKeep(foundKeep.id);
-			// 	} else {
-			// 		addKeep(activity);
-			// 	}
-			// },
 			headerImage: {
 				src: "https://placehold.co/300x200",
 				alt: "",
