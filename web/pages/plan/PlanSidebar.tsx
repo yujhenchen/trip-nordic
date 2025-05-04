@@ -25,6 +25,18 @@ import { IDS } from "@/utils/ids";
 import type { Activity } from "@/types/explore";
 import { useDialog } from "@/components/providers/DialogProvider";
 
+const includedKeyword = (value: string, keyword: string) =>
+	value.toLowerCase().includes(keyword.toLowerCase());
+
+const searchAbleFields: Array<keyof Activity> = [
+	"name",
+	"description",
+	"city",
+	"region",
+	"seasons",
+	"category",
+];
+
 function Content() {
 	const { keeps } = useActivityKeeps();
 	const isMobile = useIsMobile();
@@ -34,19 +46,17 @@ function Content() {
 		setKeyword(e.target.value);
 	};
 
-	const filteredKeeps = useMemo(() => {
-		return keeps.filter(
-			(keep) =>
-				keep.name.toLowerCase().includes(keyword.toLowerCase()) ||
-				keep.description
-					.toLowerCase()
-					.includes(keyword.toLowerCase()) ||
-				keep.city.toLowerCase().includes(keyword.toLowerCase()) ||
-				keep.region.toLowerCase().includes(keyword.toLowerCase()) ||
-				keep.seasons.toLowerCase().includes(keyword.toLowerCase()) ||
-				keep.category.toLowerCase().includes(keyword.toLowerCase())
-		);
-	}, [keeps, keyword]);
+	const filteredKeeps = useMemo(
+		() =>
+			keeps.filter((keep) =>
+				searchAbleFields.some(
+					(field) =>
+						typeof keep[field] === "string" &&
+						includedKeyword(keep[field], keyword)
+				)
+			),
+		[keeps, keyword]
+	);
 
 	if (isMobile) {
 		return (
