@@ -51,16 +51,16 @@ export function CardGrid({
 							offset: prev.offset + prev.first,
 						}));
 					}
-				},
-				{
-					threshold: 1.0,
-				},
+				}
+				// {
+				// 	threshold: 1.0,
+				// },
 			);
 			if (node) {
 				observer.current.observe(node);
 			}
 		},
-		[isLoading, setQueryObject],
+		[isLoading, setQueryObject]
 	);
 
 	return (
@@ -100,7 +100,11 @@ export function CardGrid({
 				// })
 				.map((activity, index) => (
 					<Card
-						ref={index === activities.length - 1 ? lastElementRef : null}
+						ref={
+							index === activities.length - 1
+								? lastElementRef
+								: null
+						}
 						key={activity.id}
 						id={activity.id}
 						onClick={(event) => handleClickCard(event)(activity)}
@@ -109,15 +113,24 @@ export function CardGrid({
 							<Bookmark
 								id={IDS.KEEP_ICON}
 								className="self-end"
-								onClick={(event) => handleClickCard(event)(activity)}
+								onClick={(event) =>
+									handleClickCard(event)(activity)
+								}
 								fill={
-									keeps.find((keep) => keep.id === activity.id)
+									keeps.find(
+										(keep) => keep.id === activity.id
+									)
 										? "currentColor"
 										: "none"
 								}
 							/>
-							<img src="https://placehold.co/150x100" alt="Card" />
-							<CardTitle className="line-clamp-2">{activity.name}</CardTitle>
+							<img
+								src="https://placehold.co/150x100"
+								alt="Card"
+							/>
+							<CardTitle className="line-clamp-2">
+								{activity.name}
+							</CardTitle>
 							<CardDescription className="line-clamp-3">
 								{activity.description}
 							</CardDescription>
