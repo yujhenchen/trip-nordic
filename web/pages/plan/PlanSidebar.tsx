@@ -53,10 +53,10 @@ function Content() {
 				searchAbleFields.some(
 					(field) =>
 						typeof keep[field] === "string" &&
-						includedKeyword(keep[field], keyword)
-				)
+						includedKeyword(keep[field], keyword),
+				),
 			),
-		[keeps, keyword]
+		[keeps, keyword],
 	);
 
 	if (isMobile) {
@@ -166,7 +166,7 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6"
+					: "w-full h-6 md:w-6",
 			)}
 		>
 			<Content />
@@ -181,12 +181,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger]
+		[isTabletOrBigger],
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger]
+		[isTabletOrBigger],
 	);
 
 	useEffect(() => {

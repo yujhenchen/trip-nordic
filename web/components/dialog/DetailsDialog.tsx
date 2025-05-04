@@ -47,11 +47,7 @@ export default function DetailsDialog({
 				{tags.length > 0 ? (
 					<HorizontalScrollArea>
 						{tags.map((tag) => (
-							<Badge
-								key={tag}
-								variant="default"
-								className="text-center"
-							>
+							<Badge key={tag} variant="default" className="text-center">
 								{tag}
 							</Badge>
 						))}
@@ -61,9 +57,7 @@ export default function DetailsDialog({
 				<DialogHeader className="py-4">
 					<DialogTitle>{activity.name}</DialogTitle>
 					<DialogDescription className="max-h-48">
-						<ScrollArea className="h-full">
-							{activity.description}
-						</ScrollArea>
+						<ScrollArea className="h-full">{activity.description}</ScrollArea>
 					</DialogDescription>
 				</DialogHeader>
 
