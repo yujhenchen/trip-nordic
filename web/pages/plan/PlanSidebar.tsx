@@ -39,25 +39,12 @@ const searchAbleFields: Array<keyof Activity> = [
 ];
 
 function Content() {
-	const { keeps } = useActivityKeeps();
 	const isMobile = useIsMobile();
 	const [keyword, setKeyword] = useState<string>("");
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setKeyword(e.target.value);
 	};
-
-	const filteredKeeps = useMemo(
-		() =>
-			keeps.filter((keep) =>
-				searchAbleFields.some(
-					(field) =>
-						typeof keep[field] === "string" &&
-						includedKeyword(keep[field], keyword),
-				),
-			),
-		[keeps, keyword],
-	);
 
 	if (isMobile) {
 		return (
@@ -67,7 +54,7 @@ function Content() {
 					value={keyword}
 					onChange={handleChange}
 				/>
-				<Keeps isMobile={isMobile} filteredKeeps={filteredKeeps} />
+				<Keeps isMobile={isMobile} searchKeyword={keyword} />
 			</HorizontalScrollArea>
 		);
 	}
@@ -79,34 +66,49 @@ function Content() {
 				value={keyword}
 				onChange={handleChange}
 			/>
-			<Keeps isMobile={isMobile} filteredKeeps={filteredKeeps} />
+			<Keeps isMobile={isMobile} searchKeyword={keyword} />
 		</ScrollArea>
 	);
 }
 
 function Keeps({
 	isMobile,
-	filteredKeeps,
+	searchKeyword,
 }: {
 	isMobile: boolean;
-	filteredKeeps: Array<Activity>;
+	searchKeyword: string;
 }) {
 	const mobileProps = {
 		className: "w-48",
 		titleClassName: "truncate",
 	};
 	const { open } = useDialog();
-	const { handleOnKeep } = useActivityKeeps();
+	const { keeps, handleOnKeep } = useActivityKeeps();
 	const focusCardIdRef = useRef<string>("");
 	const focusCardRef = useRef<HTMLDivElement>(null);
 
-	const handleClickKeepCallback = () => {
+	const filteredKeeps = useMemo(
+		() =>
+			keeps.filter((keep) =>
+				searchAbleFields.some(
+					(field) =>
+						typeof keep[field] === "string" &&
+						includedKeyword(keep[field], searchKeyword)
+				)
+			),
+		[keeps, searchKeyword]
+	);
+
+	useEffect(() => {
+		if (keeps.length === 0) {
+			return;
+		}
 		focusCardRef.current?.scrollIntoView({
 			behavior: "smooth",
 			block: "center",
 			inline: "center",
 		});
-	};
+	}, [keeps]);
 
 	const handleClickCard = (elementId: string, activity: Activity) => {
 		if (elementId === IDS.KEEP_ICON) {
@@ -129,7 +131,6 @@ function Keeps({
 				region,
 				...seasons.split(","),
 			],
-			handleClickKeepCallback,
 		});
 	};
 
@@ -166,7 +167,7 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6",
+					: "w-full h-6 md:w-6"
 			)}
 		>
 			<Content />
@@ -181,12 +182,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	useEffect(() => {
