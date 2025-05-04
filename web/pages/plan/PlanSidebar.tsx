@@ -7,7 +7,7 @@ import {
 	PanelTopOpen,
 } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
-import { type JSX, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, type JSX, useEffect, useMemo, useState } from "react";
 import { IconButton } from "@/components/common/iconButton";
 import { SidebarCard } from "./sidebarCard";
 import { SearchInput } from "@/components/common/searchInput";
@@ -23,30 +23,61 @@ function Content() {
 	const { keeps } = useActivityKeeps();
 	const isMobile = useIsMobile();
 	const showSearch = keeps.length > 0;
+	const [keyword, setKeyword] = useState<string>("");
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setKeyword(e.target.value);
+	};
+
+	const filteredKeeps = useMemo(() => {
+		return keeps.filter(
+			(keep) =>
+				keep.name.toLowerCase().includes(keyword.toLowerCase()) ||
+				keep.description
+					.toLowerCase()
+					.includes(keyword.toLowerCase()) ||
+				keep.city.toLowerCase().includes(keyword.toLowerCase()) ||
+				keep.region.toLowerCase().includes(keyword.toLowerCase()) ||
+				keep.seasons.toLowerCase().includes(keyword.toLowerCase()) ||
+				keep.category.toLowerCase().includes(keyword.toLowerCase())
+		);
+	}, [keeps, keyword]);
 
 	if (isMobile) {
 		return (
 			<HorizontalScrollArea>
-				<Keeps isMobile={isMobile} />
+				<Keeps isMobile={isMobile} filteredKeeps={filteredKeeps} />
 			</HorizontalScrollArea>
 		);
 	}
 
 	return (
 		<ScrollArea className="px-4 pb-4 pt-8">
-			{showSearch && <SearchInput wrapperClassName="sticky top-0 mb-4" />}
-			<Keeps isMobile={isMobile} />
+			{showSearch && (
+				<SearchInput
+					wrapperClassName="sticky top-0 mb-4"
+					value={keyword}
+					onChange={handleChange}
+				/>
+			)}
+			<Keeps isMobile={isMobile} filteredKeeps={filteredKeeps} />
 		</ScrollArea>
 	);
 }
 
-function Keeps({ isMobile }: { isMobile: boolean }) {
+function Keeps({
+	isMobile,
+	filteredKeeps,
+}: {
+	isMobile: boolean;
+	filteredKeeps: Array<Activity>;
+}) {
 	const mobileProps = {
 		className: "w-48",
 		titleClassName: "truncate",
 	};
 	const { open } = useDialog();
-	const { keeps, handleOnKeep } = useActivityKeeps();
+	const { handleOnKeep } = useActivityKeeps();
 
 	const handleClickCard = (elementId: string, activity: Activity) => {
 		if (elementId === IDS.KEEP_ICON) {
@@ -83,7 +114,7 @@ function Keeps({ isMobile }: { isMobile: boolean }) {
 		});
 	};
 
-	return keeps.map((keepActivity) => {
+	return filteredKeeps.map((keepActivity) => {
 		const { id, name, description } = keepActivity;
 		return (
 			<SidebarCard
