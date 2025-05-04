@@ -1,7 +1,7 @@
 import graphene
 from django.db.models import Q
 from graphene_django.types import DjangoObjectType
-from .models import Activity
+from .models import Activity, FiFilters
 
 class ActivityType(DjangoObjectType):
     class Meta:
@@ -12,7 +12,17 @@ class ActivityType(DjangoObjectType):
     
     def resolve_activities(self, info):
         return self.activities.all()
-
+    
+class FiFiltersType(DjangoObjectType):
+	class Meta:
+		model = FiFilters
+		interfaces = (graphene.relay.Node, )
+  
+	filters = graphene.List(lambda: FiFiltersType)
+  
+	def resolve_filters(self, info):
+		return self.filters.all()
+  
 
 class ActivitiesEdge(graphene.ObjectType):
     cursor = graphene.ID()
@@ -39,6 +49,8 @@ class Query(graphene.ObjectType):
         first=graphene.Int(required=False),
         offset=graphene.Int(required=False),
     )
+    
+    filters = graphene.List(FiFiltersType)
     
     def resolve_all_activities(self, info):
         return Activity.objects.all()
@@ -87,5 +99,7 @@ class Query(graphene.ObjectType):
             pageInfo=page_info
         )
 
+    def resolve_filters(self, info):
+        return FiFilters.objects.all()	
 
 schema = graphene.Schema(query=Query)

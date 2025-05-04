@@ -20,3 +20,13 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.nameen
+
+class FiFilters(models.Model):
+    name = models.CharField(max_length=255)
+    items = models.JSONField()
+    
+    class Meta:
+        db_table = 'activities_fi_filters'
+
+    def __str__(self):
+        return self.name

@@ -11,7 +11,7 @@ def main():
     fi_filters = get_fi_filters(db_client)
     # print(fi_filters)
     docs = format_fi_filters_documents(fi_filters)
-    update_collection(db_client, "fi_filters", docs)
+    update_collection(db_client, "activities_fi_filters", docs)
 
 if __name__ == "__main__":
     main()
