@@ -7,7 +7,7 @@ import {
 	PanelTopOpen,
 } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
-import { ChangeEvent, type JSX, useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, type JSX, useEffect, useMemo, useState } from "react";
 import { IconButton } from "@/components/common/iconButton";
 import { SidebarCard } from "./sidebarCard";
 import { SearchInput } from "@/components/common/searchInput";
@@ -33,13 +33,11 @@ function Content() {
 		return keeps.filter(
 			(keep) =>
 				keep.name.toLowerCase().includes(keyword.toLowerCase()) ||
-				keep.description
-					.toLowerCase()
-					.includes(keyword.toLowerCase()) ||
+				keep.description.toLowerCase().includes(keyword.toLowerCase()) ||
 				keep.city.toLowerCase().includes(keyword.toLowerCase()) ||
 				keep.region.toLowerCase().includes(keyword.toLowerCase()) ||
 				keep.seasons.toLowerCase().includes(keyword.toLowerCase()) ||
-				keep.category.toLowerCase().includes(keyword.toLowerCase())
+				keep.category.toLowerCase().includes(keyword.toLowerCase()),
 		);
 	}, [keeps, keyword]);
 
@@ -141,7 +139,7 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6"
+					: "w-full h-6 md:w-6",
 			)}
 		>
 			<Content />
@@ -156,12 +154,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger]
+		[isTabletOrBigger],
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger]
+		[isTabletOrBigger],
 	);
 
 	useEffect(() => {

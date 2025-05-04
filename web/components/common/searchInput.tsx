@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
-import { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	wrapperClassName?: string;
