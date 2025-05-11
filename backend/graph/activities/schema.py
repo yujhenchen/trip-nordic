@@ -58,7 +58,7 @@ def apply_filter(qs: QuerySet[Activity], field_name: str, values: list[str]):
     if values:
         filter_q = Q()
         for value in values:
-            filter_q &= Q(**{f"{field_name}__icontains": value})
+            filter_q |= Q(**{f"{field_name}__icontains": value})
         qs = qs.filter(filter_q)
     return qs
         
