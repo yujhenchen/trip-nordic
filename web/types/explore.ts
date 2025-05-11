@@ -12,33 +12,20 @@ export type FiltersType = Partial<Record<FilterKeyType, Array<string>>>;
 
 export interface Activity {
 	id: string;
-	category: string;
+	categories: Array<string>;
 	city: string;
 	description: string;
 	name: string;
 	region: string;
-	seasons: string;
+	seasons: Array<string>;
 	img?: {
 		src: string;
 		alt: string;
 	};
 }
 
-export interface GQLActivity {
-	id: string; // MongoDB ObjectId
-	idinternal: string; // UUID
-	accessible: boolean;
-	category: string;
-	city: string;
-	descriptionen: string;
-	languages: string;
-	nameen: string;
-	region: string;
-	seasons: string;
-}
-
 export interface ActivityEdge {
-	node: GQLActivity;
+	node: Activity;
 	cursor: string;
 }
 
@@ -52,7 +39,7 @@ export interface PageInfo {
 export interface ActivityData {
 	totalCount: number;
 	edges: Array<ActivityEdge>;
-	activities: Array<GQLActivity>;
+	activities: Array<Activity>;
 	pageInfo: PageInfo;
 }
 
