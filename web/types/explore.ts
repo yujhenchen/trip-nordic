@@ -1,6 +1,6 @@
 export const FilterKeyTitle = {
 	city: "Cities",
-	category: "Categories",
+	categories: "Categories",
 	country: "Countries",
 	region: "Region",
 	seasons: "Seasons",
@@ -44,7 +44,7 @@ export interface ActivityData {
 }
 
 export interface GQLFilterData {
-	name: string;
+	name: FilterKeyType;
 	items: string;
 }
 

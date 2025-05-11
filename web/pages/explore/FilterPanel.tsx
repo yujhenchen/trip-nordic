@@ -8,10 +8,10 @@ import {
 // import { useFilters } from "./FilterProvider";
 import { SearchInput } from "@/components/common/searchInput";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
-import type {
-	// FilterKeyTitle,
-	GQLFilterResponse,
-	FilterKeyType,
+import {
+	type GQLFilterResponse,
+	type FilterKeyType,
+	FilterKeyTitle,
 } from "@/types/explore";
 import { useData } from "vike-react/useData";
 
@@ -59,7 +59,7 @@ export function FilterPanel({
 							className="flex items-center space-x-3"
 						>
 							<FilterRowTitle className="flex-shrink-0 w-24">
-								{filter.name}
+								{FilterKeyTitle[filter.name]}
 							</FilterRowTitle>
 							<HorizontalScrollArea>
 								{options.map((option) => (
