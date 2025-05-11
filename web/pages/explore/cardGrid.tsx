@@ -9,7 +9,7 @@ import { useActivityKeeps } from "@/hooks/use-activity-keeps";
 import type { Activity } from "@/types/explore";
 import { IDS } from "@/utils/ids";
 import { Bookmark } from "lucide-react";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { SkeletonCard } from "@/components/common/skeletonCard";
 
 interface Props {
 	isFetching: boolean;
@@ -124,7 +124,7 @@ export function CardGrid({
 						</CardHeader>
 					</Card>
 				))}
-			{isFetching && <LoadingSpinner />}
+			{isFetching && <SkeletonCard />}
 		</div>
 	);
 }
