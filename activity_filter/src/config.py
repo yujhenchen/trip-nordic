@@ -8,6 +8,8 @@ mongo_password = config.get("MONGO_PASSWORD")
 mongo_cluster = config.get("MONGO_CLUSTER")
 mongo_options = config.get("MONGO_OPTIONS")
 mongo_db_name = config.get("MONGO_DB_NAME")
+fi_collection_name = config.get("FI_COLLECTION_NAME")
+fi_filters_collection_name = config.get("FI_FILTERS_COLLECTION_NAME")
 
 # Check if any variable is None and handle accordingly
 if not all([mongo_username, mongo_password, mongo_cluster, mongo_options, mongo_db_name]):
