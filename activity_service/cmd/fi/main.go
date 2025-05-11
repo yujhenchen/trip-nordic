@@ -61,16 +61,6 @@ func main() {
 			// use bson.D when field order matters. bson.D is used in the official documentation
 			// filter := bson.M{"id": activities[i].ID}
 			filter := bson.D{{Key: "id", Value: (*data)[idx].ID}}
-			// TODO: generate hash for checking if doc is updated
-			// hash, err := utils.GenerateHash(activity)
-			// if err != nil {
-			// 	fmt.Printf("Error GenerateHash activity: %v\n", activity.ID)
-			// 	// TODO: error handling
-			// 	continue
-			// }
-			// activity.Hash = hash
-
-			// update := bson.M{"$set": activity}
 			update := bson.D{{Key: "$set", Value: &(*data)[idx]}}
 
 			mu.Lock()
