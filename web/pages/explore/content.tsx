@@ -24,6 +24,7 @@ import { useActivityKeeps } from "@/hooks/use-activity-keeps";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { IDS } from "@/utils/ids";
 import { CardGrid } from "./cardGrid";
+import { cn } from "@/lib/utils";
 
 // const isFilterMatch = (
 // 	filters: FiltersType,
@@ -59,6 +60,19 @@ const initQueryObject: ActivityQueryParams = {
 	first: 30,
 };
 
+const Updating = ({ isFetching }: { isFetching: boolean }) => {
+	return (
+		<p
+			className={cn(
+				"text-sm text-gray-500",
+				isFetching ? "visible" : "invisible"
+			)}
+		>
+			Updating...
+		</p>
+	);
+};
+
 export function Content() {
 	const {
 		// currentFilters,
@@ -82,7 +96,7 @@ export function Content() {
 				// TODO: endpoint should be env var
 				const result = await new GraphQLClient(
 					"http://127.0.0.1:8000/graphql",
-					{ signal },
+					{ signal }
 				).request<{
 					activities: ActivityData;
 				}>(query, queryObject);
@@ -132,7 +146,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -165,16 +179,19 @@ export function Content() {
 				searchKeyword={queryObject.search}
 				handleSearchChange={handleSearchChange}
 			/>
-			{isLoading ? (
-				<LoadingSpinner />
-			) : isError ? null : (
-				<CardGrid
-					isLoading={isLoading}
-					isFetching={isFetching}
-					activities={allActivities}
-					handleClickCard={handleClickCard}
-					setQueryObject={setQueryObject}
-				/>
+			{isLoading && <LoadingSpinner />}
+			{isError && null}
+			{isSuccess && (
+				<>
+					<Updating isFetching={isFetching} />
+					<CardGrid
+						isLoading={isLoading}
+						isFetching={isFetching}
+						activities={allActivities}
+						handleClickCard={handleClickCard}
+						setQueryObject={setQueryObject}
+					/>
+				</>
 			)}
 		</>
 	);
