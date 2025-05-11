@@ -33,6 +33,9 @@ MONGO_CLUSTER=env("MONGO_CLUSTER")
 MONGO_OPTIONS=env("MONGO_OPTIONS")
 MONGO_DB_NAME=env("MONGO_DB_NAME")
 
+FI_COLLECTION_NAME=env("FI_COLLECTION_NAME")
+FI_FILTERS_COLLECTION_NAME=env("FI_FILTERS_COLLECTION_NAME")
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -148,6 +151,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# DEFAULT_AUTO_FIELD = 'django_mongodb_backend.fields.ObjectIdAutoField'
 
 GRAPHENE = {
     "SCHEMA": "activities.schema.schema"
