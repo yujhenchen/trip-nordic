@@ -5,6 +5,7 @@ import (
 	"backend/models/fi"
 	mongodb "backend/mongo"
 	"backend/scripts"
+	"backend/utils"
 	"context"
 	"fmt"
 	"log"
@@ -24,6 +25,18 @@ func getFIData(limit int) (*[]fi.Result, error) {
 		return nil, err
 	}
 	return &res.Results, nil
+}
+
+func getMappedResult(r fi.Result) fi.MappedResult {
+	return fi.MappedResult{
+		ID:          r.ID,
+		Name:        r.NameEN,
+		Description: r.DescriptionEN,
+		Region:      r.Region,
+		City:        r.City,
+		Categories:  utils.SplitAndTrim(r.Category),
+		Seasons:     utils.SplitAndTrim(r.Seasons),
+	}
 }
 
 func main() {
@@ -46,7 +59,7 @@ func main() {
 	}
 
 	// client: connection instance, access collection in the database, assigns the se collection reference to the seCol variable
-	fiColl := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("fi")
+	fiColl := client.Database(config.GoDotEnvVariable("DB_NAME")).Collection("activities_fi")
 
 	// mongo.WriteModel: write models is used to specify replace and update operations
 	bulkOps := make([]mongo.WriteModel, 0, len(*data))
@@ -58,10 +71,11 @@ func main() {
 		go func(idx int) {
 			defer wg.Done()
 
-			// use bson.D when field order matters. bson.D is used in the official documentation
-			// filter := bson.M{"id": activities[i].ID}
-			filter := bson.D{{Key: "id", Value: (*data)[idx].ID}}
-			update := bson.D{{Key: "$set", Value: &(*data)[idx]}}
+			original := (*data)[idx]
+			mapped := getMappedResult(original)
+
+			filter := bson.D{{Key: "id", Value: original.ID}}
+			update := bson.D{{Key: "$set", Value: mapped}}
 
 			mu.Lock()
 			bulkOps = append(bulkOps, mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true))

@@ -43,6 +43,16 @@ type Result struct {
 	// Image            Image  `json:"image"`
 }
 
+type MappedResult struct {
+	ID          string   `json:"id"`
+	Name        string   `json:"name"`
+	Description string   `json:"description,omitempty"`
+	Region      string   `json:"region"`
+	City        string   `json:"city"`
+	Categories  []string `json:"categories,omitempty"`
+	Seasons     []string `json:"seasons,omitempty"`
+}
+
 type Response struct {
 	Total   int      `json:"total"`
 	Offset  int      `json:"offset"`
