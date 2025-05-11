@@ -46,13 +46,14 @@ export function FilterPanel({
 			<FilterContent>
 				{filters.map((filter) => {
 					const options: Array<string> = JSON.parse(filter.items);
+					const filterKey = filter.name;
 					return (
 						<div
-							key={filter.name}
+							key={filterKey}
 							className="flex items-center space-x-3"
 						>
 							<FilterRowTitle className="flex-shrink-0 w-24">
-								{FilterKeyTitle[filter.name]}
+								{FilterKeyTitle[filterKey]}
 							</FilterRowTitle>
 							<HorizontalScrollArea>
 								{options.map((option) => (
@@ -60,20 +61,20 @@ export function FilterPanel({
 										key={option}
 										selected={Boolean(
 											selectedFilters[
-												filter.name
+												filterKey
 											]?.includes(option)
 										)}
 										value={option}
 										selectedIcon={chipIcon}
 										onClick={() =>
-											toggleOption(filter.name, option)
+											toggleOption(filterKey, option)
 										}
 									/>
 								))}
 							</HorizontalScrollArea>
 							<Button
 								variant="default"
-								onClick={() => onReset(filter.name)}
+								onClick={() => onReset(filterKey)}
 								className="rounded-full"
 							>
 								Reset

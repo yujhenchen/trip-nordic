@@ -2,13 +2,7 @@ import { X } from "lucide-react";
 import { useFilters } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
-import {
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-	type MouseEvent,
-} from "react";
+import { useCallback, useEffect, useState, type MouseEvent } from "react";
 
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { gql } from "graphql-request";
