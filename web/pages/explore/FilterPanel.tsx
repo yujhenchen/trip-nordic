@@ -5,7 +5,6 @@ import {
 	FilterTitle,
 	FilterChip,
 } from "./Filter";
-// import { useFilters } from "./FilterProvider";
 import { SearchInput } from "@/components/common/searchInput";
 import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
 import {
@@ -14,6 +13,7 @@ import {
 	FilterKeyTitle,
 } from "@/types/explore";
 import { useData } from "vike-react/useData";
+import { useFilters } from "./FilterProvider";
 
 export interface Props {
 	chipIcon: React.ReactNode;
@@ -33,18 +33,11 @@ export function FilterPanel({
 	title,
 	chipIcon,
 	className,
-	// toggleOption,
-	// onReset,
+	toggleOption,
+	onReset,
 	onResetAll,
 }: Props) {
-	// const {
-	// 	filters,
-	// 	currentFilters,
-	// } = useFilters();
-
-	// const { data, isLoading, isError } = useQuery<Array<GQLFilterData>>({
-	// 	queryKey: ["filters"],
-	// 	queryFn: async (): Promise<Array<GQLFilterData>> => {
+	const { selectedFilters } = useFilters();
 	const filters = useData<GQLFilterResponse["filters"]>();
 
 	return (
@@ -65,32 +58,22 @@ export function FilterPanel({
 								{options.map((option) => (
 									<FilterChip
 										key={option}
-										selected={
-											// 	Boolean(
-											// 	currentFilters[filterKey]?.includes(
-											// 		option
-											// 	)
-											// )
-											// TODO: make this to really check selected
-											false
-										}
+										selected={Boolean(
+											selectedFilters[
+												filter.name
+											]?.includes(option)
+										)}
 										value={option}
 										selectedIcon={chipIcon}
 										onClick={() =>
-											// toggleOption(filterKey, option)
-											// TODO: make this to really toggle
-											console.log(option)
+											toggleOption(filter.name, option)
 										}
 									/>
 								))}
 							</HorizontalScrollArea>
 							<Button
 								variant="default"
-								onClick={() =>
-									// onReset(filterKey)
-									// TODO: make this to really reset
-									console.log(filter.name)
-								}
+								onClick={() => onReset(filter.name)}
 								className="rounded-full"
 							>
 								Reset

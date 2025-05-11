@@ -3,20 +3,17 @@ import { createContext, useCallback, useContext, useState } from "react";
 
 type FilterProviderProps = {
 	children: React.ReactNode;
-	filters: FiltersType;
 };
 
 type FilterProviderState = {
-	filters: FiltersType;
-	currentFilters: FiltersType;
+	selectedFilters: FiltersType;
 	toggleFilterOption: (filterKey: FilterKeyType, option: string) => void;
 	resetFilterSelectedOptions: (filterKey: FilterKeyType) => void;
 	resetAllFilterSelected: () => void;
 };
 
 const initialState: FilterProviderState = {
-	filters: {},
-	currentFilters: {},
+	selectedFilters: {},
 	toggleFilterOption: () => {},
 	resetFilterSelectedOptions: () => {},
 	resetAllFilterSelected: () => {},
@@ -24,11 +21,7 @@ const initialState: FilterProviderState = {
 
 const FilterProviderContext = createContext<FilterProviderState>(initialState);
 
-export function FilterProvider({
-	children,
-	filters,
-	...props
-}: FilterProviderProps) {
+export function FilterProvider({ children, ...props }: FilterProviderProps) {
 	const [currentFilters, setCurrentFilters] = useState({} as FiltersType);
 
 	const toggleFilterOption = useCallback(
@@ -65,8 +58,7 @@ export function FilterProvider({
 		<FilterProviderContext.Provider
 			{...props}
 			value={{
-				filters,
-				currentFilters,
+				selectedFilters: currentFilters,
 				resetFilterSelectedOptions,
 				toggleFilterOption,
 				resetAllFilterSelected,
