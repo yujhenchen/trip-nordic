@@ -16,7 +16,7 @@ import { useData } from "vike-react/useData";
 import { useFilters } from "./FilterProvider";
 
 export interface Props {
-	chipIcon: React.ReactNode;
+	// chipIcon: React.ReactNode;
 	toggleOption: (filterKey: FilterKeyType, option: string) => void;
 	onReset: (filterKey: FilterKeyType) => void;
 	onResetAll: () => void;
@@ -31,7 +31,7 @@ export interface FilterPanelRow {
 
 export function FilterPanel({
 	title,
-	chipIcon,
+	// chipIcon,
 	className,
 	toggleOption,
 	onReset,
@@ -65,7 +65,7 @@ export function FilterPanel({
 											]?.includes(option)
 										)}
 										value={option}
-										selectedIcon={chipIcon}
+										// selectedIcon={chipIcon}
 										onClick={() =>
 											toggleOption(filterKey, option)
 										}

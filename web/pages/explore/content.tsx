@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+// import { X } from "lucide-react";
 import { useFilters } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
@@ -124,7 +124,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -146,7 +146,7 @@ export function Content() {
 	return (
 		<>
 			<FilterPanel
-				chipIcon={<X size={16} />}
+				// chipIcon={<X size={16} />}
 				toggleOption={handleToggleOption}
 				onReset={handleReset}
 				onResetAll={handleResetAll}

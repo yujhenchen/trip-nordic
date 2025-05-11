@@ -34,13 +34,13 @@ interface FilterChipProps
 		React.RefAttributes<HTMLDivElement> {
 	selected: boolean;
 	value: string;
-	selectedIcon: React.ReactNode;
+	// selectedIcon: React.ReactNode;
 }
 
 const FilterChip = ({
 	selected,
 	value,
-	selectedIcon,
+	// selectedIcon,
 	ref,
 	...props
 }: FilterChipProps) => {
@@ -49,14 +49,27 @@ const FilterChip = ({
 			<button
 				type="button"
 				className={cn(
-					"flex items-center px-4 py-2 rounded-full shadow-sm border space-x-2",
+					"inline-flex items-center justify-center",
+					"px-4 py-2 rounded-full shadow-sm border space-x-2",
+					"transition-all duration-100 ease-in-out",
 					selected
-						? "bg-blue-100 text-blue-800 border-blue-400"
-						: "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200",
+						? "bg-blue-500 text-white border-blue-600 font-semibold shadow-sm dark:bg-blue-400 dark:text-white dark:border-blue-500"
+						: "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600"
 				)}
 			>
-				<span>{value}</span>
-				{selected ? selectedIcon : null}
+				<span className="relative">
+					<span className="invisible font-semibold">{value}</span>
+					<span
+						className={
+							selected
+								? "font-semibold absolute inset-0"
+								: "absolute inset-0"
+						}
+					>
+						{value}
+					</span>
+				</span>
+				{/* {selected ? selectedIcon : null} */}
 			</button>
 		</div>
 	);
