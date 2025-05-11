@@ -48,10 +48,7 @@ export function FilterPanel({
 					const options: Array<string> = JSON.parse(filter.items);
 					const filterKey = filter.name;
 					return (
-						<div
-							key={filterKey}
-							className="flex items-center space-x-3"
-						>
+						<div key={filterKey} className="flex items-center space-x-3">
 							<FilterRowTitle className="flex-shrink-0 w-24">
 								{FilterKeyTitle[filterKey]}
 							</FilterRowTitle>
@@ -60,15 +57,11 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											selectedFilters[
-												filterKey
-											]?.includes(option)
+											selectedFilters[filterKey]?.includes(option),
 										)}
 										value={option}
 										// selectedIcon={chipIcon}
-										onClick={() =>
-											toggleOption(filterKey, option)
-										}
+										onClick={() => toggleOption(filterKey, option)}
 									/>
 								))}
 							</HorizontalScrollArea>
