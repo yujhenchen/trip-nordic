@@ -51,3 +51,9 @@ export interface GQLFilterData {
 export interface GQLFilterResponse {
 	filters: Array<GQLFilterData>;
 }
+
+export interface ActivityQueryParams {
+	search: string;
+	first: number;
+	offset: number;
+}

@@ -14,6 +14,7 @@ import {
 } from "@/types/explore";
 import { useData } from "vike-react/useData";
 import { useFilters } from "./FilterProvider";
+import type { ChangeEvent } from "react";
 
 export interface Props {
 	// chipIcon: React.ReactNode;
@@ -22,6 +23,8 @@ export interface Props {
 	onResetAll: () => void;
 	title?: string;
 	className?: string;
+	searchKeyword?: string;
+	handleSearchChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface FilterPanelRow {
@@ -36,6 +39,8 @@ export function FilterPanel({
 	toggleOption,
 	onReset,
 	onResetAll,
+	searchKeyword,
+	handleSearchChange,
 }: Props) {
 	const { selectedFilters } = useFilters();
 	const filters = useData<GQLFilterResponse["filters"]>();
@@ -76,7 +81,11 @@ export function FilterPanel({
 					);
 				})}
 				<div className="flex place-content-between items-center space-x-2">
-					<SearchInput wrapperClassName="md:w-1/3 lg:w-1/4" />
+					<SearchInput
+						wrapperClassName="md:w-1/3 lg:w-1/4"
+						value={searchKeyword}
+						onChange={handleSearchChange}
+					/>
 
 					<Button
 						variant="default"

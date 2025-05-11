@@ -2,15 +2,21 @@
 import { useFilters } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
-import { useCallback, useEffect, useState, type MouseEvent } from "react";
+import {
+	type ChangeEvent,
+	useCallback,
+	useEffect,
+	useState,
+	type MouseEvent,
+} from "react";
 
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { gql } from "graphql-request";
-import { graphqlClient } from "@/graphql/client";
+import { gql, GraphQLClient } from "graphql-request";
 import { toast } from "sonner";
 import type {
 	Activity,
 	ActivityData,
+	ActivityQueryParams,
 	FilterKeyType,
 	// FiltersType,
 } from "@/types/explore";
@@ -31,8 +37,8 @@ import { CardGrid } from "./cardGrid";
 // };
 
 const query = gql`
-	query GetActivities($offset: Int, $first: Int!) {
-		activities(offset: $offset, first: $first) {
+	query GetActivities($search: String, $offset: Int, $first: Int!) {
+		activities(search: $search, offset: $offset, first: $first) {
 			activities {
 				id
 				categories
@@ -47,6 +53,12 @@ const query = gql`
 	}
 `;
 
+const initQueryObject: ActivityQueryParams = {
+	search: "",
+	offset: 0,
+	first: 30,
+};
+
 export function Content() {
 	const {
 		// currentFilters,
@@ -58,37 +70,33 @@ export function Content() {
 
 	const { handleOnKeep } = useActivityKeeps();
 
-	const [queryObject, setQueryObject] = useState<{
-		offset: number;
-		first: number;
-	}>({ offset: 0, first: 30 });
+	const [queryObject, setQueryObject] =
+		useState<ActivityQueryParams>(initQueryObject);
 
 	const [allActivities, setAllActivities] = useState<Array<Activity>>([]);
 
 	const { data, isFetching, isLoading, isError, isSuccess } =
 		useQuery<ActivityData>({
 			queryKey: ["activities", queryObject],
-			queryFn: async (): Promise<ActivityData> => {
-				try {
-					const result = await graphqlClient.request<{
-						activities: ActivityData;
-					}>(query, {
-						offset: queryObject.offset,
-						first: queryObject.first,
-					});
-					return result.activities;
-				} catch (err) {
-					return Promise.reject(err);
-				}
+			queryFn: async ({ signal }): Promise<ActivityData> => {
+				// TODO: endpoint should be env var
+				const result = await new GraphQLClient(
+					"http://127.0.0.1:8000/graphql",
+					{ signal }
+				).request<{
+					activities: ActivityData;
+				}>(query, queryObject);
+				return result.activities;
 			},
 			placeholderData: keepPreviousData,
 		});
 
 	useEffect(() => {
-		if (isSuccess && data) {
+		if (isSuccess && data.activities) {
+			// TODO: handle when search or filters are apply, what to do with the init query data
 			setAllActivities((prevData) => [...prevData, ...data.activities]);
 		}
-	}, [isSuccess, data]);
+	}, [isSuccess, data?.activities]);
 
 	const handleClickCard = useCallback(
 		(event: MouseEvent) => (activity: Activity) => {
@@ -124,7 +132,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -139,6 +147,10 @@ export function Content() {
 		resetAllFilterSelected();
 	};
 
+	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setQueryObject((prev) => ({ ...prev, search: e.target.value }));
+	};
+
 	if (isError) {
 		toast.error("Something went wrong! Please try again later.");
 	}
@@ -150,6 +162,8 @@ export function Content() {
 				toggleOption={handleToggleOption}
 				onReset={handleReset}
 				onResetAll={handleResetAll}
+				searchKeyword={queryObject.search}
+				handleSearchChange={handleSearchChange}
 			/>
 			{isLoading ? (
 				<LoadingSpinner />

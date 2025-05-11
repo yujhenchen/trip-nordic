@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/card";
 import { useCallback, useRef, type MouseEvent } from "react";
 import { useActivityKeeps } from "@/hooks/use-activity-keeps";
-import type { Activity } from "@/types/explore";
+import type { Activity, ActivityQueryParams } from "@/types/explore";
 import { IDS } from "@/utils/ids";
 import { Bookmark } from "lucide-react";
 import { SkeletonCard } from "@/components/common/skeletonCard";
@@ -16,12 +16,7 @@ interface Props {
 	isLoading: boolean;
 	activities: Array<Activity>;
 	handleClickCard: (event: MouseEvent) => (activity: Activity) => void;
-	setQueryObject: React.Dispatch<
-		React.SetStateAction<{
-			offset: number;
-			first: number;
-		}>
-	>;
+	setQueryObject: React.Dispatch<React.SetStateAction<ActivityQueryParams>>;
 }
 
 export function CardGrid({
