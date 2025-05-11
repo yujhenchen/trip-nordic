@@ -74,6 +74,9 @@ export function Content() {
 
 	const [allActivities, setAllActivities] = useState<Array<Activity>>([]);
 
+	// TODO: need to consider allActivities is set to empty array when updating search keyword
+	// const deferredActivities = useDeferredValue(allActivities);
+
 	const { data, isFetching, isLoading, isError, isSuccess } =
 		useQuery<ActivityData>({
 			queryKey: ["activities", queryObject],
