@@ -18,13 +18,11 @@ import type {
 	ActivityData,
 	ActivityQueryParams,
 	FilterKeyType,
-	// FiltersType,
 } from "@/types/explore";
 import { useActivityKeeps } from "@/hooks/use-activity-keeps";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { IDS } from "@/utils/ids";
 import { CardGrid } from "./cardGrid";
-import { cn } from "@/lib/utils";
 
 // const isFilterMatch = (
 // 	filters: FiltersType,
@@ -60,19 +58,6 @@ const initQueryObject: ActivityQueryParams = {
 	first: 30,
 };
 
-const Updating = ({ isFetching }: { isFetching: boolean }) => {
-	return (
-		<p
-			className={cn(
-				"text-sm text-gray-500",
-				isFetching ? "visible" : "invisible",
-			)}
-		>
-			Updating...
-		</p>
-	);
-};
-
 export function Content() {
 	const {
 		// currentFilters,
@@ -96,7 +81,7 @@ export function Content() {
 				// TODO: endpoint should be env var
 				const result = await new GraphQLClient(
 					"http://127.0.0.1:8000/graphql",
-					{ signal },
+					{ signal }
 				).request<{
 					activities: ActivityData;
 				}>(query, queryObject);
@@ -107,7 +92,6 @@ export function Content() {
 
 	useEffect(() => {
 		if (isSuccess && data.activities) {
-			// TODO: handle when search or filters are apply, what to do with the init query data
 			setAllActivities((prevData) => [...prevData, ...data.activities]);
 		}
 	}, [isSuccess, data?.activities]);
@@ -125,19 +109,6 @@ export function Content() {
 
 			const { city, categories, region, seasons } = activity;
 			open("DetailsDialog", {
-				// keeps,
-				// handleKeep: handleOnKeep,
-				// (activity: Activity) => {
-				// 	const foundKeep = keeps.find(
-				// 		(keep) => keep.id === activity.id
-				// 	);
-
-				// 	if (foundKeep) {
-				// 		unKeep(foundKeep.id);
-				// 	} else {
-				// 		addKeep(activity);
-				// 	}
-				// },
 				headerImage: {
 					src: "https://placehold.co/300x200",
 					alt: "",
@@ -146,7 +117,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -162,7 +133,15 @@ export function Content() {
 	};
 
 	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setQueryObject((prev) => ({ ...prev, search: e.target.value }));
+		// When the search input changes:
+		// 1. Update the query object with the new search term and reset the offset to 0.
+		// 2. Clear the existing list of activities to prepare for fresh results based on the new search.
+		setQueryObject((prev) => ({
+			...prev,
+			search: e.target.value,
+			offset: 0,
+		}));
+		setAllActivities([]);
 	};
 
 	if (isError) {
@@ -182,16 +161,13 @@ export function Content() {
 			{isLoading && <LoadingSpinner />}
 			{isError && null}
 			{isSuccess && (
-				<>
-					<Updating isFetching={isFetching} />
-					<CardGrid
-						isLoading={isLoading}
-						isFetching={isFetching}
-						activities={allActivities}
-						handleClickCard={handleClickCard}
-						setQueryObject={setQueryObject}
-					/>
-				</>
+				<CardGrid
+					isLoading={isLoading}
+					isFetching={isFetching}
+					activities={allActivities}
+					handleClickCard={handleClickCard}
+					setQueryObject={setQueryObject}
+				/>
 			)}
 		</>
 	);
