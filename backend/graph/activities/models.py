@@ -1,11 +1,13 @@
 from django.db import models
 from django_mongodb_backend.fields import ObjectIdAutoField
 from django.conf import settings
+import uuid
 
 # Create your models here.
 
 class Activity(models.Model):
-    id = ObjectIdAutoField(primary_key=True)
+    # id = ObjectIdAutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  # UUID
     categories = models.JSONField(default=list, null=True)
     city = models.CharField(max_length=255)
     description = models.TextField()
