@@ -130,7 +130,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open]
+		[handleOnKeep, open],
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
