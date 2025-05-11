@@ -35,7 +35,7 @@ const searchAbleFields: Array<keyof Activity> = [
 	"city",
 	"region",
 	"seasons",
-	"category",
+	"categories",
 ];
 
 function Content() {
@@ -93,10 +93,10 @@ function Keeps({
 				searchAbleFields.some(
 					(field) =>
 						typeof keep[field] === "string" &&
-						includedKeyword(keep[field], searchKeyword),
-				),
+						includedKeyword(keep[field], searchKeyword)
+				)
 			),
-		[keeps, searchKeyword],
+		[keeps, searchKeyword]
 	);
 
 	useEffect(() => {
@@ -115,7 +115,7 @@ function Keeps({
 			handleOnKeep(activity);
 			return;
 		}
-		const { id, city, category, region, seasons } = activity;
+		const { id, city, categories, region, seasons } = activity;
 
 		focusCardIdRef.current = id;
 		open("DetailsDialog", {
@@ -124,13 +124,7 @@ function Keeps({
 				alt: "",
 			},
 			activity,
-			tags: [
-				city,
-				// TODO: perform default split with comma for API response
-				...category.split(","),
-				region,
-				...seasons.split(","),
-			],
+			tags: [city, ...categories, region, ...seasons],
 		});
 	};
 
@@ -167,7 +161,7 @@ export function PlanSidebar() {
 				"transition-all duration-300 ease-in-out",
 				sidebarOpen
 					? "w-full min-h-[25vh] md:w-1/3 xl:w-1/4"
-					: "w-full h-6 md:w-6",
+					: "w-full h-6 md:w-6"
 			)}
 		>
 			<Content />
@@ -182,12 +176,12 @@ function ToggleButton() {
 	const [icon, setIcon] = useState<JSX.Element | null>(null);
 	const openIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelRightOpen /> : <PanelTopOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	const closeIcon = useMemo(
 		() => (isTabletOrBigger ? <PanelLeftOpen /> : <PanelBottomOpen />),
-		[isTabletOrBigger],
+		[isTabletOrBigger]
 	);
 
 	useEffect(() => {

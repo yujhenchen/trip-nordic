@@ -18,7 +18,6 @@ import type {
 	Activity,
 	ActivityData,
 	FilterKeyType,
-	GQLActivity,
 	// FiltersType,
 } from "@/types/explore";
 import { useActivityKeeps } from "@/hooks/use-activity-keeps";
@@ -42,10 +41,10 @@ const query = gql`
 		activities(offset: $offset, first: $first) {
 			activities {
 				id
-				category
+				categories
 				city
-				descriptionen
-				nameen
+				description
+				name
 				region
 				seasons
 			}
@@ -68,9 +67,9 @@ export function Content() {
 	const [queryObject, setQueryObject] = useState<{
 		offset: number;
 		first: number;
-	}>({ offset: 0, first: 10 });
+	}>({ offset: 0, first: 30 });
 
-	const [allActivities, setAllActivities] = useState<Array<GQLActivity>>([]);
+	const [allActivities, setAllActivities] = useState<Array<Activity>>([]);
 
 	const { data, isFetching, isLoading, isError, isSuccess } =
 		useQuery<ActivityData>({
@@ -108,7 +107,7 @@ export function Content() {
 				return;
 			}
 
-			const { city, category, region, seasons } = activity;
+			const { city, categories, region, seasons } = activity;
 			open("DetailsDialog", {
 				// keeps,
 				// handleKeep: handleOnKeep,
@@ -128,16 +127,10 @@ export function Content() {
 					alt: "",
 				},
 				activity,
-				tags: [
-					city,
-					// TODO: perform default split with comma for API response
-					...category.split(","),
-					region,
-					...seasons.split(","),
-				],
+				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -156,21 +149,6 @@ export function Content() {
 		toast.error("Something went wrong! Please try again later.");
 	}
 
-	// TODO: filter by selected filters
-	const cardActivities = useMemo(
-		() =>
-			allActivities.map((activity) => ({
-				id: activity.id,
-				category: activity.category,
-				city: activity.city,
-				description: activity.descriptionen,
-				name: activity.nameen,
-				region: activity.region,
-				seasons: activity.seasons,
-			})) ?? [],
-		[allActivities],
-	);
-
 	return (
 		<>
 			<FilterPanel
@@ -185,7 +163,7 @@ export function Content() {
 				<CardGrid
 					isLoading={isLoading}
 					isFetching={isFetching}
-					activities={cardActivities}
+					activities={allActivities}
 					handleClickCard={handleClickCard}
 					setQueryObject={setQueryObject}
 				/>
