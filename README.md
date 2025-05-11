@@ -104,11 +104,12 @@ CORS with HTTPOnly Cookie
     - [x] select/ unselect filters
     - [x] reset a row of filters
     - [x] reset all filters
-- [x] activity card grid
+- [ ] activity card grid
     - [x] card
         - [x] image, title, description
         - [x] click to open card detail dialog
     - [x] display cards based on filters 
+	- [ ] stop fetch data when reach to total count
 - [ ] card detail dialog
 	- [x] style should be correct
 	- [ ] map of the place
@@ -217,6 +218,7 @@ CORS with HTTPOnly Cookie
 - [x] No need to press Save on control to actual save it, 
 	if it is a new trip, when click on any Sve for the first time, it auto create a new Trip ID and data into trip list
 - [ ] allow to export the trip plan to PDF
+- [ ] use Redis to improve server side data caching, eg, for filters in explore page
 
 
 ## Examples
@@ -224,10 +226,19 @@ CORS with HTTPOnly Cookie
 ### query
 ```
 {
-  activities (offset: 0, first: 50){
-    activities {
-      id
-      nameen
+  activities(
+    filters: {
+      cities: ["Rovaniemi"]
+      regions: ["lapland"]
+    }
+    first: 20
+  ){
+     activities {
+      name
+      categories
+      seasons
+      city
+      region
     }
     totalCount
   }
