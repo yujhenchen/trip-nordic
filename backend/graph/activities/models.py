@@ -4,18 +4,12 @@ from django.conf import settings
 
 # Create your models here.
 
-# import uuid
-
 class Activity(models.Model):
-    id = ObjectIdAutoField(primary_key=True)  # MongoDB ObjectId
-    # id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)  # Unique identifier
-    # idinternal = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)  # Internal identifier
-    # accessible = models.BooleanField(default=False)  # Boolean instead of string "false"
+    id = ObjectIdAutoField(primary_key=True)
     categories = models.JSONField(default=list, null=True)
     city = models.CharField(max_length=255)
-    description = models.TextField()  # English description
-    # languages = models.CharField(max_length=255)  # Comma-separated list of languages
-    name = models.CharField(max_length=255, blank=False, null=False)  # English name
+    description = models.TextField()
+    name = models.CharField(max_length=255, blank=False, null=False)
     region = models.CharField(max_length=255)
     seasons = models.JSONField(default=list)
 

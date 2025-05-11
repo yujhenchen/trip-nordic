@@ -8,21 +8,18 @@ class ActivityType(DjangoObjectType):
     class Meta:
         model = Activity
         interfaces = (graphene.relay.Node, )
-    
-    activities = graphene.List(lambda: ActivityType)
-    
+        
     def resolve_activities(self, info):
-        return self.activities.all()
+        return Activity.objects.all()
+
     
 class FiFiltersType(DjangoObjectType):
 	class Meta:
 		model = FiFilters
 		interfaces = (graphene.relay.Node, )
   
-	filters = graphene.List(lambda: FiFiltersType)
-  
 	def resolve_filters(self, info):
-		return self.filters.all()
+		return FiFilters.objects.all()
   
 
 class ActivitiesEdge(graphene.ObjectType):
@@ -41,6 +38,7 @@ class PageInfo(graphene.ObjectType):
     startCursor = graphene.String()
     endCursor = graphene.String()
     hasNextPage = graphene.Boolean()
+
     
 class ActivityFilterInput(graphene.InputObjectType):
     ids = graphene.List(graphene.ID)
@@ -49,11 +47,12 @@ class ActivityFilterInput(graphene.InputObjectType):
     regions = graphene.List(graphene.String)
     seasons = graphene.List(graphene.String)
 
+
 def apply_filter(qs: QuerySet[Activity], field_name: str, values: list[str]):
     if values:
         filter_q = Q()
         for value in values:
-            filter_q &= Q(**{f"{field_name}__contains": value})
+            filter_q &= Q(**{f"{field_name}__icontains": value})
         qs = qs.filter(filter_q)
     return qs
         
