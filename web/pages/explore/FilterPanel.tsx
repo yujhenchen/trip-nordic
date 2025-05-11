@@ -51,40 +51,6 @@ export function FilterPanel({
 		<div className={className}>
 			{title ? <FilterTitle>{title}</FilterTitle> : null}
 			<FilterContent>
-				{/* {Object.entries(filters).map(([key, options]) => {
-					const filterKey = key as FilterKeyType;
-					return (
-						<div key={key} className="flex items-center space-x-3">
-							<FilterRowTitle className="flex-shrink-0 w-24">
-								{FilterKeyTitle[filterKey]}
-							</FilterRowTitle>
-							<HorizontalScrollArea>
-								{options.map((option) => (
-									<FilterChip
-										key={option}
-										selected={Boolean(
-											currentFilters[filterKey]?.includes(
-												option
-											)
-										)}
-										value={option}
-										selectedIcon={chipIcon}
-										onClick={() =>
-											toggleOption(filterKey, option)
-										}
-									/>
-								))}
-							</HorizontalScrollArea>
-							<Button
-								variant="default"
-								onClick={() => onReset(filterKey)}
-								className="rounded-full"
-							>
-								Reset
-							</Button>
-						</div>
-					);
-				})} */}
 				{filters.map((filter) => {
 					const options: Array<string> = JSON.parse(filter.items);
 					return (
