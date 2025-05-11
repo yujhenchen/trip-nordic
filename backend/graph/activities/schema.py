@@ -82,14 +82,15 @@ class Query(graphene.ObjectType):
         # qs = qs.order_by('id')
 
         if filters:
-            if filters.ids:
-                qs = qs.filter(id__in=filters.ids)
-            
             if filters.cities:
                 qs = apply_filter(qs, 'city', filters.cities)
             
             if filters.regions:
                 qs = apply_filter(qs, 'region', filters.regions)
+            
+            # TODO: fix filter array on array data fields    
+            # if filters.ids:
+            #     qs = qs.filter(id__in=filters.ids)
                 
             # if filters.categories:
             #     qs = qs.filter(categories__in=filters.categories)
@@ -99,7 +100,6 @@ class Query(graphene.ObjectType):
 
         if search:
             qs = qs.filter(
-                Q(url__icontains=search) |
                 Q(description__icontains=search)
             )
 
