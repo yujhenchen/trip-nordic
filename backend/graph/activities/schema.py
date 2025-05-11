@@ -9,8 +9,14 @@ class ActivityType(DjangoObjectType):
         model = Activity
         interfaces = (graphene.relay.Node, )
         
-    def resolve_activities(self, info):
-        return Activity.objects.all()
+    seasons = graphene.List(graphene.String)
+    categories = graphene.List(graphene.String)
+        
+    def resolve_seasons(self, info):
+        return self.seasons if isinstance(self.seasons, list) else []
+    
+    def resolve_categories(self, info):
+        return self.categories if isinstance(self.categories, list) else []	
 
     
 class FiFiltersType(DjangoObjectType):
@@ -68,8 +74,8 @@ class Query(graphene.ObjectType):
     
     filters = graphene.List(FiFiltersType)
     
-    def resolve_all_activities(self, info):
-        return Activity.objects.all()
+    # def resolve_all_activities(self, info):
+    #     return Activity.objects.all()
 
     def resolve_activities(self, info, filters=None, search=None, first=None, offset=None):
         qs = Activity.objects.all()
@@ -79,17 +85,17 @@ class Query(graphene.ObjectType):
             if filters.ids:
                 qs = qs.filter(id__in=filters.ids)
             
-            if filters.categories:
-                qs = apply_filter(qs, 'category', filters.categories)
-            
             if filters.cities:
                 qs = apply_filter(qs, 'city', filters.cities)
             
             if filters.regions:
                 qs = apply_filter(qs, 'region', filters.regions)
-            
-            if filters.seasons:
-                qs = apply_filter(qs, 'seasons', filters.seasons)
+                
+            # if filters.categories:
+            #     qs = qs.filter(categories__in=filters.categories)
+                
+            # if filters.seasons:
+            #     qs = qs.filter(seasons__in=filters.seasons)
 
         if search:
             qs = qs.filter(
