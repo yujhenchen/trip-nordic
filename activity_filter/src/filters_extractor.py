@@ -3,6 +3,9 @@ category_key = "categories"
 region_key = "region"
 seasons_key = "seasons"
 
+mapped_key_city = "cities"
+mapped_key_region = "regions"
+
 def extract_fi_filters(activities):
     cities = set()
     categories = set()
@@ -22,8 +25,8 @@ def extract_fi_filters(activities):
             regions.add(activity[region_key])
 
     return {
-        city_key: list(cities),
+        mapped_key_city: list(cities),
         category_key: list(categories),
-        region_key: list(regions),
+        mapped_key_region: list(regions),
         seasons_key: seasons,
     }
