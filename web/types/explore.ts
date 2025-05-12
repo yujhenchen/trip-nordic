@@ -1,8 +1,8 @@
 export const FilterKeyTitle = {
-	city: "Cities",
+	cities: "Cities",
 	categories: "Categories",
-	country: "Countries",
-	region: "Region",
+	// country: "Countries",
+	regions: "Region",
 	seasons: "Seasons",
 } as const;
 
@@ -54,6 +54,7 @@ export interface GQLFilterResponse {
 
 export interface ActivityQueryParams {
 	search: string;
+	filters: FiltersType;
 	first: number;
 	offset: number;
 }

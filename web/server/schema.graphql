@@ -1,0 +1,6 @@
+input ActivityFilterInput {
+	cities: [String]
+	regions: [String]
+	categories: [String]
+	seasons: [String]
+}

@@ -20,9 +20,9 @@ import type {
 	FilterKeyType,
 } from "@/types/explore";
 import { useActivityKeeps } from "@/hooks/use-activity-keeps";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { IDS } from "@/utils/ids";
 import { CardGrid } from "./cardGrid";
+import { SkeletonCard } from "@/components/common/skeletonCard";
 
 // const isFilterMatch = (
 // 	filters: FiltersType,
@@ -36,8 +36,18 @@ import { CardGrid } from "./cardGrid";
 // };
 
 const query = gql`
-	query GetActivities($search: String, $offset: Int, $first: Int!) {
-		activities(search: $search, offset: $offset, first: $first) {
+	query GetActivities(
+		$search: String
+		$offset: Int
+		$first: Int!
+		$filters: ActivityFilterInput
+	) {
+		activities(
+			search: $search
+			offset: $offset
+			first: $first
+			filters: $filters
+		) {
 			activities {
 				id
 				categories
@@ -54,6 +64,7 @@ const query = gql`
 
 const initQueryObject: ActivityQueryParams = {
 	search: "",
+	filters: {},
 	offset: 0,
 	first: 30,
 };
@@ -124,7 +135,23 @@ export function Content() {
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
+		setAllActivities([]);
 		toggleFilterOption(filterKey, option);
+		setQueryObject((prev) => {
+			const newFilters = structuredClone(prev.filters);
+			const options = newFilters[filterKey];
+			if (options) {
+				newFilters[filterKey] = options.includes(option)
+					? options.filter((o) => o !== option)
+					: [...options, option];
+			} else {
+				newFilters[filterKey] = [option];
+			}
+			return {
+				...prev,
+				filters: newFilters,
+			};
+		});
 	};
 
 	const handleReset = (filterKey: FilterKeyType) => {
@@ -161,7 +188,7 @@ export function Content() {
 				searchKeyword={queryObject.search}
 				handleSearchChange={handleSearchChange}
 			/>
-			{isLoading && <LoadingSpinner />}
+			{isLoading && <SkeletonCard />}
 			{isError && null}
 			{isSuccess && (
 				<CardGrid
