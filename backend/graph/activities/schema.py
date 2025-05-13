@@ -20,12 +20,14 @@ class ActivityType(DjangoObjectType):
 
     
 class FiFiltersType(DjangoObjectType):
-	class Meta:
-		model = FiFilters
-		interfaces = (graphene.relay.Node, )
-  
-	def resolve_filters(self, info):
-		return FiFilters.objects.all()
+    class Meta:
+        model = FiFilters
+        interfaces = (graphene.relay.Node, )
+
+    items = graphene.List(graphene.String)
+
+    def resolve_items(self, info):
+        return self.items if isinstance(self.items, list) else []
   
 
 class ActivitiesEdge(graphene.ObjectType):
