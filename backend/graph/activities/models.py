@@ -14,6 +14,9 @@ class Activity(models.Model):
     name = models.CharField(max_length=255, blank=False, null=False)
     region = models.CharField(max_length=255)
     seasons = models.JSONField(default=list)
+    # str fields for filtering use
+    categoriesstr = models.CharField(max_length=255, null=True)
+    seasonsstr = models.CharField(max_length=255, null=True)
 
     def __str__(self):
         return self.name

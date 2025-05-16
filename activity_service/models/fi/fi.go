@@ -44,13 +44,15 @@ type Result struct {
 }
 
 type MappedResult struct {
-	ID          string   `json:"id"`
-	Name        string   `json:"name"`
-	Description string   `json:"description,omitempty"`
-	Region      string   `json:"region"`
-	City        string   `json:"city"`
-	Categories  []string `json:"categories,omitempty"`
-	Seasons     []string `json:"seasons,omitempty"`
+	ID            string   `json:"id"`
+	Name          string   `json:"name"`
+	Description   string   `json:"description,omitempty"`
+	Region        string   `json:"region"`
+	City          string   `json:"city"`
+	Categories    []string `json:"categories,omitempty"`
+	Seasons       []string `json:"seasons,omitempty"`
+	CategoriesStr string   `json:"categories_str,omitempty"`
+	SeasonsStr    string   `json:"seasons_str,omitempty"`
 }
 
 type Response struct {
