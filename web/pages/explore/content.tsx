@@ -1,4 +1,3 @@
-import { useFilters } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
 import {
@@ -58,11 +57,6 @@ const initQueryObject: ActivityQueryParams = {
 };
 
 export function Content() {
-	const {
-		toggleFilterOption,
-		resetFilterSelectedOptions,
-		resetAllFilterSelected,
-	} = useFilters();
 	const { open } = useDialog();
 
 	const { handleOnKeep } = useActivityKeeps();
@@ -79,7 +73,7 @@ export function Content() {
 				// TODO: endpoint should be env var
 				const result = await new GraphQLClient(
 					"http://127.0.0.1:8000/graphql",
-					{ signal },
+					{ signal }
 				).request<{
 					activities: ActivityData;
 				}>(query, queryObject);
@@ -115,12 +109,11 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
 		setAllActivities([]);
-		toggleFilterOption(filterKey, option);
 		setQueryObject((prev) => {
 			const newFilters = structuredClone(prev.filters);
 			const options = newFilters[filterKey];
@@ -140,11 +133,25 @@ export function Content() {
 	};
 
 	const handleReset = (filterKey: FilterKeyType) => {
-		resetFilterSelectedOptions(filterKey);
+		setAllActivities([]);
+		setQueryObject((prev) => {
+			const newFilters = structuredClone(prev.filters);
+			newFilters[filterKey] = [];
+			return {
+				...prev,
+				filters: newFilters,
+				offset: 0,
+			};
+		});
 	};
 
 	const handleResetAll = () => {
-		resetAllFilterSelected();
+		setAllActivities([]);
+		setQueryObject((prev) => ({
+			...prev,
+			filters: {},
+			offset: 0,
+		}));
 	};
 
 	const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
