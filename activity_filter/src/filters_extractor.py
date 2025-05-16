@@ -15,14 +15,20 @@ def extract_fi_filters(activities):
     seasons = ["spring", "summer", "autumn", "winter"]
 
     for activity in activities:
-        if activity.get(city_key) is not None:  # Use get() to safely access the dictionary key
-            cities.add(activity[city_key])
+        activity_city = activity.get(city_key)
+        activity_categories = activity.get(category_key)
+        activity_region = activity.get(region_key)
+        
+        if activity_city is not None and activity_city != "":
+            activity_city = activity_city.title().replace(" ", "")
+            cities.add(activity_city)
 
-        if activity.get(category_key) is not None:
-           categories.update(activity[category_key])
+        if activity_categories is not None:
+           categories.update(activity_categories)
 
-        if activity.get(region_key) is not None:
-            regions.add(activity[region_key])
+        if activity_region is not None and activity_region != "":
+            activity_region = activity_region.title().replace(" ", "")
+            regions.add(activity_region)
 
     return {
         mapped_key_city: list(cities),
