@@ -22,6 +22,8 @@ import { IDS } from "@/utils/ids";
 import { CardGrid } from "./cardGrid";
 import { SkeletonCard } from "@/components/common/skeletonCard";
 
+const SKELETON_CARD_COUNT = 3;
+
 const query = gql`
 	query GetActivities(
 		$search: String
@@ -180,7 +182,14 @@ export function Content() {
 				searchKeyword={queryObject.search}
 				handleSearchChange={handleSearchChange}
 			/>
-			{isLoading && <SkeletonCard />}
+
+			{isLoading && (
+				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+					{Array.from({ length: SKELETON_CARD_COUNT }).map(() => (
+						<SkeletonCard key={crypto.randomUUID()} />
+					))}
+				</div>
+			)}
 			{isError && null}
 			{isSuccess && (
 				<CardGrid
