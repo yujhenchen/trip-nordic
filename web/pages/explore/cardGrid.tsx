@@ -46,7 +46,7 @@ export function CardGrid({
 							offset: prev.offset + prev.first,
 						}));
 					}
-				},
+				}
 				// {
 				// 	threshold: 1.0,
 				// },
@@ -55,70 +55,43 @@ export function CardGrid({
 				observer.current.observe(node);
 			}
 		},
-		[isLoading, setQueryObject],
+		[isLoading, setQueryObject]
 	);
 
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-			{activities
-				// .filter((activity) => {
-				// 	const isCategoryMatch = isFilterMatch(
-				// 		currentFilters,
-				// 		"category",
-				// 		activity.category.split(",")
-				// 	);
-
-				// 	const isCityMatch = isFilterMatch(
-				// 		currentFilters,
-				// 		"city",
-				// 		activity.city.split(",")
-				// 	);
-
-				// 	const isRegionMatch = isFilterMatch(
-				// 		currentFilters,
-				// 		"region",
-				// 		activity.region.split(",")
-				// 	);
-
-				// 	const isSeasonMatch = isFilterMatch(
-				// 		currentFilters,
-				// 		"seasons",
-				// 		activity.seasons.split(",")
-				// 	);
-
-				// 	return (
-				// 		isCategoryMatch &&
-				// 		isCityMatch &&
-				// 		isRegionMatch &&
-				// 		isSeasonMatch
-				// 	);
-				// })
-				.map((activity, index) => (
-					<Card
-						ref={index === activities.length - 1 ? lastElementRef : null}
-						key={activity.id}
-						id={activity.id}
-						onClick={(event) => handleClickCard(event)(activity)}
-					>
-						<CardHeader>
-							<Bookmark
-								id={IDS.KEEP_ICON}
-								className="self-end"
-								onClick={(event) => handleClickCard(event)(activity)}
-								fill={
-									keeps.find((keep) => keep.id === activity.id)
-										? "currentColor"
-										: "none"
-								}
-							/>
-							<img src="https://placehold.co/150x100" alt="Card" />
-							<CardTitle className="line-clamp-2">{activity.name}</CardTitle>
-							<CardDescription className="line-clamp-3">
-								{activity.description}
-							</CardDescription>
-						</CardHeader>
-					</Card>
-				))}
+			{activities.map((activity, index) => (
+				<Card
+					ref={
+						index === activities.length - 1 ? lastElementRef : null
+					}
+					key={activity.id}
+					id={activity.id}
+					onClick={(event) => handleClickCard(event)(activity)}
+				>
+					<CardHeader>
+						<Bookmark
+							id={IDS.KEEP_ICON}
+							className="self-end"
+							onClick={(event) =>
+								handleClickCard(event)(activity)
+							}
+							fill={
+								keeps.find((keep) => keep.id === activity.id)
+									? "currentColor"
+									: "none"
+							}
+						/>
+						<img src="https://placehold.co/150x100" alt="Card" />
+						<CardTitle className="line-clamp-2">
+							{activity.name}
+						</CardTitle>
+						<CardDescription className="line-clamp-3">
+							{activity.description}
+						</CardDescription>
+					</CardHeader>
+				</Card>
+			))}
 			{isFetching && <SkeletonCard />}
 		</div>
 	);

@@ -11,19 +11,19 @@ import {
 	type GQLFilterResponse,
 	type FilterKeyType,
 	FilterKeyTitle,
+	FiltersType,
 } from "@/types/explore";
 import { useData } from "vike-react/useData";
-import { useFilters } from "./FilterProvider";
 import type { ChangeEvent } from "react";
 
 export interface Props {
-	// chipIcon: React.ReactNode;
-	toggleOption: (filterKey: FilterKeyType, option: string) => void;
-	onReset: (filterKey: FilterKeyType) => void;
-	onResetAll: () => void;
+	selectedFilters: FiltersType;
 	title?: string;
 	className?: string;
 	searchKeyword?: string;
+	toggleOption: (filterKey: FilterKeyType, option: string) => void;
+	onReset: (filterKey: FilterKeyType) => void;
+	onResetAll: () => void;
 	handleSearchChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -33,16 +33,15 @@ export interface FilterPanelRow {
 }
 
 export function FilterPanel({
+	selectedFilters,
 	title,
-	// chipIcon,
 	className,
+	searchKeyword,
 	toggleOption,
 	onReset,
 	onResetAll,
-	searchKeyword,
 	handleSearchChange,
 }: Props) {
-	const { selectedFilters } = useFilters();
 	const filters = useData<GQLFilterResponse["filters"]>();
 
 	return (
@@ -50,23 +49,28 @@ export function FilterPanel({
 			{title ? <FilterTitle>{title}</FilterTitle> : null}
 			<FilterContent>
 				{filters.map((filter) => {
-					const options: Array<string> = JSON.parse(filter.items);
 					const filterKey = filter.name;
 					return (
-						<div key={filterKey} className="flex items-center space-x-3">
+						<div
+							key={filterKey}
+							className="flex items-center space-x-3"
+						>
 							<FilterRowTitle className="flex-shrink-0 w-24">
 								{FilterKeyTitle[filterKey]}
 							</FilterRowTitle>
 							<HorizontalScrollArea>
-								{options.map((option) => (
+								{filter.items.map((option) => (
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											selectedFilters[filterKey]?.includes(option),
+											selectedFilters[
+												filterKey
+											]?.includes(option)
 										)}
 										value={option}
-										// selectedIcon={chipIcon}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
 							</HorizontalScrollArea>

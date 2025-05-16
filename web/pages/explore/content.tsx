@@ -1,4 +1,3 @@
-// import { X } from "lucide-react";
 import { useFilters } from "./FilterProvider";
 import { useDialog } from "@/components/providers/DialogProvider";
 import { FilterPanel } from "./FilterPanel";
@@ -23,17 +22,6 @@ import { useActivityKeeps } from "@/hooks/use-activity-keeps";
 import { IDS } from "@/utils/ids";
 import { CardGrid } from "./cardGrid";
 import { SkeletonCard } from "@/components/common/skeletonCard";
-
-// const isFilterMatch = (
-// 	filters: FiltersType,
-// 	filterKey: FilterKeyType,
-// 	activityTags: Array<string>
-// ) => {
-// 	const selectedFilters = filters[filterKey] ?? [];
-// 	return selectedFilters.length > 0
-// 		? anySourceElementInTarget(activityTags, selectedFilters)
-// 		: true;
-// };
 
 const query = gql`
 	query GetActivities(
@@ -71,7 +59,6 @@ const initQueryObject: ActivityQueryParams = {
 
 export function Content() {
 	const {
-		// currentFilters,
 		toggleFilterOption,
 		resetFilterSelectedOptions,
 		resetAllFilterSelected,
@@ -84,9 +71,6 @@ export function Content() {
 		useState<ActivityQueryParams>(initQueryObject);
 
 	const [allActivities, setAllActivities] = useState<Array<Activity>>([]);
-
-	// TODO: need to consider allActivities is set to empty array when updating search keyword
-	// const deferredActivities = useDeferredValue(allActivities);
 
 	const { data, isFetching, isLoading, isError, isSuccess } =
 		useQuery<ActivityData>({
@@ -182,7 +166,7 @@ export function Content() {
 	return (
 		<>
 			<FilterPanel
-				// chipIcon={<X size={16} />}
+				selectedFilters={queryObject.filters}
 				toggleOption={handleToggleOption}
 				onReset={handleReset}
 				onResetAll={handleResetAll}
