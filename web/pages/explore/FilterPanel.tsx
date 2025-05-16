@@ -11,7 +11,7 @@ import {
 	type GQLFilterResponse,
 	type FilterKeyType,
 	FilterKeyTitle,
-	FiltersType,
+	type FiltersType,
 } from "@/types/explore";
 import { useData } from "vike-react/useData";
 import type { ChangeEvent } from "react";
@@ -51,10 +51,7 @@ export function FilterPanel({
 				{filters.map((filter) => {
 					const filterKey = filter.name;
 					return (
-						<div
-							key={filterKey}
-							className="flex items-center space-x-3"
-						>
+						<div key={filterKey} className="flex items-center space-x-3">
 							<FilterRowTitle className="flex-shrink-0 w-24">
 								{FilterKeyTitle[filterKey]}
 							</FilterRowTitle>
@@ -63,14 +60,10 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											selectedFilters[
-												filterKey
-											]?.includes(option)
+											selectedFilters[filterKey]?.includes(option),
 										)}
 										value={option}
-										onClick={() =>
-											toggleOption(filterKey, option)
-										}
+										onClick={() => toggleOption(filterKey, option)}
 									/>
 								))}
 							</HorizontalScrollArea>
