@@ -45,7 +45,7 @@ export interface ActivityData {
 
 export interface GQLFilterData {
 	name: FilterKeyType;
-	items: string;
+	items: Array<string>;
 }
 
 export interface GQLFilterResponse {
