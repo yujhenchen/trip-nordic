@@ -55,14 +55,16 @@ class ActivityFilterInput(graphene.InputObjectType):
     regions = graphene.List(graphene.String)
     seasons = graphene.List(graphene.String)
 
-
 def apply_filter(qs: QuerySet[Activity], field_name: str, values: list[str]):
-    if values:
-        filter_q = Q()
-        for value in values:
-            filter_q |= Q(**{f"{field_name}__icontains": value})
-        qs = qs.filter(filter_q)
-    return qs
+    try:
+        if values:
+            filter_q = Q()
+            for value in values:
+                filter_q |= Q(**{f"{field_name}__icontains": value})
+            qs = qs.filter(filter_q)
+        return qs
+    except Exception as e:
+        print(e)
         
 
 class Query(graphene.ObjectType):
@@ -76,9 +78,6 @@ class Query(graphene.ObjectType):
     
     filters = graphene.List(FiFiltersType)
     
-    # def resolve_all_activities(self, info):
-    #     return Activity.objects.all()
-
     def resolve_activities(self, info, filters=None, search=None, first=None, offset=None):
         qs = Activity.objects.all()
         # qs = qs.order_by('id')
@@ -90,15 +89,11 @@ class Query(graphene.ObjectType):
             if filters.regions:
                 qs = apply_filter(qs, 'region', filters.regions)
             
-            # TODO: fix filter array on array data fields    
-            # if filters.ids:
-            #     qs = qs.filter(id__in=filters.ids)
+            if filters.categories:
+                qs = apply_filter(qs, 'categoriesstr', filters.categories)
                 
-            # if filters.categories:
-            #     qs = qs.filter(categories__in=filters.categories)
-                
-            # if filters.seasons:
-            #     qs = qs.filter(seasons__in=filters.seasons)
+            if filters.seasons:
+                qs = apply_filter(qs, 'seasonsstr', filters.seasons)
 
         if search:
             qs = qs.filter(
