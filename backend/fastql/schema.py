@@ -20,7 +20,8 @@ class Query:
         cities: typing.Optional[typing.List[str]] = None,
         regions : typing.Optional[typing.List[str]] = None,
 		categories: typing.Optional[typing.List[str]] = None,
-		seasons: typing.Optional[typing.List[str]] = None
+		seasons: typing.Optional[typing.List[str]] = None,
+		keyword: typing.Optional[str] = None
   ) -> PaginationWindow[FiActivity]:        
         filters = {}
         
@@ -34,6 +35,12 @@ class Query:
             filters["categories"] = {"$in": categories}
         if seasons:
             filters["seasons"] = {"$in": seasons}
+            
+        if keyword:
+            filters["$or"] = [
+                {"name": {"$regex": keyword, "$options": "i"}},
+                {"description": {"$regex": keyword, "$options": "i"}}
+            ]
             
         documents = db_client.find(
             collection_name=fi_collection_name,
