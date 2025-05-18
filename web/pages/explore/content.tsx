@@ -16,6 +16,7 @@ import type {
 	GQLFiActivityResponse,
 	ActivityQueryParams,
 	FilterKeyType,
+	FiActivities,
 } from "@/types/explore";
 import { useActivityKeeps } from "@/hooks/use-activity-keeps";
 import { IDS } from "@/utils/ids";
@@ -67,6 +68,11 @@ const initQueryObject: ActivityQueryParams = {
 	orderBy: "",
 };
 
+const initActivityData: FiActivities = {
+	items: [],
+	totalItemsCount: 0,
+};
+
 export function Content() {
 	const { open } = useDialog();
 
@@ -75,7 +81,8 @@ export function Content() {
 	const [queryObject, setQueryObject] =
 		useState<ActivityQueryParams>(initQueryObject);
 
-	const [allActivities, setAllActivities] = useState<Array<Activity>>([]);
+	const [allActivityData, setAllActivityData] =
+		useState<FiActivities>(initActivityData);
 
 	const { keyword, limit, offset, orderBy, filters } = queryObject;
 	const variables = {
@@ -102,10 +109,10 @@ export function Content() {
 
 	useEffect(() => {
 		if (isSuccess && data.fiActivities) {
-			setAllActivities((prevData) => [
-				...prevData,
-				...data.fiActivities.items,
-			]);
+			setAllActivityData((prev) => ({
+				items: [...prev.items, ...data.fiActivities.items],
+				totalItemsCount: data.fiActivities.totalItemsCount,
+			}));
 		}
 	}, [isSuccess, data?.fiActivities]);
 
@@ -134,7 +141,10 @@ export function Content() {
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
-		setAllActivities([]);
+		setAllActivityData((prev) => ({
+			...prev,
+			items: [],
+		}));
 		setQueryObject((prev) => {
 			const newFilters = structuredClone(prev.filters);
 			const options = newFilters[filterKey];
@@ -154,7 +164,10 @@ export function Content() {
 	};
 
 	const handleReset = (filterKey: FilterKeyType) => {
-		setAllActivities([]);
+		setAllActivityData((prev) => ({
+			...prev,
+			items: [],
+		}));
 		setQueryObject((prev) => {
 			const newFilters = structuredClone(prev.filters);
 			newFilters[filterKey] = [];
@@ -167,7 +180,10 @@ export function Content() {
 	};
 
 	const handleResetAll = () => {
-		setAllActivities([]);
+		setAllActivityData((prev) => ({
+			...prev,
+			items: [],
+		}));
 		setQueryObject((prev) => ({
 			...prev,
 			filters: {},
@@ -184,7 +200,10 @@ export function Content() {
 			keyword: e.target.value,
 			offset: 0,
 		}));
-		setAllActivities([]);
+		setAllActivityData((prev) => ({
+			...prev,
+			items: [],
+		}));
 	};
 
 	if (isError) {
@@ -214,7 +233,8 @@ export function Content() {
 				<CardGrid
 					isLoading={isLoading}
 					isFetching={isFetching}
-					activities={allActivities}
+					activities={allActivityData.items}
+					totalCount={allActivityData.totalItemsCount}
 					handleClickCard={handleClickCard}
 					setQueryObject={setQueryObject}
 				/>
