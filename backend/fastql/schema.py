@@ -1,25 +1,11 @@
 import typing
 import strawberry
-import uuid
+
+from .types import Activity, FiFilters
 
 from .db import db_client
 from .config import fi_collection_name, fi_filters_collection_name
 
-@strawberry.type
-class Activity:
-    id: uuid.UUID
-    categories: typing.Optional[typing.List[str]]
-    city: str
-    description: str
-    name: str
-    region: str
-    seasons: typing.List[str]
-    
-@strawberry.type
-class FiFilters:
-	name: str
-	items: typing.List[str]
-    
 @strawberry.type
 class Query:
     @strawberry.field
