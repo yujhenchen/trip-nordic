@@ -10,14 +10,13 @@ import { HorizontalScrollArea } from "@/components/common/horizontalScrollArea";
 import {
 	type GQLFilterResponse,
 	type FilterKeyType,
-	FilterKeyTitle,
-	type FiltersType,
+	ActivityFilters,
 } from "@/types/explore";
 import { useData } from "vike-react/useData";
 import type { ChangeEvent } from "react";
 
 export interface Props {
-	selectedFilters: FiltersType;
+	selectedFilters: ActivityFilters;
 	title?: string;
 	className?: string;
 	searchKeyword?: string;
@@ -42,7 +41,7 @@ export function FilterPanel({
 	onResetAll,
 	handleSearchChange,
 }: Props) {
-	const filters = useData<GQLFilterResponse["filters"]>();
+	const filters = useData<GQLFilterResponse["fiActivityFilters"]>();
 
 	return (
 		<div className={className}>
@@ -51,19 +50,26 @@ export function FilterPanel({
 				{filters.map((filter) => {
 					const filterKey = filter.name;
 					return (
-						<div key={filterKey} className="flex items-center space-x-3">
+						<div
+							key={filterKey}
+							className="flex items-center space-x-3"
+						>
 							<FilterRowTitle className="flex-shrink-0 w-24">
-								{FilterKeyTitle[filterKey]}
+								{filterKey}
 							</FilterRowTitle>
 							<HorizontalScrollArea>
 								{filter.items.map((option) => (
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											selectedFilters[filterKey]?.includes(option),
+											selectedFilters[
+												filterKey
+											]?.includes(option)
 										)}
 										value={option}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
 							</HorizontalScrollArea>

@@ -1,15 +1,3 @@
-export const FilterKeyTitle = {
-	cities: "Cities",
-	categories: "Categories",
-	// country: "Countries",
-	regions: "Region",
-	seasons: "Seasons",
-} as const;
-
-export type FilterKeyType = keyof typeof FilterKeyTitle;
-
-export type FiltersType = Partial<Record<FilterKeyType, Array<string>>>;
-
 export interface Activity {
 	id: string;
 	categories: Array<string>;
@@ -24,23 +12,13 @@ export interface Activity {
 	};
 }
 
-export interface ActivityEdge {
-	node: Activity;
-	cursor: string;
+export interface FiActivities {
+	totalItemsCount: number;
+	items: Array<Activity>;
 }
 
-export interface PageInfo {
-	hasNextPage: boolean;
-	hasPreviousPage: boolean;
-	startCursor?: string | null;
-	endCursor?: string | null;
-}
-
-export interface ActivityData {
-	totalCount: number;
-	edges: Array<ActivityEdge>;
-	activities: Array<Activity>;
-	pageInfo: PageInfo;
+export interface GQLFiActivityResponse {
+	fiActivities: FiActivities;
 }
 
 export interface GQLFilterData {
@@ -49,12 +27,22 @@ export interface GQLFilterData {
 }
 
 export interface GQLFilterResponse {
-	filters: Array<GQLFilterData>;
+	fiActivityFilters: Array<GQLFilterData>;
+}
+
+export interface ActivityFilters {
+	cities?: Array<string>;
+	regions?: Array<string>;
+	categories?: Array<string>;
+	seasons?: Array<string>;
 }
 
 export interface ActivityQueryParams {
 	search: string;
-	filters: FiltersType;
-	first: number;
+	filters: ActivityFilters;
+	limit: number;
 	offset: number;
+	orderBy: string;
 }
+
+export type FilterKeyType = keyof ActivityFilters;

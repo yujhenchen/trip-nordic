@@ -13,7 +13,7 @@ import { gql, GraphQLClient } from "graphql-request";
 import { toast } from "sonner";
 import type {
 	Activity,
-	ActivityData,
+	GQLFiActivityResponse,
 	ActivityQueryParams,
 	FilterKeyType,
 } from "@/types/explore";
@@ -25,28 +25,34 @@ import { SkeletonCard } from "@/components/common/skeletonCard";
 const SKELETON_CARD_COUNT = 3;
 
 const query = gql`
-	query GetActivities(
-		$search: String
+	query GetFiActivities(
+		$cities: [String!]
+		$regions: [String!]
+		$categories: [String!]
+		$seasons: [String!]
+		$limit: Int!
 		$offset: Int
-		$first: Int!
-		$filters: ActivityFilterInput
+		$orderBy: String
 	) {
-		activities(
-			search: $search
+		fiActivities(
+			cities: $cities
+			regions: $regions
+			categories: $categories
+			seasons: $seasons
+			limit: $limit
 			offset: $offset
-			first: $first
-			filters: $filters
+			orderBy: $orderBy
 		) {
-			activities {
+			items {
 				id
+				name
+				seasons
 				categories
 				city
-				description
-				name
 				region
-				seasons
+				description
 			}
-			totalCount
+			totalItemsCount
 		}
 	}
 `;
@@ -55,7 +61,8 @@ const initQueryObject: ActivityQueryParams = {
 	search: "",
 	filters: {},
 	offset: 0,
-	first: 30,
+	limit: 30,
+	orderBy: "",
 };
 
 export function Content() {
@@ -68,27 +75,37 @@ export function Content() {
 
 	const [allActivities, setAllActivities] = useState<Array<Activity>>([]);
 
+	const { search, limit, offset, orderBy, filters } = queryObject;
+	const variables = {
+		search,
+		limit,
+		offset,
+		orderBy,
+		...filters,
+	};
+
 	const { data, isFetching, isLoading, isError, isSuccess } =
-		useQuery<ActivityData>({
+		useQuery<GQLFiActivityResponse>({
 			queryKey: ["activities", queryObject],
-			queryFn: async ({ signal }): Promise<ActivityData> => {
+			queryFn: async ({ signal }): Promise<GQLFiActivityResponse> => {
 				// TODO: endpoint should be env var
 				const result = await new GraphQLClient(
 					"http://127.0.0.1:8000/graphql",
 					{ signal }
-				).request<{
-					activities: ActivityData;
-				}>(query, queryObject);
-				return result.activities;
+				).request<GQLFiActivityResponse>(query, variables);
+				return result;
 			},
 			placeholderData: keepPreviousData,
 		});
 
 	useEffect(() => {
-		if (isSuccess && data.activities) {
-			setAllActivities((prevData) => [...prevData, ...data.activities]);
+		if (isSuccess && data.fiActivities) {
+			setAllActivities((prevData) => [
+				...prevData,
+				...data.fiActivities.items,
+			]);
 		}
-	}, [isSuccess, data?.activities]);
+	}, [isSuccess, data?.fiActivities]);
 
 	const handleClickCard = useCallback(
 		(event: MouseEvent) => (activity: Activity) => {
