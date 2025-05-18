@@ -91,7 +91,7 @@ export function Content() {
 				// TODO: endpoint should be env var
 				const result = await new GraphQLClient(
 					"http://127.0.0.1:8000/graphql",
-					{ signal }
+					{ signal },
 				).request<GQLFiActivityResponse>(query, variables);
 				return result;
 			},
@@ -100,10 +100,7 @@ export function Content() {
 
 	useEffect(() => {
 		if (isSuccess && data.fiActivities) {
-			setAllActivities((prevData) => [
-				...prevData,
-				...data.fiActivities.items,
-			]);
+			setAllActivities((prevData) => [...prevData, ...data.fiActivities.items]);
 		}
 	}, [isSuccess, data?.fiActivities]);
 
@@ -128,7 +125,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open]
+		[handleOnKeep, open],
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
