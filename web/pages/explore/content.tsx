@@ -26,22 +26,24 @@ const SKELETON_CARD_COUNT = 3;
 
 const query = gql`
 	query GetFiActivities(
+		$orderBy: String
+		$limit: Int!
+		$offset: Int
 		$cities: [String!]
 		$regions: [String!]
 		$categories: [String!]
 		$seasons: [String!]
-		$limit: Int!
-		$offset: Int
-		$orderBy: String
+		$keyword: String
 	) {
 		fiActivities(
+			orderBy: $orderBy
+			limit: $limit
+			offset: $offset
 			cities: $cities
 			regions: $regions
 			categories: $categories
 			seasons: $seasons
-			limit: $limit
-			offset: $offset
-			orderBy: $orderBy
+			keyword: $keyword
 		) {
 			items {
 				id
@@ -58,7 +60,7 @@ const query = gql`
 `;
 
 const initQueryObject: ActivityQueryParams = {
-	search: "",
+	keyword: "",
 	filters: {},
 	offset: 0,
 	limit: 30,
@@ -75,9 +77,9 @@ export function Content() {
 
 	const [allActivities, setAllActivities] = useState<Array<Activity>>([]);
 
-	const { search, limit, offset, orderBy, filters } = queryObject;
+	const { keyword, limit, offset, orderBy, filters } = queryObject;
 	const variables = {
-		search,
+		keyword,
 		limit,
 		offset,
 		orderBy,
@@ -91,7 +93,7 @@ export function Content() {
 				// TODO: endpoint should be env var
 				const result = await new GraphQLClient(
 					"http://127.0.0.1:8000/graphql",
-					{ signal },
+					{ signal }
 				).request<GQLFiActivityResponse>(query, variables);
 				return result;
 			},
@@ -100,7 +102,10 @@ export function Content() {
 
 	useEffect(() => {
 		if (isSuccess && data.fiActivities) {
-			setAllActivities((prevData) => [...prevData, ...data.fiActivities.items]);
+			setAllActivities((prevData) => [
+				...prevData,
+				...data.fiActivities.items,
+			]);
 		}
 	}, [isSuccess, data?.fiActivities]);
 
@@ -125,7 +130,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -176,7 +181,7 @@ export function Content() {
 		// 2. Clear the existing list of activities to prepare for fresh results based on the new search.
 		setQueryObject((prev) => ({
 			...prev,
-			search: e.target.value,
+			keyword: e.target.value,
 			offset: 0,
 		}));
 		setAllActivities([]);
@@ -193,7 +198,7 @@ export function Content() {
 				toggleOption={handleToggleOption}
 				onReset={handleReset}
 				onResetAll={handleResetAll}
-				searchKeyword={queryObject.search}
+				searchKeyword={queryObject.keyword}
 				handleSearchChange={handleSearchChange}
 			/>
 

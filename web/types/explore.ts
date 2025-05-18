@@ -38,7 +38,7 @@ export interface ActivityFilters {
 }
 
 export interface ActivityQueryParams {
-	search: string;
+	keyword: string;
 	filters: ActivityFilters;
 	limit: number;
 	offset: number;
