@@ -9,7 +9,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"strings"
 	"sync"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -33,15 +32,15 @@ func getMappedResult(r fi.Result) fi.MappedResult {
 	seasons := utils.SplitAndTrim(r.Seasons)
 
 	return fi.MappedResult{
-		ID:            r.ID,
-		Name:          r.NameEN,
-		Description:   r.DescriptionEN,
-		Region:        r.Region,
-		City:          r.City,
-		Categories:    categories,
-		Seasons:       seasons,
-		CategoriesStr: strings.Join(categories, ","),
-		SeasonsStr:    strings.Join(seasons, ","),
+		ID:          r.ID,
+		Name:        r.NameEN,
+		Description: r.DescriptionEN,
+		Region:      utils.CapitalizeFirstLetter(r.Region),
+		City:        utils.CapitalizeFirstLetter(r.City),
+		Categories:  categories,
+		Seasons:     seasons,
+		// CategoriesStr: strings.Join(categories, ","),
+		// SeasonsStr:    strings.Join(seasons, ","),
 	}
 }
 
