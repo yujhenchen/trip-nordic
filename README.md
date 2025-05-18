@@ -220,27 +220,34 @@ CORS with HTTPOnly Cookie
 - [ ] allow to export the trip plan to PDF
 - [ ] use Redis to improve server side data caching, eg, for filters in explore page
 
+- [ ] explore page
+	- [x] fix cities may be incorrect (400 more cities)
+	- [ ] change UI of cities to search box + dropdown list (order by Alphabet, multiple selection); on the right side shows the selected options, and can remove them
+
 
 ## Examples
 
 ### query
 ```
 {
-  activities(
-    filters: {
-      cities: ["Rovaniemi"]
-      regions: ["lapland"]
-    }
-    first: 20
-  ){
-     activities {
+  fiActivities (
+    cities: ["Ii", "Rovaniemi"], 
+    regions: ["lakeland", "lapland"]
+    categories: ["families", "attractions"]
+    seasons: ["winter"]
+    limit: 5, 
+    offset: 0
+    orderBy: "name"
+  ) {
+    items {
+      id
       name
-      categories
       seasons
+      categories
       city
       region
     }
-    totalCount
+    totalItemsCount
   }
 }
 ```
@@ -248,9 +255,16 @@ CORS with HTTPOnly Cookie
 filters
 ```
 {
-  filters{
+  fiActivityFilters{
     name
     items
   }
 }
+```
+
+
+
+### Run Fast API
+```
+fastapi dev main.py
 ```
