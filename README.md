@@ -233,7 +233,7 @@ CORS with HTTPOnly Cookie
   fiActivities (
     keyword: "14km"
     cities: ["Ii", "Rovaniemi"], 
-    regions: ["lakeland", "lapland"]
+    regions: ["Lakeland", "Lapland"]
     categories: ["families", "attractions"]
     seasons: ["winter"]
     limit: 5, 
