@@ -231,6 +231,7 @@ CORS with HTTPOnly Cookie
 ```
 {
   fiActivities (
+    keyword: "14km"
     cities: ["Ii", "Rovaniemi"], 
     regions: ["lakeland", "lapland"]
     categories: ["families", "attractions"]
