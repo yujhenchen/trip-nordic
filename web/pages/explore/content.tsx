@@ -100,7 +100,7 @@ export function Content() {
 				// TODO: endpoint should be env var
 				const result = await new GraphQLClient(
 					"http://127.0.0.1:8000/graphql",
-					{ signal }
+					{ signal },
 				).request<GQLFiActivityResponse>(query, variables);
 				return result;
 			},
@@ -137,7 +137,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open]
+		[handleOnKeep, open],
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {

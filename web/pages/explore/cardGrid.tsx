@@ -50,7 +50,6 @@ export function CardGrid({
 								nextOffset,
 								totalCount - 1
 							);
-							debugger;
 							return {
 								...prev,
 								offset: maxOffset,
