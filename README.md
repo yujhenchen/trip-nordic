@@ -69,6 +69,8 @@ CORS with HTTPOnly Cookie
 [![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev/)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Django REST framework](https://img.shields.io/badge/Django_REST_Framework-092D2D?style=for-the-badge&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Strawberry](https://img.shields.io/badge/Strawberry-FF5A5F?style=for-the-badge&logo=strawberry&logoColor=white)](https://strawberry.rocks/)
 [![Poetry](https://img.shields.io/badge/Poetry-000000?style=for-the-badge&logo=python&logoColor=white)](https://python-poetry.org/)
 [![Simple JWT](https://img.shields.io/badge/Simple_JWT-1F5D4E?style=for-the-badge&logo=python&logoColor=white)](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/index.html#)
 [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
