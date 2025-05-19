@@ -13,7 +13,8 @@ import type {
 	ActivityFilters,
 } from "@/types/explore";
 import { useData } from "vike-react/useData";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, ComponentProps } from "react";
+import { CustomSelect } from "@/components/common/customSelect";
 
 export interface Props {
 	selectedFilters: ActivityFilters;
@@ -24,6 +25,7 @@ export interface Props {
 	onReset: (filterKey: FilterKeyType) => void;
 	onResetAll: () => void;
 	handleSearchChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+	handleChangeCities: ComponentProps<typeof CustomSelect>["onChange"];
 }
 
 export interface FilterPanelRow {
@@ -40,17 +42,38 @@ export function FilterPanel({
 	onReset,
 	onResetAll,
 	handleSearchChange,
+	handleChangeCities,
 }: Props) {
 	const filters = useData<GQLFilterResponse["fiActivityFilters"]>();
+
+	const options =
+		filters
+			.find((filter) => filter.name === "cities")
+			?.items.map((item) => ({ value: item, label: item })) || [];
 
 	return (
 		<div className={className}>
 			{title ? <FilterTitle>{title}</FilterTitle> : null}
+
+			<FilterContent>
+				<FilterRowTitle className="flex-shrink-0 w-24">
+					Cities
+				</FilterRowTitle>
+				<CustomSelect
+					options={options}
+					isMulti
+					onChange={handleChangeCities}
+				/>
+			</FilterContent>
+
 			<FilterContent>
 				{filters.map((filter) => {
 					const filterKey = filter.name;
 					return (
-						<div key={filterKey} className="flex items-center space-x-3">
+						<div
+							key={filterKey}
+							className="flex items-center space-x-3"
+						>
 							<FilterRowTitle className="flex-shrink-0 w-24">
 								{filterKey}
 							</FilterRowTitle>
@@ -59,10 +82,14 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											selectedFilters[filterKey]?.includes(option),
+											selectedFilters[
+												filterKey
+											]?.includes(option)
 										)}
 										value={option}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
 							</HorizontalScrollArea>

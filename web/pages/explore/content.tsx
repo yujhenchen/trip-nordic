@@ -100,7 +100,7 @@ export function Content() {
 				// TODO: endpoint should be env var
 				const result = await new GraphQLClient(
 					"http://127.0.0.1:8000/graphql",
-					{ signal },
+					{ signal }
 				).request<GQLFiActivityResponse>(query, variables);
 				return result;
 			},
@@ -137,7 +137,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -206,6 +206,28 @@ export function Content() {
 		}));
 	};
 
+	const handleChangeCities = (value: unknown) => {
+		if (Array.isArray(value)) {
+			setAllActivityData((prev) => ({
+				...prev,
+				items: [],
+			}));
+			const newCityFilters = value.map(
+				(option) => option.value as string
+			);
+			setQueryObject((prev) => {
+				return {
+					...prev,
+					filters: {
+						...prev.filters,
+						cities: newCityFilters,
+					},
+					offset: 0,
+				};
+			});
+		}
+	};
+
 	if (isError) {
 		toast.error("Something went wrong! Please try again later.");
 	}
@@ -219,6 +241,7 @@ export function Content() {
 				onResetAll={handleResetAll}
 				searchKeyword={queryObject.keyword}
 				handleSearchChange={handleSearchChange}
+				handleChangeCities={handleChangeCities}
 			/>
 
 			{isLoading && (
