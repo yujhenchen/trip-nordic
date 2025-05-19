@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useTheme } from "../providers/ThemeProvider";
@@ -21,8 +21,8 @@ const customStyles = (isDarkMode: boolean) => ({
 				? "#555"
 				: "#eee"
 			: isDarkMode
-			? "#333"
-			: "white",
+				? "#333"
+				: "white",
 		color: isDarkMode ? "white" : "black",
 		cursor: "pointer",
 	}),
