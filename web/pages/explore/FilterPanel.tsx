@@ -11,6 +11,7 @@ import type {
 	GQLFilterResponse,
 	FilterKeyType,
 	ActivityFilters,
+	GQLFilterData,
 } from "@/types/explore";
 import { useData } from "vike-react/useData";
 import type { ChangeEvent, ComponentProps } from "react";
@@ -33,6 +34,11 @@ export interface FilterPanelRow {
 	options: Array<string>;
 }
 
+interface FilterSplitResult {
+	cityFilters: Array<string>;
+	nonCityFilters: Array<GQLFilterData>;
+}
+
 export function FilterPanel({
 	selectedFilters,
 	title,
@@ -46,25 +52,48 @@ export function FilterPanel({
 }: Props) {
 	const filters = useData<GQLFilterResponse["fiActivityFilters"]>();
 
-	const options =
-		filters
-			.find((filter) => filter.name === "cities")
-			?.items.map((item) => ({ value: item, label: item })) || [];
+	const { cityFilters, nonCityFilters } = filters.reduce<FilterSplitResult>(
+		(acc: FilterSplitResult, filter: GQLFilterData) => {
+			if (filter.name === "cities") {
+				acc.cityFilters = filter.items || [];
+			} else {
+				acc.nonCityFilters.push(filter);
+			}
+			return acc;
+		},
+		{
+			cityFilters: [],
+			nonCityFilters: [],
+		}
+	);
+
+	const cityOptions =
+		cityFilters.map((item) => ({ value: item, label: item })) || [];
 
 	return (
 		<div className={className}>
 			{title ? <FilterTitle>{title}</FilterTitle> : null}
 
 			<FilterContent>
-				<FilterRowTitle className="flex-shrink-0 w-24">Cities</FilterRowTitle>
-				<CustomSelect options={options} isMulti onChange={handleChangeCities} />
-			</FilterContent>
+				<div key="city-filters" className="flex items-center space-x-3">
+					<FilterRowTitle className="flex-shrink-0 w-24">
+						Cities
+					</FilterRowTitle>
+					<CustomSelect
+						options={cityOptions}
+						isMulti
+						onChange={handleChangeCities}
+						className="w-full"
+					/>
+				</div>
 
-			<FilterContent>
-				{filters.map((filter) => {
+				{nonCityFilters.map((filter) => {
 					const filterKey = filter.name;
 					return (
-						<div key={filterKey} className="flex items-center space-x-3">
+						<div
+							key={filterKey}
+							className="flex items-center space-x-3"
+						>
 							<FilterRowTitle className="flex-shrink-0 w-24">
 								{filterKey}
 							</FilterRowTitle>
@@ -73,10 +102,14 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											selectedFilters[filterKey]?.includes(option),
+											selectedFilters[
+												filterKey
+											]?.includes(option)
 										)}
 										value={option}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
 							</HorizontalScrollArea>
