@@ -25,6 +25,8 @@ import { SkeletonCard } from "@/components/common/skeletonCard";
 
 const SKELETON_CARD_COUNT = 3;
 
+const graphqlUrl = import.meta.env.VITE_GRAPHQL_API_URL;
+
 const query = gql`
 	query GetFiActivities(
 		$orderBy: String
@@ -97,11 +99,9 @@ export function Content() {
 		useQuery<GQLFiActivityResponse>({
 			queryKey: ["activities", queryObject],
 			queryFn: async ({ signal }): Promise<GQLFiActivityResponse> => {
-				// TODO: endpoint should be env var
-				const result = await new GraphQLClient(
-					"http://127.0.0.1:8000/graphql",
-					{ signal },
-				).request<GQLFiActivityResponse>(query, variables);
+				const result = await new GraphQLClient(graphqlUrl, {
+					signal,
+				}).request<GQLFiActivityResponse>(query, variables);
 				return result;
 			},
 			placeholderData: keepPreviousData,
@@ -137,7 +137,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -212,7 +212,9 @@ export function Content() {
 				...prev,
 				items: [],
 			}));
-			const newCityFilters = value.map((option) => option.value as string);
+			const newCityFilters = value.map(
+				(option) => option.value as string
+			);
 			setQueryObject((prev) => {
 				return {
 					...prev,

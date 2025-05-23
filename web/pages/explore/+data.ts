@@ -2,6 +2,9 @@
 import type { GQLFilterResponse } from "@/types/explore";
 import { gql, GraphQLClient } from "graphql-request";
 
+const graphqlUrl = import.meta.env.VITE_GRAPHQL_API_URL;
+const graphqlClient = new GraphQLClient(graphqlUrl);
+
 const filtersQuery = gql`
 	query GetFilters {
 		fiActivityFilters {
@@ -10,9 +13,6 @@ const filtersQuery = gql`
 		}
 	}
 `;
-
-// TODO: endpoint should be env var
-const graphqlClient = new GraphQLClient("http://127.0.0.1:8000/graphql");
 
 export async function data(): Promise<GQLFilterResponse["fiActivityFilters"]> {
 	try {
