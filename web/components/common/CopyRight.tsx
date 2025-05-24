@@ -5,7 +5,7 @@ export function CopyRight() {
 		<span
 			className={cn(
 				"text-sm text-gray-500 sm:text-center dark:text-gray-300",
-				"font-extrabold"
+				"font-extrabold",
 			)}
 		>
 			© 2025{" "}
