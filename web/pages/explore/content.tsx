@@ -137,7 +137,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open]
+		[handleOnKeep, open],
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -212,9 +212,7 @@ export function Content() {
 				...prev,
 				items: [],
 			}));
-			const newCityFilters = value.map(
-				(option) => option.value as string
-			);
+			const newCityFilters = value.map((option) => option.value as string);
 			setQueryObject((prev) => {
 				return {
 					...prev,
