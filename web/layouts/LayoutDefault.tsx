@@ -22,18 +22,18 @@ export default function LayoutDefault({
 }) {
 	const pageContext = usePageContext();
 
+	const isHome = pageContext.pageType === "home";
+
 	return (
 		<ThemeProvider>
 			<div
 				className={cn(
 					"flex flex-col min-h-screen",
-					pageContext.pageType === "home"
-						? `${pageContext.randomBgClass} bg-cover bg-center`
-						: "",
+					isHome ? `${pageContext.randomBgClass} bg-cover bg-center` : "",
 				)}
 			>
 				<QueryClientProvider client={queryClient}>
-					<Header />
+					<Header showLogo={!isHome} showNavMenu={!isHome} />
 					{children}
 					<Footer />
 					<Toaster />
