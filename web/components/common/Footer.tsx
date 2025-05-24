@@ -1,11 +1,6 @@
-import {
-	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-} from "@radix-ui/react-navigation-menu";
-import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
+import { NavigationMenu } from "@radix-ui/react-navigation-menu";
 import { CopyRight } from "./copyRight";
+import { NavMenuList } from "./navMenuList";
 
 export function Footer() {
 	return (
@@ -14,45 +9,7 @@ export function Footer() {
 				<CopyRight />
 
 				<NavigationMenu>
-					<NavigationMenuList className="flex items-center">
-						<div className="flex grow">
-							<NavigationMenuItem>
-								<NavigationMenuLink
-									className={navigationMenuTriggerStyle()}
-									href="/"
-								>
-									Home
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-
-							<NavigationMenuItem>
-								<NavigationMenuLink
-									className={navigationMenuTriggerStyle()}
-									href="/plan"
-								>
-									Plan
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-
-							<NavigationMenuItem>
-								<NavigationMenuLink
-									className={navigationMenuTriggerStyle()}
-									href="/explore"
-								>
-									Explore
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-
-							<NavigationMenuItem>
-								<NavigationMenuLink
-									className={navigationMenuTriggerStyle()}
-									href="/about"
-								>
-									About
-								</NavigationMenuLink>
-							</NavigationMenuItem>
-						</div>
-					</NavigationMenuList>
+					<NavMenuList />
 				</NavigationMenu>
 			</div>
 		</footer>
