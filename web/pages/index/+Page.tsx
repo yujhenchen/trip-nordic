@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { NavLink } from "@/components/common/navLink";
 
+const HEADING_TEXT = "Plan Your Next Adventure";
+
 export default function Page() {
 	return (
 		<PageContainer className="items-center justify-center">
@@ -13,12 +15,12 @@ export default function Page() {
 						"scroll-m-20 text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold tracking-tight",
 						"absolute inset-0 pointer-events-none",
 						"text-gray-200/80 dark:text-gray-800/80",
-						"scale-105 blur-xl",
+						"scale-105 blur-xl"
 					)}
 				>
-					Plan Your Next Adventure
+					{HEADING_TEXT}
 				</p>
-				<H1 text="Plan Your Next Adventure" className={cn("drop-shadow-lg")} />
+				<H1 text={HEADING_TEXT} className={cn("drop-shadow-lg")} />
 			</div>
 
 			<div className="flex gap-6 w-full place-content-center pt-12">
