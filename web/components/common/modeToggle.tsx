@@ -1,12 +1,23 @@
 import { Toggle } from "@radix-ui/react-toggle";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../providers/ThemeProvider";
+import { cn } from "@/lib/utils";
 
-export function ModeToggle() {
+interface Props {
+	className?: string;
+}
+
+export function ModeToggle({ className }: Props) {
 	const { theme, setTheme } = useTheme();
 
 	return (
 		<Toggle
+			className={cn(
+				"inline-flex items-center justify-center ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+				"bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-full",
+				"aspect-square p-2",
+				className
+			)}
 			aria-label="Toggle Mode"
 			onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
 		>
