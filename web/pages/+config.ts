@@ -14,8 +14,5 @@ export default {
 	description: "Plan your next nordic adventure",
 
 	extends: vikeReact,
-	passToClient: [
-		// pageContext.user
-		"user",
-	],
+	passToClient: ["user", "pageType", "randomBgClass"],
 } satisfies Config;
