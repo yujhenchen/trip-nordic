@@ -64,11 +64,15 @@ export function FilterPanel({
 		{
 			cityFilters: [],
 			nonCityFilters: [],
-		},
+		}
 	);
 
 	const cityOptions =
 		cityFilters.map((item) => ({ value: item, label: item })) || [];
+
+	const disAbleResetAll = Object.values(selectedFilters).every(
+		(ls) => ls.length === 0
+	);
 
 	return (
 		<div className={className}>
@@ -76,7 +80,9 @@ export function FilterPanel({
 
 			<FilterContent>
 				<div key="city-filters" className="flex items-center space-x-3">
-					<FilterRowTitle className="flex-shrink-0 w-24">Cities</FilterRowTitle>
+					<FilterRowTitle className="flex-shrink-0 w-24">
+						Cities
+					</FilterRowTitle>
 					<CustomSelect
 						options={cityOptions}
 						isMulti
@@ -87,8 +93,14 @@ export function FilterPanel({
 
 				{nonCityFilters.map((filter) => {
 					const filterKey = filter.name;
+					const disableReset =
+						!selectedFilters[filterKey] ||
+						selectedFilters[filterKey].length === 0;
 					return (
-						<div key={filterKey} className="flex items-center space-x-3">
+						<div
+							key={filterKey}
+							className="flex items-center space-x-3"
+						>
 							<FilterRowTitle className="flex-shrink-0 w-24">
 								{filterKey}
 							</FilterRowTitle>
@@ -97,17 +109,22 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											selectedFilters[filterKey]?.includes(option),
+											selectedFilters[
+												filterKey
+											]?.includes(option)
 										)}
 										value={option}
-										onClick={() => toggleOption(filterKey, option)}
+										onClick={() =>
+											toggleOption(filterKey, option)
+										}
 									/>
 								))}
 							</HorizontalScrollArea>
 							<Button
 								variant="default"
 								onClick={() => onReset(filterKey)}
-								className="rounded-full"
+								className="rounded-full font-extrabold"
+								disabled={disableReset}
 							>
 								Reset
 							</Button>
@@ -124,7 +141,8 @@ export function FilterPanel({
 					<Button
 						variant="default"
 						onClick={onResetAll}
-						className="rounded-full w-fit"
+						className="rounded-full w-fit font-extrabold"
+						disabled={disAbleResetAll}
 					>
 						Reset All
 					</Button>
