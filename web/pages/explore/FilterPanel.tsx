@@ -64,14 +64,14 @@ export function FilterPanel({
 		{
 			cityFilters: [],
 			nonCityFilters: [],
-		}
+		},
 	);
 
 	const cityOptions =
 		cityFilters.map((item) => ({ value: item, label: item })) || [];
 
 	const disAbleResetAll = Object.values(selectedFilters).every(
-		(ls) => ls.length === 0
+		(ls) => ls.length === 0,
 	);
 
 	return (
@@ -80,9 +80,7 @@ export function FilterPanel({
 
 			<FilterContent>
 				<div key="city-filters" className="flex items-center space-x-3">
-					<FilterRowTitle className="flex-shrink-0 w-24">
-						Cities
-					</FilterRowTitle>
+					<FilterRowTitle className="flex-shrink-0 w-24">Cities</FilterRowTitle>
 					<CustomSelect
 						options={cityOptions}
 						isMulti
@@ -97,10 +95,7 @@ export function FilterPanel({
 						!selectedFilters[filterKey] ||
 						selectedFilters[filterKey].length === 0;
 					return (
-						<div
-							key={filterKey}
-							className="flex items-center space-x-3"
-						>
+						<div key={filterKey} className="flex items-center space-x-3">
 							<FilterRowTitle className="flex-shrink-0 w-24">
 								{filterKey}
 							</FilterRowTitle>
@@ -109,14 +104,10 @@ export function FilterPanel({
 									<FilterChip
 										key={option}
 										selected={Boolean(
-											selectedFilters[
-												filterKey
-											]?.includes(option)
+											selectedFilters[filterKey]?.includes(option),
 										)}
 										value={option}
-										onClick={() =>
-											toggleOption(filterKey, option)
-										}
+										onClick={() => toggleOption(filterKey, option)}
 									/>
 								))}
 							</HorizontalScrollArea>
