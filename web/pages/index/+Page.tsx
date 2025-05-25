@@ -13,7 +13,9 @@ function NavButtons() {
 	const items = [
 		{
 			href:
-				trips.length > 0 ? `/plan/${trips[0].id}` : `/plan/${defaultTrip.id}`,
+				trips.length > 0
+					? `/plan/${trips[0].id}`
+					: `/plan/${defaultTrip.id}`,
 			text: "Plan",
 		},
 		{ href: "/explore", text: "Explore" },
@@ -39,12 +41,15 @@ export default function Page() {
 						"scroll-m-20 text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold tracking-tight",
 						"absolute inset-0 pointer-events-none",
 						"text-gray-200/80 dark:text-gray-800/80",
-						"scale-105 blur-xl",
+						"scale-105 blur-xl"
 					)}
 				>
 					{HEADING_TEXT}
 				</p>
-				<H1 text={HEADING_TEXT} className={cn("drop-shadow-lg")} />
+				<H1
+					text={HEADING_TEXT}
+					className={cn("drop-shadow-lg", "text-gray-50")}
+				/>
 			</div>
 
 			<div className="flex gap-6 w-full place-content-center pt-12">
