@@ -42,21 +42,23 @@ class Query:
                 {"description": {"$regex": keyword, "$options": "i"}}
             ]
             
-        documents = db_client.find(
+        documents, total_items_count = db_client.find(
             collection_name=fi_collection_name,
             filter=filters,
-			order_by=order_by
-        )            
+            limit=limit,
+            offset=offset,
+			order_by=order_by,
+        )
+        # print("total_items_count", total_items_count, "offset", offset, "limit", limit)          
         return get_pagination_window(
             dataset=documents,
             ItemType=FiActivity,
-            limit=limit,
-            offset=offset,
-        )
+            total_items_count=total_items_count,
+            )
 
     @strawberry.field(description="Get a list of FI activity filters")
     async def fi_activity_filters(self) -> typing.List[FiFilters]:
-        documents = db_client.find(fi_filters_collection_name)
+        documents, _ = db_client.find(fi_filters_collection_name)
         return [FiFilters(name=doc["name"], items=doc["items"]) for doc in documents]
 
 schema = strawberry.Schema(query=Query)
