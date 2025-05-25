@@ -1,4 +1,4 @@
-import type { PageType } from "./shared";
+import type { RoutePath } from "./shared";
 
 declare global {
 	namespace Vike {
@@ -6,7 +6,7 @@ declare global {
 			// Type of pageContext.user
 			user?: string;
 			// Refine type of pageContext.Page (it's `unknown` by default)
-			pageType: PageType;
+			routePath: RoutePath;
 			// Type of pageContext.bgImgClass
 			bgImgClass: string;
 			Page: () => React.JSX.Element;

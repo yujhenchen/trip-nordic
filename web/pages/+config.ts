@@ -14,5 +14,5 @@ export default {
 	description: "Plan your next nordic adventure",
 
 	extends: vikeReact,
-	passToClient: ["user", "pageType", "bgImgClass"],
+	passToClient: ["user", "routePath", "bgImgClass"],
 } satisfies Config;

@@ -1,9 +1,11 @@
+type ValueOf<T> = T[keyof T];
+
 export interface AppDateRange {
 	from: Date;
 	to: Date;
 }
 
-export const PAGE_KEYS = {
+export const ROUTE_PATHS = {
 	ABOUT: "/about",
 	DASHBOARD: "/dashboard",
 	EXPLORE: "/explore",
@@ -13,4 +15,4 @@ export const PAGE_KEYS = {
 	PLAN: "/plan",
 } as const;
 
-export type PageType = (typeof PAGE_KEYS)[keyof typeof PAGE_KEYS];
+export type RoutePath = ValueOf<typeof ROUTE_PATHS>;
