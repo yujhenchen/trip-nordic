@@ -1,39 +1,44 @@
-import {
-	NavigationMenu,
-	NavigationMenuItem,
-} from "@radix-ui/react-navigation-menu";
+import { NavigationMenu } from "@radix-ui/react-navigation-menu";
 import { ModeToggle } from "./modeToggle";
-import { ProfileLink } from "./profileLink";
 import Logo from "./logo";
 import { NavMenuList } from "./navMenuList";
 import { cn } from "@/lib/utils";
+import { ProfileMenuItem } from "./profile";
 
 interface Props {
 	showLogo?: boolean;
 	showNavMenu?: boolean;
 	showModeToggle?: boolean;
+	showProfile?: boolean;
 }
 
 export function Header({
 	showLogo = true,
 	showNavMenu = true,
 	showModeToggle = true,
+	showProfile = true,
 }: Props) {
 	return (
-		<header className={cn("flex p-4 items-center w-full h-24")}>
-			{showLogo && <Logo />}
-			{showNavMenu && (
-				<NavigationMenu className="w-full px-6">
-					<NavMenuList>
-						<div className="flex gap-6 items-center">
-							<NavigationMenuItem>
-								<ProfileLink />
-							</NavigationMenuItem>
-						</div>
-					</NavMenuList>
-				</NavigationMenu>
+		<header className={cn("flex p-4 items-center w-full h-24 justify-between")}>
+			<div className="flex items-center">
+				{showLogo && <Logo />}
+				{showNavMenu && (
+					<NavigationMenu>
+						<NavMenuList />
+					</NavigationMenu>
+				)}
+			</div>
+
+			{(showProfile || showModeToggle) && (
+				<div className="flex items-center space-x-4">
+					{showProfile && (
+						<NavigationMenu>
+							<ProfileMenuItem />
+						</NavigationMenu>
+					)}
+					{showModeToggle && <ModeToggle />}
+				</div>
 			)}
-			{showModeToggle && <ModeToggle className="px-2" />}
 		</header>
 	);
 }
