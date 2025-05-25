@@ -9,11 +9,10 @@ import { cva } from "class-variance-authority";
 import type { ReactNode } from "react";
 
 const menuItemLinkStyle = cva(
-	"relative inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:text-accent-foreground focus:outline-none focus:text-accent-foreground disabled:opacity-50 disabled:pointer-events-none after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] after:bg-accent-foreground after:transition-all after:duration-300 after:origin-center hover:after:left-0 hover:after:w-full",
+	"relative inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:text-accent-foreground focus:outline-none focus:text-accent-foreground disabled:opacity-50 disabled:pointer-events-none after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-[2px] after:bg-accent-foreground after:transition-all after:duration-300 after:origin-center hover:after:left-0 hover:after:w-full"
 );
 
 type MenuItemType = {
-	key: string;
 	text: string;
 	href: string;
 };
@@ -24,19 +23,20 @@ function MenuItems({ showHome = false }: { showHome?: boolean }) {
 	const menuItems = [
 		showHome && { key: "home", text: "Home", href: "/" },
 		{
-			key: "plan",
 			text: "Plan",
 			href:
-				trips.length > 0 ? `/plan/${trips[0].id}` : `/plan/${defaultTrip.id}`,
+				trips.length > 0
+					? `/plan/${trips[0].id}`
+					: `/plan/${defaultTrip.id}`,
 		},
-		{ key: "explore", text: "Explore", href: "/explore" },
-		{ key: "about", text: "About", href: "/about" },
+		{ text: "Explore", href: "/explore" },
+		{ text: "About", href: "/about" },
 	].filter((item): item is MenuItemType =>
-		Boolean(item),
+		Boolean(item)
 	) satisfies Array<MenuItemType>;
 
 	return menuItems.map((item) => (
-		<NavigationMenuItem key={item.key}>
+		<NavigationMenuItem key={item.href}>
 			<NavigationMenuLink
 				className={cn(menuItemLinkStyle(), "bg-transparent")}
 				href={item.href}
