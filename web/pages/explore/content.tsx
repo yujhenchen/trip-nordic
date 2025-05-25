@@ -81,14 +81,14 @@ export function Content() {
 
 	const { handleOnKeep } = useActivityKeeps();
 
-	const [queryObject, setQueryObject] =
+	const [queryParams, setQueryParams] =
 		useState<ActivityQueryParams>(initQueryObject);
 
 	const [allActivityData, setAllActivityData] =
 		useState<FiActivities>(initActivityData);
 
-	const { keyword, limit, offset, orderBy, filters } = queryObject;
-	const variables = {
+	const { keyword, limit, offset, orderBy, filters } = queryParams;
+	const graphqlVariables = {
 		keyword,
 		limit,
 		offset,
@@ -98,11 +98,11 @@ export function Content() {
 
 	const { data, isFetching, isLoading, isError, isSuccess } =
 		useQuery<GQLFiActivityResponse>({
-			queryKey: ["activities", queryObject],
+			queryKey: ["activities", queryParams],
 			queryFn: async ({ signal }): Promise<GQLFiActivityResponse> => {
 				const result = await new GraphQLClient(graphqlUrl, {
 					signal,
-				}).request<GQLFiActivityResponse>(query, variables);
+				}).request<GQLFiActivityResponse>(query, graphqlVariables);
 				return result;
 			},
 			placeholderData: keepPreviousData,
@@ -138,7 +138,7 @@ export function Content() {
 				tags: [city, ...categories, region, ...seasons],
 			});
 		},
-		[handleOnKeep, open],
+		[handleOnKeep, open]
 	);
 
 	const handleToggleOption = (filterKey: FilterKeyType, option: string) => {
@@ -146,7 +146,7 @@ export function Content() {
 			...prev,
 			items: [],
 		}));
-		setQueryObject((prev) => {
+		setQueryParams((prev) => {
 			const newFilters = structuredClone(prev.filters);
 			const options = newFilters[filterKey];
 			if (options) {
@@ -169,7 +169,7 @@ export function Content() {
 			...prev,
 			items: [],
 		}));
-		setQueryObject((prev) => {
+		setQueryParams((prev) => {
 			const newFilters = structuredClone(prev.filters);
 			newFilters[filterKey] = [];
 			return {
@@ -185,7 +185,7 @@ export function Content() {
 			...prev,
 			items: [],
 		}));
-		setQueryObject((prev) => ({
+		setQueryParams((prev) => ({
 			...prev,
 			filters: {},
 			offset: 0,
@@ -196,7 +196,7 @@ export function Content() {
 		// When the search input changes:
 		// 1. Update the query object with the new search term and reset the offset to 0.
 		// 2. Clear the existing list of activities to prepare for fresh results based on the new search.
-		setQueryObject((prev) => ({
+		setQueryParams((prev) => ({
 			...prev,
 			keyword: e.target.value,
 			offset: 0,
@@ -213,8 +213,10 @@ export function Content() {
 				...prev,
 				items: [],
 			}));
-			const newCityFilters = value.map((option) => option.value as string);
-			setQueryObject((prev) => {
+			const newCityFilters = value.map(
+				(option) => option.value as string
+			);
+			setQueryParams((prev) => {
 				return {
 					...prev,
 					filters: {
@@ -234,11 +236,11 @@ export function Content() {
 	return (
 		<>
 			<FilterPanel
-				selectedFilters={queryObject.filters}
+				selectedFilters={queryParams.filters}
 				toggleOption={handleToggleOption}
 				onReset={handleReset}
 				onResetAll={handleResetAll}
-				searchKeyword={queryObject.keyword}
+				searchKeyword={queryParams.keyword}
 				handleSearchChange={handleSearchChange}
 				handleChangeCities={handleChangeCities}
 				className="rounded-3xl bg-gray-200 dark:bg-gray-800 p-4"
@@ -259,7 +261,7 @@ export function Content() {
 					activities={allActivityData.items}
 					totalCount={allActivityData.totalItemsCount}
 					handleClickCard={handleClickCard}
-					setQueryObject={setQueryObject}
+					setQueryParams={setQueryParams}
 				/>
 			)}
 		</>

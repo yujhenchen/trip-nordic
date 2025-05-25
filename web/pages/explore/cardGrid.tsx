@@ -18,7 +18,7 @@ interface Props {
 	activities: Array<Activity>;
 	totalCount: number;
 	handleClickCard: (event: MouseEvent) => (activity: Activity) => void;
-	setQueryObject: React.Dispatch<React.SetStateAction<ActivityQueryParams>>;
+	setQueryParams: React.Dispatch<React.SetStateAction<ActivityQueryParams>>;
 }
 
 export function CardGrid({
@@ -27,7 +27,7 @@ export function CardGrid({
 	activities,
 	totalCount,
 	handleClickCard,
-	setQueryObject,
+	setQueryParams,
 }: Props) {
 	const { keeps } = useActivityKeeps();
 
@@ -43,18 +43,24 @@ export function CardGrid({
 			}
 			observer.current = new IntersectionObserver(
 				(entries) => {
-					if (entries[0].isIntersecting && totalCount > activities.length) {
-						setQueryObject((prev) => {
+					if (
+						entries[0].isIntersecting &&
+						totalCount > activities.length
+					) {
+						setQueryParams((prev) => {
 							// NOTE: offset should never be equal to or greater than totalCount
 							const nextOffset = prev.offset + prev.limit;
-							const maxOffset = Math.min(nextOffset, totalCount - 1);
+							const maxOffset = Math.min(
+								nextOffset,
+								totalCount - 1
+							);
 							return {
 								...prev,
 								offset: maxOffset,
 							};
 						});
 					}
-				},
+				}
 				// {
 				// 	threshold: 1.0,
 				// },
@@ -63,14 +69,16 @@ export function CardGrid({
 				observer.current.observe(node);
 			}
 		},
-		[isLoading, totalCount, setQueryObject, activities.length],
+		[isLoading, totalCount, setQueryParams, activities.length]
 	);
 
 	return (
 		<CardsContainer>
 			{activities.map((activity, index) => (
 				<Card
-					ref={index === activities.length - 1 ? lastElementRef : null}
+					ref={
+						index === activities.length - 1 ? lastElementRef : null
+					}
 					key={activity.id}
 					id={activity.id}
 					onClick={(event) => handleClickCard(event)(activity)}
@@ -79,7 +87,9 @@ export function CardGrid({
 						<Bookmark
 							id={IDS.KEEP_ICON}
 							className="self-end"
-							onClick={(event) => handleClickCard(event)(activity)}
+							onClick={(event) =>
+								handleClickCard(event)(activity)
+							}
 							fill={
 								keeps.find((keep) => keep.id === activity.id)
 									? "currentColor"
@@ -87,7 +97,9 @@ export function CardGrid({
 							}
 						/>
 						<img src="https://placehold.co/150x100" alt="Card" />
-						<CardTitle className="line-clamp-2">{activity.name}</CardTitle>
+						<CardTitle className="line-clamp-2">
+							{activity.name}
+						</CardTitle>
 						<CardDescription className="line-clamp-3">
 							{activity.description}
 						</CardDescription>
