@@ -12,6 +12,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Header } from "@/components/common/header";
 import { Footer } from "@/components/common/footer";
 import { cn } from "@/lib/utils";
+import { ROUTE_PATHS, routePaths } from "@/types/shared";
 
 const queryClient = new QueryClient();
 
@@ -22,15 +23,19 @@ export default function LayoutDefault({
 }) {
 	const pageContext = usePageContext();
 
-	const showBgImg = ["/", "/plan", "/login", "/signup"].includes(
+	const showBgImg = routePaths.includes(pageContext.routePath);
+
+	const showHeader = routePaths.includes(pageContext.routePath);
+
+	const { PLAN, EXPLORE, ...rest } = ROUTE_PATHS;
+	const showFooter = (Object.values(rest) as Array<string>).includes(
 		pageContext.routePath,
 	);
 
-	const showHeader = ["/about", "/explore", "/login", "/signup"].includes(
-		pageContext.routePath,
-	);
-
-	const showFooterMore = ["/", "/plan"].includes(pageContext.routePath);
+	const { HOME, ...restExcludeHome } = ROUTE_PATHS;
+	const showHeaderMore = (
+		Object.values(restExcludeHome) as Array<string>
+	).includes(pageContext.routePath);
 
 	return (
 		<ThemeProvider>
@@ -41,9 +46,17 @@ export default function LayoutDefault({
 				)}
 			>
 				<QueryClientProvider client={queryClient}>
-					{showHeader && <Header />}
+					{showHeader && (
+						<Header showLogo={showHeaderMore} showNavMenu={showHeaderMore} />
+					)}
 					{children}
-					<Footer showHome={showFooterMore} showModeToggle={showFooterMore} />
+					{showFooter && (
+						<Footer
+							showHome={!showHeader}
+							showModeToggle={!showHeader}
+							showProfile={!showHeader}
+						/>
+					)}
 					<Toaster />
 				</QueryClientProvider>
 			</div>
