@@ -50,7 +50,7 @@ export function ControlPanel({ trip }: Props) {
 	};
 
 	return (
-		<div className="w-full h-16 place-content-between flex border px-8 py-1 items-center">
+		<div className="w-full h-16 place-content-between flex border px-8 py-1 items-center bg-gray-200 dark:bg-gray-800 rounded-b-3xl">
 			<EditableHeading3
 				text={trip?.name ?? defaultTrip.name}
 				handleSave={handleSaveName}

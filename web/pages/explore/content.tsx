@@ -240,6 +240,7 @@ export function Content() {
 				searchKeyword={queryObject.keyword}
 				handleSearchChange={handleSearchChange}
 				handleChangeCities={handleChangeCities}
+				className="rounded-3xl bg-gray-200 dark:bg-gray-800 p-4"
 			/>
 
 			{isLoading && (

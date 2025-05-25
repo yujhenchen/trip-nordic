@@ -66,7 +66,7 @@ export function CardGrid({
 	);
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+		<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-8">
 			{activities.map((activity, index) => (
 				<Card
 					ref={index === activities.length - 1 ? lastElementRef : null}

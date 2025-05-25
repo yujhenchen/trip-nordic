@@ -28,7 +28,11 @@ export function SidebarCard({
 	titleClassName,
 }: Props) {
 	return (
-		<Card ref={cardRef} className={className} onClick={handleClick}>
+		<Card
+			ref={cardRef}
+			className={cn("bg-gray-200 dark:bg-gray-800", className)}
+			onClick={handleClick}
+		>
 			<CardHeader>
 				<Bookmark
 					id={IDS.KEEP_ICON}
