@@ -1,9 +1,8 @@
 import { NavigationMenu } from "@radix-ui/react-navigation-menu";
-import { ModeToggle } from "./modeToggle";
 import Logo from "./logo";
 import { NavMenuList } from "./navMenuList";
 import { cn } from "@/lib/utils";
-import { ProfileMenuItem } from "./profile";
+import { RightMenu } from "./rightMenu";
 
 interface Props {
 	showLogo?: boolean;
@@ -29,16 +28,7 @@ export function Header({
 				)}
 			</div>
 
-			{(showProfile || showModeToggle) && (
-				<div className="flex items-center space-x-4">
-					{showProfile && (
-						<NavigationMenu>
-							<ProfileMenuItem />
-						</NavigationMenu>
-					)}
-					{showModeToggle && <ModeToggle />}
-				</div>
-			)}
+			<RightMenu showProfile={showProfile} showModeToggle={showModeToggle} />
 		</header>
 	);
 }

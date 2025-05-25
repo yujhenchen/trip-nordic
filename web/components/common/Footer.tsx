@@ -1,9 +1,8 @@
 import { NavigationMenu } from "@radix-ui/react-navigation-menu";
 import { CopyRight } from "./copyRight";
 import { NavMenuList } from "./navMenuList";
-import { ModeToggle } from "./modeToggle";
-import { ProfileMenuItem } from "./profile";
 import { cn } from "@/lib/utils";
+import { RightMenu } from "./rightMenu";
 
 export function Footer({
 	showHome = true,
@@ -27,20 +26,15 @@ export function Footer({
 
 			{showNavMenu && (
 				<NavigationMenu>
-					<NavMenuList showHome={showHome} />
+					<NavMenuList showHome={showHome} showBgColor={false} />
 				</NavigationMenu>
 			)}
 
-			{(showProfile || showModeToggle) && (
-				<div className="flex items-center space-x-4">
-					{showProfile && (
-						<NavigationMenu>
-							<ProfileMenuItem />
-						</NavigationMenu>
-					)}
-					{showModeToggle && <ModeToggle />}
-				</div>
-			)}
+			<RightMenu
+				showProfile={showProfile}
+				showModeToggle={showModeToggle}
+				showBgColor={false}
+			/>
 		</footer>
 	);
 }
