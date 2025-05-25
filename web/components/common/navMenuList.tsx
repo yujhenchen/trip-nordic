@@ -48,12 +48,18 @@ function MenuItems({ showHome = false }: { showHome?: boolean }) {
 export function NavMenuList({
 	children,
 	showHome,
+	showBgColor = true,
 }: {
 	children?: ReactNode;
 	showHome?: boolean;
+	showBgColor?: boolean;
 }) {
 	return (
-		<NavigationMenuList className="flex items-center">
+		<NavigationMenuList
+			className={cn("flex items-center", {
+				"bg-gray-400 dark:bg-gray-600 shadow rounded-3xl": showBgColor,
+			})}
+		>
 			<div className="flex grow">
 				<MenuItems showHome={showHome} />
 			</div>
