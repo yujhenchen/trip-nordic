@@ -15,4 +15,6 @@ export const ROUTE_PATHS = {
 	PLAN: "/plan",
 } as const;
 
+export const routePaths = Object.values(ROUTE_PATHS) as Array<string>;
+
 export type RoutePath = ValueOf<typeof ROUTE_PATHS>;
