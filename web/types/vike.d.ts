@@ -7,8 +7,8 @@ declare global {
 			user?: string;
 			// Refine type of pageContext.Page (it's `unknown` by default)
 			pageType: PageType;
-			// Type of pageContext.randomBgClass
-			randomBgClass: string;
+			// Type of pageContext.bgImgClass
+			bgImgClass: string;
 			Page: () => React.JSX.Element;
 		}
 	}
