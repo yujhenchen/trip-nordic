@@ -3,8 +3,34 @@ import { H1 } from "@/components/typography/h1";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { NavLink } from "@/components/common/navLink";
+import { defaultTrip, useTrips } from "@/states/useTripsState";
 
 const HEADING_TEXT = "Plan Your Next Adventure";
+
+function NavButtons() {
+	const trips = useTrips();
+
+	const items = [
+		{
+			href:
+				trips.length > 0
+					? `/plan/${trips[0].id}`
+					: `/plan/${defaultTrip.id}`,
+			text: "Plan",
+		},
+		{ href: "/explore", text: "Explore" },
+	];
+	return items.map((item) => (
+		<Button
+			key={item.href}
+			variant="secondary"
+			size="lg"
+			className="rounded-full"
+		>
+			<NavLink href={item.href}>{item.text}</NavLink>
+		</Button>
+	));
+}
 
 export default function Page() {
 	return (
@@ -24,12 +50,7 @@ export default function Page() {
 			</div>
 
 			<div className="flex gap-6 w-full place-content-center pt-12">
-				<Button variant="secondary" size="lg" className="rounded-full">
-					<NavLink href="/plan">Plan</NavLink>
-				</Button>
-				<Button variant="secondary" size="lg" className="rounded-full">
-					<NavLink href="/explore">Explore</NavLink>
-				</Button>
+				<NavButtons />
 			</div>
 		</PageContainer>
 	);
