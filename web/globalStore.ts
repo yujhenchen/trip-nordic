@@ -2,7 +2,7 @@ export class BgImgClassStore {
 	private bgImgClass = "";
 	private static instance: BgImgClassStore;
 
-	private constructor() { }
+	private constructor() {}
 
 	public static getInstance(): BgImgClassStore {
 		if (!BgImgClassStore.instance) {

@@ -30,7 +30,7 @@ export default function LayoutDefault({
 			<div
 				className={cn(
 					"flex flex-col min-h-screen",
-					isHome ? `${pageContext.bgImgClass} bg-cover bg-center` : ""
+					isHome ? `${pageContext.bgImgClass} bg-cover bg-center` : "",
 				)}
 			>
 				<QueryClientProvider client={queryClient}>
