@@ -22,6 +22,7 @@ import { useActivityKeeps } from "@/hooks/use-activity-keeps";
 import { IDS } from "@/utils/ids";
 import { CardGrid } from "./cardGrid";
 import { SkeletonCard } from "@/components/common/skeletonCard";
+import { CardsContainer } from "./cardsContainer";
 
 const SKELETON_CARD_COUNT = 3;
 
@@ -244,11 +245,11 @@ export function Content() {
 			/>
 
 			{isLoading && (
-				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+				<CardsContainer>
 					{Array.from({ length: SKELETON_CARD_COUNT }).map(() => (
 						<SkeletonCard key={crypto.randomUUID()} />
 					))}
-				</div>
+				</CardsContainer>
 			)}
 			{isError && null}
 			{isSuccess && (
