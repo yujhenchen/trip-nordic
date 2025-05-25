@@ -18,10 +18,11 @@ type MenuItemType = {
 	href: string;
 };
 
-function MenuItems() {
+function MenuItems({ showHome = false }: { showHome?: boolean }) {
 	const trips = useTrips();
 
 	const menuItems = [
+		showHome && { key: "home", text: "Home", href: "/" },
 		{
 			key: "plan",
 			text: "Plan",
@@ -30,7 +31,9 @@ function MenuItems() {
 		},
 		{ key: "explore", text: "Explore", href: "/explore" },
 		{ key: "about", text: "About", href: "/about" },
-	] satisfies Array<MenuItemType>;
+	].filter((item): item is MenuItemType =>
+		Boolean(item),
+	) satisfies Array<MenuItemType>;
 
 	return menuItems.map((item) => (
 		<NavigationMenuItem key={item.key}>
@@ -44,11 +47,17 @@ function MenuItems() {
 	));
 }
 
-export function NavMenuList({ children }: { children?: ReactNode }) {
+export function NavMenuList({
+	children,
+	showHome,
+}: {
+	children?: ReactNode;
+	showHome?: boolean;
+}) {
 	return (
 		<NavigationMenuList className="flex items-center">
 			<div className="flex grow">
-				<MenuItems />
+				<MenuItems showHome={showHome} />
 			</div>
 
 			{children}

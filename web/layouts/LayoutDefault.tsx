@@ -22,21 +22,28 @@ export default function LayoutDefault({
 }) {
 	const pageContext = usePageContext();
 
-	const isHome =
-		pageContext.pageType === "/" || pageContext.pageType === "/plan";
+	const showBgImg = ["/", "/plan", "/login", "/signup"].includes(
+		pageContext.routePath,
+	);
+
+	const showHeader = ["/about", "/explore", "/login", "/signup"].includes(
+		pageContext.routePath,
+	);
+
+	const showFooterMore = ["/", "/plan"].includes(pageContext.routePath);
 
 	return (
 		<ThemeProvider>
 			<div
 				className={cn(
 					"flex flex-col min-h-screen",
-					isHome ? `${pageContext.bgImgClass} bg-cover bg-center` : "",
+					showBgImg ? `${pageContext.bgImgClass} bg-cover bg-center` : "",
 				)}
 			>
 				<QueryClientProvider client={queryClient}>
-					<Header showLogo={!isHome} showNavMenu={!isHome} />
+					{showHeader && <Header />}
 					{children}
-					<Footer />
+					<Footer showHome={showFooterMore} showModeToggle={showFooterMore} />
 					<Toaster />
 				</QueryClientProvider>
 			</div>
