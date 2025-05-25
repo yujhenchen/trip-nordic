@@ -17,7 +17,7 @@ export function onBeforeRender(pageContext: PageContext) {
 	if (currentPath === "/") {
 		const randomBgClass =
 			COUNTRY_BG_CLASSES[
-			Math.floor(Math.random() * COUNTRY_BG_CLASSES.length)
+				Math.floor(Math.random() * COUNTRY_BG_CLASSES.length)
 			] ?? "";
 		bgClassStore.setBgImgClass(randomBgClass);
 	}
