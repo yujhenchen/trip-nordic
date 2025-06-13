@@ -29,7 +29,7 @@ export default function LayoutDefault({
 
 	const { PLAN, EXPLORE, ...rest } = ROUTE_PATHS;
 	const showFooter = (Object.values(rest) as Array<string>).includes(
-		pageContext.routePath,
+		pageContext.routePath
 	);
 
 	const { HOME, ...restExcludeHome } = ROUTE_PATHS;
@@ -45,13 +45,16 @@ export default function LayoutDefault({
 				})}
 				{...(showBgImg && {
 					style: {
-						backgroundImage: `url(${pageContext.bgImgClass})`,
+						backgroundImage: `url(${pageContext.bgImgUrl})`,
 					},
 				})}
 			>
 				<QueryClientProvider client={queryClient}>
 					{showHeader && (
-						<Header showLogo={showHeaderMore} showNavMenu={showHeaderMore} />
+						<Header
+							showLogo={showHeaderMore}
+							showNavMenu={showHeaderMore}
+						/>
 					)}
 					{children}
 					{showFooter && (

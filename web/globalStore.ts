@@ -1,21 +1,21 @@
-export class BgImgClassStore {
-	private bgImgClass = "";
-	private static instance: BgImgClassStore;
+export class BgImgUrlStore {
+	private bgImgUrl = "";
+	private static instance: BgImgUrlStore;
 
-	private constructor() {}
+	private constructor() { }
 
-	public static getInstance(): BgImgClassStore {
-		if (!BgImgClassStore.instance) {
-			BgImgClassStore.instance = new BgImgClassStore();
+	public static getInstance(): BgImgUrlStore {
+		if (!BgImgUrlStore.instance) {
+			BgImgUrlStore.instance = new BgImgUrlStore();
 		}
-		return BgImgClassStore.instance;
+		return BgImgUrlStore.instance;
 	}
 
-	public getBgImgClass(): string {
-		return this.bgImgClass;
+	public getBgImgUrl(): string {
+		return this.bgImgUrl;
 	}
 
-	public setBgImgClass(bgImgClass: string): void {
-		this.bgImgClass = bgImgClass;
+	public setBgImgUrl(imgUrl: string): void {
+		this.bgImgUrl = imgUrl;
 	}
 }

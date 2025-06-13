@@ -1,6 +1,6 @@
 // /pages/some-page/+onBeforeRender.js
 
-import { BgImgClassStore } from "@/globalStore";
+import { BgImgUrlStore } from "@/globalStore";
 import type { PageContext } from "vike/types";
 
 import { Cloudinary } from "@cloudinary/url-gen";
@@ -11,7 +11,7 @@ const cloudName: string = process.env.CLOUDINARY_CLOUD_NAME ?? "test";
 
 export function onBeforeRender(pageContext: PageContext) {
 	let currentPath = pageContext.urlPathname;
-	const bgClassStore = BgImgClassStore.getInstance();
+	const bgClassStore = BgImgUrlStore.getInstance();
 
 	// TODO: use API key to secure
 	const cld = new Cloudinary({ cloud: { cloudName } });
@@ -34,13 +34,13 @@ export function onBeforeRender(pageContext: PageContext) {
 	// get new image when at home
 	if (currentPath === "/") {
 		const bgClass = imgUrl;
-		bgClassStore.setBgImgClass(bgClass);
+		bgClassStore.setBgImgUrl(bgClass);
 	}
 
 	return {
 		pageContext: {
 			routePath: currentPath,
-			bgImgClass: bgClassStore.getBgImgClass(),
+			bgImgUrl: bgClassStore.getBgImgUrl(),
 		},
 	};
 }
