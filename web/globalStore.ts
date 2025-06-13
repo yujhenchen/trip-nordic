@@ -1,10 +1,11 @@
 import { getAssetsPublicIds } from "./cloudinary";
 
 export class BgImgUrlStore {
-	private bgImgUrl = "";
 	private static instance: BgImgUrlStore;
+	private bgImgUrl = "";
+	private bgImgId = "";
 
-	private constructor() {}
+	private constructor() { }
 
 	public static getInstance(): BgImgUrlStore {
 		if (!BgImgUrlStore.instance) {
@@ -20,6 +21,14 @@ export class BgImgUrlStore {
 	public setBgImgUrl(imgUrl: string): void {
 		this.bgImgUrl = imgUrl;
 	}
+
+	public getBgImgId(): string {
+		return this.bgImgId;
+	}
+
+	public setBgImgId(imgId: string): void {
+		this.bgImgId = imgId;
+	}
 }
 
 const imgPrefix: string = process.env.CLOUDINARY_IMAGE_PREFIX ?? "img_prefix";
@@ -28,7 +37,7 @@ export class ImageIdsStore {
 	private static instance: ImageIdsStore;
 	private imgIds: Array<string> = [];
 
-	private constructor() {}
+	private constructor() { }
 
 	private async init(): Promise<void> {
 		try {
