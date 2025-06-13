@@ -11,7 +11,7 @@ const cloudName: string = process.env.CLOUDINARY_CLOUD_NAME ?? "test";
 
 export async function onBeforeRender(pageContext: PageContext) {
 	let currentPath = pageContext.urlPathname;
-	const bgClassStore = BgImgUrlStore.getInstance();
+	const bgImgUrlStore = BgImgUrlStore.getInstance();
 
 	const imgIdsStore = await ImageIdsStore.getInstance();
 	const imgIds = imgIdsStore.getImgIds();
@@ -35,14 +35,13 @@ export async function onBeforeRender(pageContext: PageContext) {
 
 	// get new image when at home
 	if (currentPath === "/") {
-		const bgClass = imgUrl;
-		bgClassStore.setBgImgUrl(bgClass);
+		bgImgUrlStore.setBgImgUrl(imgUrl);
 	}
 
 	return {
 		pageContext: {
 			routePath: currentPath,
-			bgImgUrl: bgClassStore.getBgImgUrl(),
+			bgImgUrl: bgImgUrlStore.getBgImgUrl(),
 		},
 	};
 }
