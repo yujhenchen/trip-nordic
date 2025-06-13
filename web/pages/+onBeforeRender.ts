@@ -4,7 +4,7 @@ import { BgImgUrlStore, ImageIdsStore } from "@/globalStore";
 import type { PageContext } from "vike/types";
 
 import { Cloudinary } from "@cloudinary/url-gen";
-import { auto } from "@cloudinary/url-gen/actions/resize";
+import { auto, scale } from "@cloudinary/url-gen/actions/resize";
 import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
 
 const cloudName: string = process.env.CLOUDINARY_CLOUD_NAME ?? "test";
@@ -19,24 +19,28 @@ export async function onBeforeRender(pageContext: PageContext) {
 
 	const cld = new Cloudinary({ cloud: { cloudName } });
 
-	// Use this sample image or upload your own via the Media Explorer
-	const img = cld
-		.image(imgIds[randomIndex])
-		.format("auto") // Optimize delivery by resizing and applying auto-format and auto-quality
-		.quality("auto")
-		.resize(auto().gravity(autoGravity())); // Transform the image: auto-crop to square aspect_ratio
-
-	const imgUrl = img.toURL();
-
 	// process plan
 	if (currentPath.includes("/plan")) {
 		currentPath = "/plan";
 	}
 
-	// get new image when at home
+	let imgId = bgImgUrlStore.getBgImgId();
+
 	if (currentPath === "/") {
-		bgImgUrlStore.setBgImgUrl(imgUrl);
+		imgId = imgIds[randomIndex];
+		bgImgUrlStore.setBgImgId(imgId);
 	}
+
+	let img = cld
+		.image(imgId)
+		.format("auto")
+		.resize(auto().gravity(autoGravity()));
+	if (currentPath !== "/") {
+		img = img.resize(scale().width(20));
+	}
+
+	const imgUrl = img.toURL();
+	bgImgUrlStore.setBgImgUrl(imgUrl);
 
 	return {
 		pageContext: {
