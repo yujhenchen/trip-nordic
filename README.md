@@ -53,15 +53,30 @@ CORS with HTTPOnly Cookie
 ## Tech stack and why choose them
 
 #### Frontend
-[![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-6-purple?style=for-the-badge&logo=vite)](https://vitejs.dev/)
-[![Radix UI](https://img.shields.io/badge/Radix_UI-%23181717.svg?style=for-the-badge&logo=radix-ui&logoColor=white)](https://radix-ui.com/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3-blue?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
-[![Express.js](https://img.shields.io/badge/Express-4-gray?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-[![Zod](https://img.shields.io/badge/Zod-3-green?style=for-the-badge)](https://zod.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![TanStack Query](https://img.shields.io/badge/TanStack_Query-5-red?style=for-the-badge&logo=react-query)](https://tanstack.com/query)
-[![Vike](https://img.shields.io/badge/Vike-%23000000.svg?style=for-the-badge)](https://vike.dev/)
+<!-- Core -->
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vike](https://img.shields.io/badge/Vike-000000?style=for-the-badge)](https://vike.dev/)
+[![Express.js](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+
+<!-- UI & Styling -->
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Radix UI](https://img.shields.io/badge/Radix_UI-181717?style=for-the-badge&logo=radix-ui&logoColor=white)](https://www.radix-ui.com/)
+[![Lucide](https://img.shields.io/badge/Lucide-000000?style=for-the-badge&logo=lucide&logoColor=white)](https://lucide.dev/)
+[![React Select](https://img.shields.io/badge/React_Select-FF69B4?style=for-the-badge&logo=react&logoColor=white)](https://react-select.com/home)
+
+<!-- State & Data -->
+[![Zustand](https://img.shields.io/badge/Zustand-000000?style=for-the-badge&logo=zustand&logoColor=white)](https://zustand-demo.pmnd.rs/)
+[![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white)](https://tanstack.com/query)
+[![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)](https://graphql.org/)
+
+<!-- Validation -->
+[![Zod](https://img.shields.io/badge/Zod-3EAF7C?style=for-the-badge)](https://zod.dev/)
+
+<!-- Media & Deployment -->
+[![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)](https://cloudinary.com/)
+
 
 
 
@@ -226,6 +241,16 @@ CORS with HTTPOnly Cookie
 	- [x] fix cities may be incorrect (400 more cities)
 	- [ ] change UI of cities to search box + dropdown list (order by Alphabet, multiple selection); on the right side shows the selected options, and can remove them
 
+- [ ] Images: process the content of the data and provide general images if cannot find the real one (eg, 10 restaurant images to switch in between)
+
+- [ ] Styling cohesive
+	- [ ] make all blue colors the same but different level
+	- [ ] header navigation background color in light mode nicer
+
+- [ ] Performance
+	- [ ] debouncing
+	- [ ] throttle
+	- [ ] remove not need re-render
 
 ## Examples
 
