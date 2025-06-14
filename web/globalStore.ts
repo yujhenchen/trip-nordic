@@ -8,7 +8,7 @@ export class BgImgStore {
 
 	private currentImgId = "";
 
-	private constructor() { }
+	private constructor() {}
 
 	public static async getInstance(
 		cloudName: string,
