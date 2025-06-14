@@ -1,63 +1,57 @@
-import { getAssetsPublicIds } from "./cloudinary";
+import { initBgImages } from "./utils/assetsHelper";
 
-export class BgImgUrlStore {
-	private static instance: BgImgUrlStore;
-	private bgImgUrl = "";
-	private bgImgId = "";
-
-	private constructor() { }
-
-	public static getInstance(): BgImgUrlStore {
-		if (!BgImgUrlStore.instance) {
-			BgImgUrlStore.instance = new BgImgUrlStore();
-		}
-		return BgImgUrlStore.instance;
-	}
-
-	public getBgImgUrl(): string {
-		return this.bgImgUrl;
-	}
-
-	public setBgImgUrl(imgUrl: string): void {
-		this.bgImgUrl = imgUrl;
-	}
-
-	public getBgImgId(): string {
-		return this.bgImgId;
-	}
-
-	public setBgImgId(imgId: string): void {
-		this.bgImgId = imgId;
-	}
-}
-
-const imgPrefix: string = process.env.CLOUDINARY_IMAGE_PREFIX ?? "img_prefix";
-
-export class ImageIdsStore {
-	private static instance: ImageIdsStore;
+export class BgImgStore {
+	private static instance: BgImgStore;
 	private imgIds: Array<string> = [];
+	private imgUrlMap: Map<string, { default: string; small: string }> =
+		new Map();
+
+	private currentImgId = "";
 
 	private constructor() { }
 
-	private async init(): Promise<void> {
-		try {
-			const imgIds = await getAssetsPublicIds({ prefix: imgPrefix });
-			this.imgIds = imgIds;
-		} catch (error) {
-			console.error(error);
-			this.imgIds = [];
+	public static async getInstance(
+		cloudName: string,
+		imgPrefix: string,
+	): Promise<BgImgStore> {
+		if (!BgImgStore.instance) {
+			BgImgStore.instance = new BgImgStore();
 		}
+		if (BgImgStore.instance.imgIds.length === 0) {
+			await initBgImages(cloudName, imgPrefix, BgImgStore.instance);
+		}
+		return BgImgStore.instance;
 	}
 
-	public static async getInstance(): Promise<ImageIdsStore> {
-		if (!ImageIdsStore.instance) {
-			ImageIdsStore.instance = new ImageIdsStore();
-			await ImageIdsStore.instance.init();
-		}
-		return ImageIdsStore.instance;
+	public setImgIds(imgIds: Array<string>): void {
+		this.imgIds = imgIds;
 	}
 
 	public getImgIds(): Array<string> {
 		return this.imgIds;
+	}
+
+	public setImgUrlMap(
+		imgUrlMap: Map<string, { default: string; small: string }>,
+	): void {
+		this.imgUrlMap = imgUrlMap;
+	}
+
+	public getImgUrlMap(): Map<string, { default: string; small: string }> {
+		return this.imgUrlMap;
+	}
+
+	public getItemFromImgUrlMap(
+		imgId: string,
+	): { default: string; small: string } | undefined {
+		return this.imgUrlMap.get(imgId);
+	}
+
+	public setCurrentImgId(imgId: string): void {
+		this.currentImgId = imgId;
+	}
+
+	public getCurrentImgId(): string {
+		return this.currentImgId;
 	}
 }
