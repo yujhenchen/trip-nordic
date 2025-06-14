@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { NavigationMenu } from "../ui/navigation-menu";
-import { ModeToggle } from "./modeToggle";
+import { ThemeToggle } from "./themeToggle";
 import { ProfileMenuItem } from "./profile";
 
 interface Props {
@@ -30,7 +30,7 @@ export function RightMenu({
 					<ProfileMenuItem />
 				</NavigationMenu>
 			)}
-			{showModeToggle && <ModeToggle />}
+			{showModeToggle && <ThemeToggle />}
 		</div>
 	);
 }

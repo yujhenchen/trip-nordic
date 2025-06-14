@@ -7,7 +7,7 @@ interface Props {
 	className?: string;
 }
 
-export function ModeToggle({ className }: Props) {
+export function ThemeToggle({ className }: Props) {
 	const { theme, setTheme } = useTheme();
 
 	return (
@@ -16,9 +16,9 @@ export function ModeToggle({ className }: Props) {
 				"inline-flex items-center justify-center ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
 				"bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-full",
 				"aspect-square p-2",
-				className,
+				className
 			)}
-			aria-label="Toggle Mode"
+			aria-label="Toggle Theme"
 			onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
 		>
 			{theme === "dark" ? <Sun /> : <Moon />}
