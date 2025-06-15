@@ -13,10 +13,18 @@ interface PanelActionBarType extends HTMLAttributes<HTMLDivElement> {
 	handleConfirm: () => void;
 }
 
+// export function Panel({ children, ...rest }: PanelProps) {
+// 	return (
+// 		<PanelContainer {...rest} className="py-4">
+// 			<Panel.Content>{children}</Panel.Content>
+// 		</PanelContainer>
+// 	);
+// }
+
 export function Panel({ children, ...rest }: PanelProps) {
 	return (
 		<PanelContainer {...rest} className="py-4">
-			<Panel.Content>{children}</Panel.Content>
+			{children}
 		</PanelContainer>
 	);
 }
