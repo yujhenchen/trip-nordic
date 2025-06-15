@@ -4,7 +4,7 @@ import { PlanSidebar } from "./planSidebar";
 
 export default function PlanPage() {
 	return (
-		<div className="flex flex-col md:flex-row-reverse h-[calc(100vh-6rem-5.5rem)]">
+		<div className="flex flex-col md:flex-row-reverse h-[calc(100vh-6rem)]">
 			<Content />
 			<SidebarProvider>
 				<PlanSidebar />
