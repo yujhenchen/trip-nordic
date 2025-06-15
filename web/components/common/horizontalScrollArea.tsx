@@ -1,12 +1,25 @@
 import type { ScrollAreaProps } from "@radix-ui/react-scroll-area";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { cn } from "@/lib/utils";
 
-interface Props extends ScrollAreaProps {}
+interface Props extends ScrollAreaProps {
+	fullHeight?: boolean;
+}
 
-export function HorizontalScrollArea({ children, ...props }: Props) {
+export function HorizontalScrollArea({
+	children,
+	fullHeight = false,
+	...props
+}: Props) {
 	return (
-		<ScrollArea {...props}>
-			<div className="flex w-max space-x-4 p-4">{children}</div>
+		<ScrollArea fullHeight={fullHeight} {...props}>
+			<div
+				className={cn("flex w-max space-x-4 p-4 h-full", {
+					"h-full": fullHeight,
+				})}
+			>
+				{children}
+			</div>
 			<ScrollBar orientation="horizontal" />
 		</ScrollArea>
 	);
