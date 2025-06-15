@@ -93,7 +93,7 @@ export function PanelSection({ trip }: Props) {
 	};
 
 	return (
-		<HorizontalScrollArea>
+		<HorizontalScrollArea className="flex-1" fullHeight={true}>
 			{trip?.tripDays.map((tripDay) => (
 				<Panel key={tripDay.id}>
 					<Panel.ActionBar handleConfirm={() => handleConfirm(tripDay.id)} />
@@ -103,25 +103,27 @@ export function PanelSection({ trip }: Props) {
 							handleSelectDate(selectedDay, tripDay)
 						}
 					/>
-					{tripDay.activities.map((activity) => (
-						<PanelCard
-							key={activity.id}
-							tripId={trip.id}
-							tripDayId={tripDay.id}
-							activityId={activity.id}
-							title={activity.name}
-							content={activity.content}
-							handleRemove={() => handleRemoveCard(tripDay.id, activity.id)}
-							handleUpdate={(title: string, description: string) =>
-								handleUpdateCard(tripDay.id, {
-									...activity,
-									name: title,
-									content: description,
-								})
-							}
-						/>
-					))}
-					<PanelCardNew handleCreate={() => handleCreateCard(tripDay.id)} />
+					<Panel.Content>
+						{tripDay.activities.map((activity) => (
+							<PanelCard
+								key={activity.id}
+								tripId={trip.id}
+								tripDayId={tripDay.id}
+								activityId={activity.id}
+								title={activity.name}
+								content={activity.content}
+								handleRemove={() => handleRemoveCard(tripDay.id, activity.id)}
+								handleUpdate={(title: string, description: string) =>
+									handleUpdateCard(tripDay.id, {
+										...activity,
+										name: title,
+										content: description,
+									})
+								}
+							/>
+						))}
+						<PanelCardNew handleCreate={() => handleCreateCard(tripDay.id)} />
+					</Panel.Content>
 				</Panel>
 			))}
 			<PanelNew handleCreate={handleCreatePanel} />

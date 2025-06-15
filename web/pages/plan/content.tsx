@@ -13,7 +13,7 @@ export function Content() {
 		: null;
 
 	return (
-		<div className="w-full flex-grow overflow-hidden flex flex-col">
+		<div className="w-full h-full flex-grow overflow-hidden flex flex-col">
 			<TripProvider {...(trip ? { defaultTrip: trip } : {})}>
 				<ControlPanel trip={trip} />
 				<PanelSection trip={trip} />
