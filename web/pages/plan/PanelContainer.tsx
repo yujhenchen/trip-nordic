@@ -11,6 +11,7 @@ export function PanelContainer({
 		<Card
 			className={cn(
 				"bg-gray-200 dark:bg-gray-600 overflow-hidden shrink-0 w-full h-full md:w-72 flex flex-col",
+				"shadow-lg",
 				className,
 			)}
 			{...rest}
