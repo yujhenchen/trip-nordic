@@ -1,25 +1,18 @@
 import type { ComponentProps, HTMLAttributes } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import type { Card } from "@/components/ui/card";
+// import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { ActionDropdown } from "./actionDropdown";
 import { PanelContainer } from "./panelContainer";
+import { DroppableScrollArea } from "@/components/common/droppableScrollArea";
 
-export interface PanelProps extends ComponentProps<typeof Card> {}
+export interface PanelProps extends ComponentProps<typeof PanelContainer> {}
 
-interface PanelContentProps extends ComponentProps<typeof ScrollArea> {}
+interface PanelContentProps
+	extends ComponentProps<typeof DroppableScrollArea> {}
 
 interface PanelActionBarType extends HTMLAttributes<HTMLDivElement> {
 	handleConfirm: () => void;
 }
-
-// export function Panel({ children, ...rest }: PanelProps) {
-// 	return (
-// 		<PanelContainer {...rest} className="py-4">
-// 			<Panel.Content>{children}</Panel.Content>
-// 		</PanelContainer>
-// 	);
-// }
 
 export function Panel({ children, ...rest }: PanelProps) {
 	return (
@@ -42,12 +35,17 @@ Panel.ActionBar = function PanelActionBar({
 
 Panel.Content = function PanelContent({
 	children,
+	id,
 	...rest
 }: PanelContentProps) {
 	return (
-		<ScrollArea className="px-4" {...rest}>
+		// <ScrollArea className="px-4" {...rest}>
+		// 	{children}
+		// 	<div className="w-full h-24" />
+		// </ScrollArea>
+		<DroppableScrollArea id={id} className="px-4" {...rest}>
 			{children}
 			<div className="w-full h-24" />
-		</ScrollArea>
+		</DroppableScrollArea>
 	);
 };
